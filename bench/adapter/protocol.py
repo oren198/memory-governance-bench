@@ -1,58 +1,56 @@
 """The whole surface a system under test exposes to the benchmark.
 
-Everything the benchmark knows about a system passes through this file.
-Nothing here names a mechanism: no judge, no summary, no prompt, no store.
-A system is a black box that agents write to, share from, retract from, and
-read from; the benchmark scores only what `read` returns.
+Vocabulary and meaning: MODEL.md. Canonical contract: SPEC.md §2 (HTTP);
+this is its Python form. Nothing here names a mechanism. The benchmark
+scores only what `read` returns.
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Literal, Protocol
 
-Kind = Literal["observation", "decision"]
+Kind = Literal["note", "rule"]
 
 
 @dataclass(frozen=True)
 class World:
-    """The topology a scenario runs in.
+    """The fleet a scenario runs in.
 
-    scopes:    every scope id.
-    contains:  (outer, inner) pairs — `outer` contains `inner`; decisions of
-               `outer` bind readers of `inner`.
-    refers:    (scope, peer) pairs — `scope` wants to hear what `peer` shares.
-               May form cycles.
-    operator:  scopes the operator may make decisions for, or None.
+    groups:       every group id.
+    part_of:      (group, container) pairs — the container's rules bind the group.
+    listens_to:   (group, source) pairs — the source's announcements are shown
+                  to the group. Directed, one hop; may be mutual.
+    owner_groups: groups the owner may write rules for.
     """
 
-    scopes: tuple[str, ...]
-    contains: tuple[tuple[str, str], ...] = ()
-    refers: tuple[tuple[str, str], ...] = ()
-    operator: tuple[str, ...] = ()
+    groups: tuple[str, ...]
+    part_of: tuple[tuple[str, str], ...] = ()
+    listens_to: tuple[tuple[str, str], ...] = ()
+    owner_groups: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
-class Actor:
-    """Who is acting. `scope` is where they act from."""
+class Agent:
+    """Who is acting, and the group they act from."""
 
     id: str
-    scope: str
-    is_operator: bool = False
+    group: str
+    owner: bool = False
 
 
 @dataclass(frozen=True)
 class Write:
     content: str
     kind: Kind
-    supersedes: str | None = None  # receipt id of the item this replaces, if any
-    subject: str | None = None      # optional topic tag; systems may ignore it
+    replaces: str | None = None  # receipt id of the item this supersedes
+    subject: str | None = None
 
 
 @dataclass(frozen=True)
 class Receipt:
-    """What the system hands back for a write or share. `id` must be stable
-    enough to be used in later `retract`/`supersedes` calls."""
+    """Handed back for a write or announcement; `id` is used by later
+    `retract` and `replaces`."""
 
     id: str
     accepted: bool
@@ -61,68 +59,53 @@ class Receipt:
 
 @dataclass(frozen=True)
 class Shown:
-    """One item a reader is shown. This is the unit every measure grades.
-
-    content:     the text as shown.
-    kind:        observation or decision, *as shown* — the label a reader sees.
-    origin:      the scope the system says this came from.
-    via:         if the item reached the reader through another scope (a
-                 relay), that scope; else None.
-    attributed:  if the item is a restatement of another scope's claim, the
-                 scope it is attributed to; else None.
-    binding:     whether the reader is told this binds them.
-    receipt:     the receipt id of the write/share it derives from, when the
-                 system can say; else None.
-    event:       None for ordinary items; "withdrawn" for an item the reader
-                 is told was retracted (delivered as an event, not silence).
-    """
+    """One item a reader is shown — the unit every measure grades.
+    Field meanings: MODEL.md § "What a reader is shown"."""
 
     content: str
     kind: Kind
     origin: str
     binding: bool
     via: str | None = None
-    attributed: str | None = None
+    attributed_to: str | None = None
     receipt: str | None = None
     event: Literal["withdrawn"] | None = None
 
 
 @dataclass(frozen=True)
-class ReadResult:
+class Read:
     items: tuple[Shown, ...]
-    words: int = field(default=0)  # size of the read surface, for family G
+    words: int = 0
 
 
 class Unsupported(Exception):
-    """Raised by an adapter for an operation the system has no equivalent of.
-    Reported as `unsupported` — scored as failure, labelled distinctly."""
+    """Raised for an operation the system has no equivalent of. Reported as
+    `unsupported` — scored as failure, labelled distinctly."""
 
 
 class MemorySystem(Protocol):
-    """Implement this to put a system under test."""
-
     name: str
 
-    def setup(self, world: World) -> None: ...
-
-    def write(self, actor: Actor, write: Write) -> Receipt: ...
-
-    def retract(self, actor: Actor, receipt_id: str) -> Receipt: ...
-
-    def share(self, actor: Actor, receipt_id: str) -> Receipt:
-        """Offer a held item to the scopes that refer to the actor's scope
-        or are contained by it."""
+    def world(self, world: World) -> None:
+        """Replace the fleet; wipe all memory."""
         ...
 
-    def unshare(self, actor: Actor, receipt_id: str) -> Receipt: ...
+    def write(self, agent: Agent, write: Write) -> Receipt: ...
 
-    def read(self, actor: Actor) -> ReadResult:
-        """Everything the actor is shown when acting from their scope."""
+    def announce(self, agent: Agent, receipt_id: str) -> Receipt:
+        """Offer a held item to the groups that listen to the agent's group
+        and to the groups that are part of it."""
+        ...
+
+    def retract(self, agent: Agent, receipt_id: str) -> Receipt:
+        """Take back a write or an announcement."""
+        ...
+
+    def read(self, agent: Agent) -> Read:
+        """Everything the agent is shown, acting from its group."""
         ...
 
     def settle(self) -> None:
-        """Finish any deferred work between a write and the next read.
-        A system with no deferred work returns immediately."""
+        """Finish deferred work; return when reads are stable. No-op for a
+        system that decides synchronously."""
         ...
-
-    def teardown(self) -> None: ...

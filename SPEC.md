@@ -1,103 +1,76 @@
 # Specification
 
-Precise contract: how a team runs the benchmark, what their system must
-expose, what a result is, and how results are published and compared.
+How a team runs the benchmark, what their system must expose, what a result
+is, and how results are published and compared. Vocabulary: `MODEL.md`.
 
 ## 1. Running it
 
 ```
 pip install fleet-memory-bench            # or: pip install -e .
-fmb run  --system mypkg.adapter:MySystem   # Python adapter, or
-fmb run  --system http://localhost:8080    # HTTP adapter (any language)
-fmb run  ... --families C,A,T              # subset while iterating
-fmb ui                                     # local dashboard: your runs + published ones
-fmb submit <run-id>                        # publish one run to this repo
+fmb run  --system http://localhost:8080   # HTTP adapter (any language)
+fmb run  --system mypkg.adapter:MySystem  # Python adapter
+fmb run  ... --families C,A,T             # subset while iterating
+fmb ui                                    # local dashboard: your runs + published ones
+fmb submit <run-id>                       # publish one run to this repo
 ```
 
-`fmb run` writes one **run file** to `~/.fmb/runs/<run-id>.json` and prints
-the headline pair. Run as many times as you like; nothing leaves your machine
-until `fmb submit`.
+`fmb run` writes one run file to `~/.fmb/runs/<run-id>.json` and prints the
+headline pair. Nothing leaves your machine until `fmb submit`.
 
 ## 2. The system API
 
-A system participates by exposing five operations plus setup. Two bindings
-carry the same contract; the HTTP binding is canonical and the Python
-binding is a convenience.
-
-### 2.1 HTTP binding (canonical)
-
-All bodies are JSON. The benchmark is the only client; the system is a
-server. Every request carries the acting agent.
+The benchmark is the only client; the system is a server. The HTTP binding
+is canonical; the Python binding (`bench/adapter/protocol.py`) is the same
+contract as methods.
 
 | Method | Path | Body | Returns |
 |---|---|---|---|
-| `POST` | `/world` | `World` | `{}` — replace the topology; wipe all memory |
-| `POST` | `/write` | `{actor, content, kind, supersedes?, subject?}` | `Receipt` |
-| `POST` | `/retract` | `{actor, receipt_id}` | `Receipt` |
-| `POST` | `/share` | `{actor, receipt_id}` | `Receipt` — offer a held item outward |
-| `POST` | `/unshare` | `{actor, receipt_id}` | `Receipt` |
-| `POST` | `/read` | `{actor}` | `ReadResult` |
-| `POST` | `/settle` | `{}` | `{}` — finish deferred work; return when a `read` would be stable |
+| `POST` | `/world` | `World` | `{}` — replace the fleet; wipe all memory |
+| `POST` | `/write` | `{agent, content, kind, replaces?, subject?}` | `Receipt` |
+| `POST` | `/announce` | `{agent, receipt_id}` | `Receipt` |
+| `POST` | `/retract` | `{agent, receipt_id}` | `Receipt` — a write or an announcement |
+| `POST` | `/read` | `{agent}` | `Read` |
+| `POST` | `/settle` | `{}` | `{}` — finish deferred work; return when reads are stable |
 | `GET` | `/info` | — | `{id, name, version}` |
 
-Unsupported operation: respond `501` with `{"unsupported": "<op>"}`.
+Unsupported operation: `501` with `{"unsupported": "<op>"}`.
 
 **Types**
 
 ```
-World      { scopes: [id], contains: [[outer, inner]], refers: [[scope, peer]],
-             operator_scopes: [id] }
-Actor      { id, scope, operator: bool }
-kind       "observation" | "decision"
-Receipt    { id, accepted: bool, reason?: string }
-ReadResult { items: [Shown], words: int }
-Shown      { content, kind, origin, binding: bool,
-             via?: scope, attributed?: scope, receipt?: id,
-             event?: "withdrawn" }
+World    { groups: [id], part_of: [[group, container]], listens_to: [[group, source]],
+           owner_groups: [id] }
+Agent    { id, group, owner: bool }
+kind     "note" | "rule"
+Receipt  { id, accepted: bool, reason?: string }
+Read     { items: [Shown], words: int }
+Shown    { content, kind, origin, binding: bool,
+           via?: group, attributed_to?: group, receipt?: id,
+           event?: "withdrawn" }
 ```
 
-`Shown` is the unit every measure grades:
+`Shown` fields mean exactly what `MODEL.md` § "What a reader is shown" says.
+`words` is the size of the read, whitespace-split, counted by the system.
 
-- `content` — text as shown to the reader.
-- `kind` — how the reader is told to treat it.
-- `binding` — whether the reader is told it binds them.
-- `origin` — the scope the system says it came from. Must be true.
-- `via` — set when the item reached the reader through an intermediate scope.
-- `attributed` — set when the item restates another scope's claim.
-- `receipt` — the write/share it derives from, when the system can say.
-- `event` — `"withdrawn"` when the reader is being told this item was
-  retracted. A withdrawn item is shown once as an event, then may vanish.
+**What the benchmark promises the system**
 
-`words` — the size of what the reader was shown, counted by the system
-(whitespace-split). Family G uses it against the bound the scenario states.
-
-### 2.2 Python binding
-
-`bench.adapter.MemorySystem` (`bench/adapter/protocol.py`) — the same seven
-operations as methods. The benchmark wraps a Python adapter and an HTTP
-endpoint identically.
-
-### 2.3 What the benchmark promises the system
-
-- `setup`/`/world` is called once per scenario; scenarios are independent.
-- `settle` is called after every batch of writes and before every read.
-  Systems that decide synchronously implement it as a no-op.
-- The benchmark never calls the system concurrently within a scenario unless
-  the scenario says so (family T has explicit concurrent-write cases).
-- Content strings contain **canaries** — unique tokens per scenario per
-  item. Graders look for canaries in `read` output; they never interpret
-  prose. This is what makes the benchmark deterministic.
+- `/world` is called once per scenario; scenarios are independent.
+- `/settle` is called after every batch of writes and before every read.
+  A system that decides synchronously implements it as a no-op.
+- The system is not called concurrently within a scenario unless the
+  scenario says so (family T has explicit concurrent cases).
+- Every content string contains a **canary** — a token unique to that item
+  in that scenario. Graders look for canaries in reads; they never
+  interpret prose.
 
 ## 3. Determinism
 
-- Every scenario is generated from `(bench_version, family, index, seed)`.
-  The seed is fixed per benchmark release; `--seed` may override it for
-  robustness checks but such runs are not submittable.
-- Graders are pure functions of `ReadResult`s. No model, no network, no
-  clock. Contradictions are constructed structurally (same `subject`,
-  canary-tagged opposing values), never detected by reading prose.
-- A run file records the exact scenario ids and grader version, so any run
-  is reproducible from the file alone.
+- A scenario is a pure function of `(bench_version, family, index, seed)`.
+  The seed is fixed per release; `--seed` overrides for robustness checks
+  but such runs are not submittable.
+- Graders are pure functions of reads. No model, no network, no clock.
+- A run file records scenario ids and grader version; any run is
+  reproducible from the file alone.
 
 ## 4. Run file
 
@@ -111,53 +84,45 @@ endpoint identically.
   "headline":      { "governance": 0.83, "contribution": 0.97 },
   "families":      { "C": {"pass": 118, "total": 120, "rate": .983,
                            "wilson_low": .95, "unsupported": 0}, ... },
-  "scenarios":     [ {"id": "C-007", "family": "C", "passed": true,
+  "scenarios":     [ {"id": "C1-007", "family": "C", "passed": true,
                       "unsupported": false, "detail": {...}} ... ],
   "cost":          { "wall_seconds": 412, "calls": 9381 },
   "environment":   { "python": "...", "platform": "..." }
 }
 ```
 
-`system.id` is the stable identity across versions (comparison-to-self keys
-on it). `system.version` is whatever the team versions by.
+`system.id` is the stable identity across versions; `system.version` is
+whatever the team versions by.
 
 ## 5. Publishing a result
 
-`fmb submit <run-id>`:
+`fmb submit <run-id>` (or the UI's **Submit** button):
 
-1. Validates the run file (schema, seed is the release seed, all families
-   present or explicitly `unsupported`).
+1. Validates the run file (schema; release seed; every family present or
+   explicitly unsupported).
 2. Writes it to `results/<system-id>/<timestamp>.json` on a branch and opens
-   a pull request against this repository (via `gh`; falls back to printing
-   the file and the PR URL to create manually).
-3. CI on the PR re-validates the file. Merging publishes it.
+   a pull request against this repository via `gh`; without `gh`, prints
+   the file and the URL to open the PR by hand.
+3. CI re-validates on the PR. Merging publishes it.
 
-No credentials beyond the submitter's own GitHub account. Results are
-self-reported and the PR history is the audit trail.
-
-The UI's **Submit** button runs the same flow for the selected local run.
+Results are self-reported; the PR history is the audit trail.
 
 ## 6. UI
 
-Static site, built from `results/**.json` at deploy time and served from
-GitHub Pages at the repo's URL; `fmb ui` serves the same site locally with
-your unsubmitted runs merged in.
+Static site built from `results/**.json`, served from GitHub Pages;
+`fmb ui` serves the same site locally with unsubmitted runs merged in and
+badged "not submitted".
 
-Views:
-
-- **Leaderboard** — every system's latest submitted run, plotted on the
-  governance × contribution plane. A point in the top-right is the goal;
-  the axes are never merged.
-- **System** — one system over time (comparison to self): headline pair per
-  version, per-family trend, scenario-level diff between any two runs.
-- **Compare** — two or more systems side by side by family, with the
+- **Leaderboard** — each system's latest run on the governance ×
+  contribution plane. Axes are never merged.
+- **System** — one `system.id` over versions: headline per version,
+  per-family trend, scenario-level diff between any two runs.
+- **Compare** — several systems side by side by family, with a
   scenario-level diff for a chosen family.
-- **Scenario** — what a scenario does and which systems fail it.
-
-Local runs appear with a "not submitted" badge until published.
+- **Scenario** — what it does, which systems fail it.
 
 ## 7. Versioning
 
-Scenarios, seeds and graders are frozen per `bench_version`. Results are
-comparable only within a major version; the UI groups by it. A change to a
-scenario or grader is a new benchmark version, never an edit in place.
+Scenarios, seeds and graders are frozen per `bench_version`. Results
+compare only within a major version; the UI groups by it. A change to a
+scenario or grader is a new version, never an edit in place.

@@ -18,15 +18,15 @@ Kind = Literal["observation", "decision"]
 class World:
     """The topology a scenario runs in.
 
-    places:    every place id.
+    scopes:    every scope id.
     contains:  (outer, inner) pairs — `outer` contains `inner`; decisions of
                `outer` bind readers of `inner`.
-    refers:    (place, peer) pairs — `place` wants to hear what `peer` shares.
+    refers:    (scope, peer) pairs — `scope` wants to hear what `peer` shares.
                May form cycles.
-    operator:  places the operator may make decisions for, or None.
+    operator:  scopes the operator may make decisions for, or None.
     """
 
-    places: tuple[str, ...]
+    scopes: tuple[str, ...]
     contains: tuple[tuple[str, str], ...] = ()
     refers: tuple[tuple[str, str], ...] = ()
     operator: tuple[str, ...] = ()
@@ -34,10 +34,10 @@ class World:
 
 @dataclass(frozen=True)
 class Actor:
-    """Who is acting. `place` is where they act from."""
+    """Who is acting. `scope` is where they act from."""
 
     id: str
-    place: str
+    scope: str
     is_operator: bool = False
 
 
@@ -65,11 +65,11 @@ class Shown:
 
     content:     the text as shown.
     kind:        observation or decision, *as shown* — the label a reader sees.
-    origin:      the place the system says this came from.
-    via:         if the item reached the reader through another place (a
-                 relay), that place; else None.
-    attributed:  if the item is a restatement of another place's claim, the
-                 place it is attributed to; else None.
+    origin:      the scope the system says this came from.
+    via:         if the item reached the reader through another scope (a
+                 relay), that scope; else None.
+    attributed:  if the item is a restatement of another scope's claim, the
+                 scope it is attributed to; else None.
     binding:     whether the reader is told this binds them.
     receipt:     the receipt id of the write/share it derives from, when the
                  system can say; else None.
@@ -109,16 +109,15 @@ class MemorySystem(Protocol):
 
     def retract(self, actor: Actor, receipt_id: str) -> Receipt: ...
 
-    def share(self, actor: Actor, content: str, receipt_id: str | None = None) -> Receipt:
-        """Offer something the actor's place holds to the places that refer
-        to it or are contained by it. `receipt_id` optionally names the
-        held item being shared."""
+    def share(self, actor: Actor, receipt_id: str) -> Receipt:
+        """Offer a held item to the scopes that refer to the actor's scope
+        or are contained by it."""
         ...
 
     def unshare(self, actor: Actor, receipt_id: str) -> Receipt: ...
 
     def read(self, actor: Actor) -> ReadResult:
-        """Everything the actor is shown when acting from their place."""
+        """Everything the actor is shown when acting from their scope."""
         ...
 
     def settle(self) -> None:

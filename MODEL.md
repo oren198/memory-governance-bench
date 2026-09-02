@@ -145,3 +145,37 @@ scenario states the memory must stay within.
 | binding | the reader is told the item binds them |
 | withdrawn | an event telling a reader an item they were shown was retracted |
 | bound | the maximum size of a read, in words |
+
+## Forced by the promise, and chosen
+
+Not every rule in this model is forced by the promise. Being honest about
+which is which is what keeps the benchmark from grading systems on one
+school of thought.
+
+**Forced.** Deny any of these and the promise fails outright:
+
+- An agent is not shown items from groups it is entitled to nothing of.
+- A rule that binds an agent is shown to that agent, in full.
+- Kind, origin, `via` and `attributed to` are true as shown.
+- A reader is not shown both sides of a contradiction as current.
+- A reader can detect that something they were shown was retracted.
+- Reads stay within their bound, and rules are never what gets dropped.
+- Legitimate items reach the agents entitled to them.
+
+**Chosen.** Defensible, but a different fleet memory could decide otherwise
+and still keep the promise:
+
+- *Notes do not flow down from a container.* A system could pass a
+  container's notes to its parts as clearly-labelled, non-binding material.
+- *Listening is one hop and not transitive.* A system could propagate
+  announcements further, so long as each hop is labelled.
+- *A group has at most one container.* Multiple containers are conceivable;
+  the rules of all of them would bind.
+
+A system **declares** its position on each chosen rule (`/info`, see
+`SPEC.md`). The benchmark then checks the system against **what it
+declared**, and reports the declaration alongside the score. Conformance to
+a declared policy is scored; the choice itself is not. A system that
+declares "notes flow down, labelled" and does exactly that loses no points —
+it loses points if its notes flow down *unlabelled*, or flow down when it
+said they would not.

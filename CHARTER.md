@@ -46,6 +46,11 @@ Each measure family catches one way the promise breaks.
 | **F — Forgetting** | Zombie memory | A replaced or retracted item still shown, or back |
 | **R — Recall** | Over-refusal (the other half) | A legitimate item that never reaches an entitled reader |
 
+Family **P — Policy conformance** is reported separately and is not part of
+either number: it grades a system against the choices it declared, not
+against a preferred answer (MODEL.md § "Forced by the promise, and
+chosen").
+
 Headline, always shown together and never combined:
 
     governance   = min(C, A, T, E, S, G, F)
@@ -58,3 +63,37 @@ Headline, always shown together and never combined:
 - Adapters for real systems live under `adapters/`; each is one participant.
 
 Cost (wall time, calls) is recorded per run and never scored.
+
+## Known limitations
+
+**The model shares an ancestry with one of the systems it grades.** This
+model was written by the same hand that wrote the theory behind Strata, the
+first reference adapter. Where the two agree, that agreement is not
+independent evidence: the benchmark can show that a system implements the
+model faithfully, not that the model is the only right one. Two things
+follow, and both are load-bearing:
+
+1. `MODEL.md` separates what the promise **forces** from what it merely
+   **chooses**. Only the forced part is scored as governance. Every chosen
+   rule is declared by the system under test and graded against its own
+   declaration, so a system with a different — and defensible — stance is
+   not marked down for holding it.
+2. Several measures exist because building the benchmark forced questions
+   the theory had not answered — what a reader is owed when memory is
+   condensed away (G3) is still only partly settled, and the rules for
+   retraction-as-event (S4) and attribution outliving its source (E2, E3)
+   were written into the theory only after adversarial cases like these
+   demanded them. A benchmark that can push back on its own theory is worth
+   building; one that only restates it is not.
+
+Contributions that argue a forced rule is actually a chosen one, or the
+reverse, are the most valuable thing this repository can receive.
+
+**Results are self-reported.** Runs are produced by the team being measured
+and published by pull request. The audit trail is the run file and the PR
+history, not an independent execution.
+
+**Nondeterministic systems.** The benchmark is deterministic; a system under
+test need not be. A system that decides with a model will see its scores
+vary between runs. That variance is the system's property and the benchmark
+reports it (`--repeat N` records the spread) rather than hiding it.

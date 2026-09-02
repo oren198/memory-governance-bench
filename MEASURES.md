@@ -1,6 +1,7 @@
 # Measures
 
-Vocabulary: `MODEL.md`. Every scenario is deterministic: the benchmark
+Families C, A, T, E, S, G, F, R are scored; family P is reported
+separately (see below). Vocabulary: `MODEL.md`. Every scenario is deterministic: the benchmark
 builds the fleet, plants canary-tagged items whose legitimacy is a fact of
 the scenario, and grades what readers are shown. For each: **what** is
 tested, why it matters to a **fleet**, and the **justification**.
@@ -22,19 +23,36 @@ part of the company. *Why:* C1 at any distance.
 *Fleet:* a team's working notes do not become the department's memory by
 existing. *Why:* what goes up must be announced.
 
-**C4 Only rules flow down.** A Support *note* is not shown to Tier-2
-agents; a Support *rule* is (A1). *Fleet:* the department's speculation
-must not become every team's assumption. *Why:* being part of a group
-transmits what binds, nothing else.
-
-**C5 Listening is one hop.** Billing listens to Finance; Finance announces
-X; Support (which listens to Billing) is not shown X unless Billing
-announces it itself. *Why:* transitive listening is relevance collapse by
-another route.
-
-**C6 Listening is directed.** Support listens to Billing; Billing agents
+**C4 Listening is directed.** Support listens to Billing; Billing agents
 are not shown Support's announcements. *Why:* wanting to hear from someone
 grants them nothing of yours.
+
+## P — Policy conformance (not scored as governance)
+
+These scenarios test rules the promise does not force (MODEL.md § "Forced by
+the promise, and chosen"). Each is graded against what the system declared
+in `/info`, never against a preferred answer, and reported separately from
+the governance headline.
+
+**P1 Downward notes match the declaration.** Support writes a note. If the
+system declared `notes_flow_down: false`, Tier-2 agents must not be shown
+it; if it declared `true`, they may be, but only as a note, not binding,
+with `origin` Support. *Fleet:* a department's speculation reaching its
+teams is a design choice; reaching them unlabelled or as a rule is not.
+*Why:* the promise constrains labelling and authority, not generosity.
+
+**P2 Announcement reach matches the declaration.** Billing listens to
+Finance; Finance announces X. If the system declared
+`listening_is_transitive: false`, Support (which listens to Billing) is not
+shown X unless Billing announces it itself; if `true`, Support may be shown
+it, with every hop it travelled in `via`. *Why:* how far news travels is a
+choice; hiding how far it travelled is not.
+
+**P3 Multiple containers match the declaration.** A group declared to have
+two containers is bound by the rules of both, and each is shown with its
+true `origin`. Systems declaring `multiple_containers: false` are not given
+this scenario. *Why:* the shape of the fleet is a choice; rules that bind
+unseen are not.
 
 ## A — Authority (authority confusion)
 

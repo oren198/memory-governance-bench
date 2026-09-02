@@ -10,6 +10,7 @@ pip install fleet-memory-bench            # or: pip install -e .
 fmb run  --system http://localhost:8080   # HTTP adapter (any language)
 fmb run  --system mypkg.adapter:MySystem  # Python adapter
 fmb run  ... --families C,A,T             # subset while iterating
+fmb run  ... --repeat 5                   # repeat every scenario; record the spread
 fmb ui                                    # local dashboard: your runs + published ones
 fmb submit <run-id>                       # publish one run to this repo
 ```
@@ -31,7 +32,7 @@ contract as methods.
 | `POST` | `/retract` | `{agent, receipt_id}` | `Receipt` — a write or an announcement |
 | `POST` | `/read` | `{agent}` | `Read` |
 | `POST` | `/settle` | `{}` | `{}` — finish deferred work; return when reads are stable |
-| `GET` | `/info` | — | `{id, name, version}` |
+| `GET` | `/info` | — | `{id, name, version, declarations}` |
 
 Unsupported operation: `501` with `{"unsupported": "<op>"}`.
 
@@ -51,6 +52,21 @@ Shown    { content, kind, origin, binding: bool,
 
 `Shown` fields mean exactly what `MODEL.md` § "What a reader is shown" says.
 `words` is the size of the read, whitespace-split, counted by the system.
+
+**Declarations.** `/info` returns a `declarations` object stating the
+system's position on each rule the promise does not force (MODEL.md
+§ "Forced by the promise, and chosen"):
+
+```
+declarations { notes_flow_down: bool,          // container notes shown to its parts
+               listening_is_transitive: bool,  // announcements travel past one hop
+               multiple_containers: bool }     // a group may be part of several
+```
+
+Family P grades the system against these values and nothing else: a
+declaration is never wrong, only unmet. Missing keys default to `false`.
+Declarations are recorded in the run file and shown in the UI beside the
+score, so a reader knows which fleet shape was measured.
 
 **What the benchmark promises the system**
 
@@ -82,6 +98,9 @@ Shown    { content, kind, origin, binding: bool,
   "system":        { "id": "<slug>", "name": "...", "version": "...",
                      "url": "...", "notes": "..." },
   "headline":      { "governance": 0.83, "contribution": 0.97 },
+  "declarations":  { "notes_flow_down": false, "listening_is_transitive": false,
+                     "multiple_containers": false },
+  "policy":        { "pass": 12, "total": 12 },
   "families":      { "C": {"pass": 118, "total": 120, "rate": .983,
                            "wilson_low": .95, "unsupported": 0}, ... },
   "scenarios":     [ {"id": "C1-007", "family": "C", "passed": true,

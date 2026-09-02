@@ -34,6 +34,13 @@ the promise, and chosen"). Each is graded against what the system declared
 in `/info`, never against a preferred answer, and reported separately from
 the governance headline.
 
+A declaration is scoring input the participant controls, so every P scenario
+checks it against behaviour rather than recording it. A system that declares
+`listening_is_transitive: false` and relays two hops **fails** P; so does one
+that declares `notes_flow_down: true` and shows them unlabelled. A
+declaration is never wrong as a choice and never sufficient as an answer:
+the reads decide whether it was met.
+
 **P1 Downward notes match the declaration.** Support writes a note. If the
 system declared `notes_flow_down: false`, Tier-2 agents must not be shown
 it; if it declared `true`, they may be, but only as a note, not binding,

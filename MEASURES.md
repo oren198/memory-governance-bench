@@ -50,7 +50,8 @@ choice; hiding how far it travelled is not.
 
 **P3 Multiple containers match the declaration.** A group declared to have
 two containers is bound by the rules of both, and each is shown with its
-true `origin`. Systems declaring `multiple_containers: false` are not given
+true `origin`. When the two containers' rules conflict, the reader is
+shown the conflict rather than one silently chosen winner. Systems declaring `multiple_containers: false` are not given
 this scenario. *Why:* the shape of the fleet is a choice; rules that bind
 unseen are not.
 
@@ -173,8 +174,9 @@ claim has travelled.
 
 ## G — Growth (unbounded growth / silent loss)
 
-**G1 Reads stay within the bound.** After N writes, N far above the
-stated bound, a read's `words` stays under it. *Fleet:* an agent's memory
+**G1 Reads stay within the bound.** After N writes, N far above the stated
+bound, the words of what a reader is shown — counted by the benchmark, not
+reported by the system — stay under it. *Fleet:* an agent's memory
 must fit in what it can actually read. *Why:* unbounded memory is unread
 memory.
 
@@ -190,6 +192,11 @@ forgets silently cannot know what it no longer knows.
 shown once. *Why:* repetition is the cheapest growth attack.
 
 ## F — Forgetting (zombie memory)
+
+**F0 Notes are retractable.** A note is retracted; it leaves the reads of
+every agent entitled to it, and they are told (S4). A system that cannot
+retract a note reports `unsupported`. *Why:* a fleet that can only drop a
+false note when something else displaces it cannot correct itself on demand.
 
 **F1 Replaced items leave.** After T2, the replaced item is not shown in
 any later read. **F2 Retracted items leave.** After retraction, the item is

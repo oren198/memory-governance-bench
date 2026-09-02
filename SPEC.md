@@ -1,5 +1,12 @@
 # Specification
 
+> **Status: not implemented.** This file specifies the benchmark; the code
+> does not exist yet. There is no `fleet-memory-bench` package, no runner,
+> no graders and no adapters. What exists today is `MODEL.md`, `CHARTER.md`,
+> `MEASURES.md` and the Python protocol. Build order: runner + family C +
+> the `null` adapter (which must fail the measures, proving they bite),
+> then the remaining families, then real adapters and the UI.
+
 How a team runs the benchmark, what their system must expose, what a result
 is, and how results are published and compared. Vocabulary: `MODEL.md`.
 
@@ -51,7 +58,9 @@ Shown    { content, kind, origin, binding: bool,
 ```
 
 `Shown` fields mean exactly what `MODEL.md` § "What a reader is shown" says.
-`words` is the size of the read, whitespace-split, counted by the system.
+`words` is the system's own count of the read, recorded for cost reporting.
+It is **not** used for scoring: family G counts the words of the items the
+benchmark was actually shown, so no participant supplies its own score input.
 
 **Declarations.** `/info` returns a `declarations` object stating the
 system's position on each rule the promise does not force (MODEL.md
@@ -85,6 +94,14 @@ score, so a reader knows which fleet shape was measured.
   The seed is fixed per release; `--seed` overrides for robustness checks
   but such runs are not submittable.
 - Graders are pure functions of reads. No model, no network, no clock.
+- The benchmark is deterministic; a system under test need not be. A system
+  that decides by model call will score differently between runs. `--repeat
+  N` runs every scenario N times and the run file records, per family, the
+  min/median/max rate and the number of scenarios whose outcome was not
+  stable across repeats. The UI shows a run with N>1 as a band, not a point,
+  so variance is never read as regression. A submitted run must state its
+  `repeat`; single-run submissions from a nondeterministic system are
+  labelled as such.
 - A run file records scenario ids and grader version; any run is
   reproducible from the file alone.
 
@@ -101,6 +118,7 @@ score, so a reader knows which fleet shape was measured.
   "declarations":  { "notes_flow_down": false, "listening_is_transitive": false,
                      "multiple_containers": false },
   "policy":        { "pass": 12, "total": 12 },
+  "repeat":        1,
   "families":      { "C": {"pass": 118, "total": 120, "rate": .983,
                            "wilson_low": .95, "unsupported": 0}, ... },
   "scenarios":     [ {"id": "C1-007", "family": "C", "passed": true,

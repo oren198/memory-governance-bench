@@ -49,6 +49,12 @@ is shown its group's memory and nothing else, except through the two
 relations below.
 
 **Part of.** Group A may be *part of* group B (Tier-2 is part of Support).
+By default containment is a tree: a group has at most one container, because
+authority needs one unambiguous source and two containers give a group two
+answers with no tiebreak. A system may declare that it supports several
+containers (`SPEC.md`); it is then measured on showing every binding rule
+with its true origin, and on showing a conflict between two containers as an
+unresolved conflict rather than silently picking a winner.
 Then B's rules bind A's agents. Nothing else passes from B to A by virtue of
 this relation; in particular B's notes do not. Nothing passes from A up to B.
 "Part of" is transitive: Tier-2 is part of Company because Support is.
@@ -76,6 +82,15 @@ for that group; nobody may write a rule for a group they are not in.
 on the same subject with incompatible content **contradict**. The benchmark
 constructs contradictions by subject; it never infers them from text.
 
+**Entitled reader.** An agent is entitled to an item when, at the moment of
+the read, it is in the group the item was written in, in a group that is
+part of that group and the item is a rule, or in a group that listens to a
+group that announced it. Entitlement is evaluated at read time. The model
+grants no memory of readership: no system is required to know who has read
+what, and no measure may depend on it. Where this file says a retraction
+must reach "the readers a claim reached", it means every agent entitled to
+the item at the moment it was retracted — including through a relay.
+
 **Legitimate.** An item is legitimate for a reader when all four hold: it
 was written by an agent entitled to write it; the reader is entitled to be
 shown it; no rule on its subject stands against it; it has not been replaced
@@ -92,6 +107,11 @@ listen to its group and to the groups that are part of its group. An
 announcement can only be of something the group actually holds.
 
 **Retract.** An agent takes back a write or an announcement its group made.
+Notes are retractable as well as rules: a fleet that can only stop carrying
+a false note when something else happens to displace it cannot correct
+itself on demand. A system with no separate retract act may implement it as
+a replacement by nothing, so long as the effect — the item leaves, and the
+readers it reached are told — is the same.
 
 **Read.** An agent asks what it is shown, acting from its group. The read is
 the only thing the benchmark grades.
@@ -106,14 +126,17 @@ Each **shown item** carries:
 - its **origin** — the group the item was written in;
 - **via** — if the item reached the reader through an intermediate group's
   announcement, that group (it is **second-hand**);
-- **attributed to** — if the item is a restatement of another group's
-  claim, that group. An attribution is a *live* claim: it asserts the named
-  group holds the item now;
+- **attributed to** — if the item is a restatement of a claim made by
+  another group, that group. Whether the attribution is still true is a
+  separate question the model does not settle structurally: a system learns
+  its source stopped holding the claim only when that source retracts, and
+  what it must do then is measured, not assumed (family E);
 - an **event** — when the reader is being told the item was **withdrawn**
   rather than shown it as current.
 
 **Bound.** The size of what a reader is shown, measured in words, that a
-scenario states the memory must stay within.
+scenario states the memory must stay within. The benchmark counts the words
+of what it was shown; a system never reports its own size for scoring.
 
 ## The promise, in these words
 

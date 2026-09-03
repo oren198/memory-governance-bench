@@ -71,8 +71,11 @@ const fmt = n => (n===null||n===undefined) ? "—" : n.toFixed(3);
 const esc = s => String(s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 
 function latestBySystem(){
+  // A partial run has no headline; it never appears on the leaderboard,
+  // where a missing number would read as a score of zero.
   const by = {};
   for (const r of RUNS){
+    if (r.headline.governance === null || r.headline.contribution === null) continue;
     const id = r.system.id;
     if (!by[id] || r.timestamp > by[id].timestamp) by[id] = r;
   }
@@ -110,9 +113,10 @@ function systemView(){
   if (!ids.length) return `<p class="empty">No runs yet.</p>`;
   const chosen = window._sysId && ids.includes(window._sysId) ? window._sysId : ids[0];
   const runs = RUNS.filter(r=>r.system.id===chosen).sort((a,b)=>a.timestamp.localeCompare(b.timestamp));
+  const partial = runs.filter(r=>r.headline.governance===null).length;
   const rows = runs.map(r=>`<tr>
       <td>${esc(r.system.version)}</td><td>${esc(r.timestamp)}</td>
-      <td class="num">${fmt(r.headline.governance)}</td><td class="num">${fmt(r.headline.contribution)}</td>
+      <td class="num">${fmt(r.headline.governance)}${r.headline.governance===null?' <span class="pill">partial</span>':''}</td><td class="num">${fmt(r.headline.contribution)}</td>
       ${FAMS.map(f=>`<td class="num">${r.families[f]?fmt(r.families[f].rate):"—"}</td>`).join("")}
     </tr>`).join("");
   const d = runs[runs.length-1].declarations || {};
@@ -120,6 +124,7 @@ function systemView(){
     <p><select id="syspick">${ids.map(i=>`<option${i===chosen?" selected":""}>${esc(i)}</option>`).join("")}</select></p>
     <table><thead><tr><th>Version</th><th>When</th><th class="num">Gov</th><th class="num">Contrib</th>
       ${FAMS.map(f=>`<th class="num">${f}</th>`).join("")}</tr></thead><tbody>${rows}</tbody></table>
+    ${partial?`<p class="sub">${partial} partial run(s) shown: a run of a subset of families reports no headline, because a family that was never run has no rate.</p>`:""}
     <h3>Declared policy</h3>
     <table><tbody>${Object.entries(d).map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v}</td></tr>`).join("")}</tbody></table>`;
 }

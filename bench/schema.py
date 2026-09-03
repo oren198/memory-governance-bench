@@ -35,9 +35,15 @@ def validate(run: dict, *, for_submission: bool = False) -> list[str]:
             problems.append(f"declarations.{key} must be a boolean")
 
     for key in ("governance", "contribution"):
-        value = run["headline"].get(key)
+        value = run["headline"].get(key, "missing")
+        if value is None:
+            if run.get("submittable", False):
+                problems.append(
+                    f"headline.{key} is null but the run claims to be submittable"
+                )
+            continue   # a partial run honestly reports no headline
         if not isinstance(value, (int, float)) or not 0.0 <= value <= 1.0:
-            problems.append(f"headline.{key} must be a number in [0,1]")
+            problems.append(f"headline.{key} must be a number in [0,1], or null")
 
     for fam in GOVERNANCE_FAMILIES + (CONTRIBUTION_FAMILY,):
         block = run["families"].get(fam)
@@ -62,10 +68,12 @@ def validate(run: dict, *, for_submission: bool = False) -> list[str]:
     # result cannot claim a score its own scenarios do not support.
     governance = min((run["families"][f]["rate"] for f in GOVERNANCE_FAMILIES
                       if f in run["families"]), default=None)
-    if governance is not None and abs(governance - run["headline"]["governance"]) > 1e-6:
+    if (governance is not None and run["headline"]["governance"] is not None
+            and abs(governance - run["headline"]["governance"]) > 1e-6):
         problems.append("headline.governance is not min() of the governance families")
     contribution = run["families"].get(CONTRIBUTION_FAMILY, {}).get("rate")
-    if contribution is not None and abs(contribution - run["headline"]["contribution"]) > 1e-6:
+    if (contribution is not None and run["headline"]["contribution"] is not None
+            and abs(contribution - run["headline"]["contribution"]) > 1e-6):
         problems.append("headline.contribution does not match families.R.rate")
 
     if for_submission:

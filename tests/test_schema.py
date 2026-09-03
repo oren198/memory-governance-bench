@@ -51,3 +51,19 @@ def test_run_file_round_trips(valid_run, tmp_path):
     path = tmp_path / "run.json"
     path.write_text(json.dumps(valid_run))
     assert validate(json.loads(path.read_text())) == []
+
+
+def test_partial_run_reports_no_headline():
+    """A family that was never run has no rate. Reporting 0.0 would be a score
+    the run did not earn, and would read on the dashboard as a total failure."""
+    result = run(NullMemory(), families=["C"])
+    assert result.headline["governance"] is None
+    assert result.headline["contribution"] is None
+    assert validate(result.to_json()) == []
+
+
+def test_a_null_headline_cannot_claim_to_be_submittable():
+    result = run(NullMemory(), families=["C"]).to_json()
+    result["submittable"] = True
+    problems = validate(result)
+    assert any("submittable" in p for p in problems)

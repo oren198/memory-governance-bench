@@ -79,9 +79,10 @@ def cmd_run(args: argparse.Namespace) -> int:
 
 def print_summary(run: dict) -> None:
     h = run["headline"]
+    num = lambda v: "  —  (partial run)" if v is None else f"{v:.3f}"
     print(f"\n{run['system']['name']}  ({run['system']['version']})")
-    print(f"  governance   {h['governance']:.3f}   (weakest of {', '.join(GOVERNANCE_FAMILIES)})")
-    print(f"  contribution {h['contribution']:.3f}")
+    print(f"  governance   {num(h['governance'])}   (weakest of {', '.join(GOVERNANCE_FAMILIES)})")
+    print(f"  contribution {num(h['contribution'])}")
     print()
     for fam, block in run["families"].items():
         spread = block.get("spread")

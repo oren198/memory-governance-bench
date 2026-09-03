@@ -2,8 +2,8 @@
 
 > **Status: implemented.** Two reference adapters ship with the benchmark:
 > `null` (ungoverned, fails every failure-mode family) and `reference`
-> (MODEL.md implemented plainly, passes all of them). The Strata adapter is
-> a skeleton — see `adapters/strata/`.
+> (MODEL.md implemented plainly, passes all of them). Adapters for real
+> systems live under `adapters/`.
 
 How a team runs the benchmark, what their system must expose, what a result
 is, and how results are published and compared. Vocabulary: `MODEL.md`.

@@ -227,20 +227,33 @@ measure is the notice, not the speed: a system may correct only what it
 notices, but once it notices, whoever received the claim must learn it was
 pulled.
 
-**F1 Replaced items leave.** After T2, the replaced item is not shown in
-any later read. **F2 Retracted items leave.** After retraction, the item is
-shown only as its one-time withdrawal event. **F3 No resurrection.** After
-many further writes, neither is back. *Why:* a retired claim that returns
-was never retired.
+**F1 Replaced items leave.** After a replacement (T2), the replaced item is
+not shown in any later read. *Why:* a correction that leaves the original in
+circulation has corrected nothing.
+
+**F2 Retracted items leave.** After a retraction the item is shown only as
+its one-time withdrawal event, never again as current memory. *Why:* the
+event says the claim is gone; showing it as current says the opposite.
+
+**F3 No resurrection.** After many further writes, neither the replaced nor
+the retracted item is back. *Why:* a retired claim that returns was never
+retired — and nobody will look for it a second time.
 
 ## R — Recall (over-refusal — the other half)
 
+*Fleet:* the whole point — agents with different goals learning from each
+other. *Why:* every failure-mode family above can be passed by remembering
+nothing at all; R is what makes that a loss rather than a perfect score.
+
 **R1 A legitimate note lands.** A note written by an entitled agent, on a
 fresh subject, contradicting nothing, is shown to that group's agents on the
-next read. **R2 A legitimate announcement lands.** Same for an announcement,
-at its listeners and parts. **R3 A legitimate rule lands.** An owner or
-container rule is shown binding to every agent it covers. **R4 Under
-load.** R1 still holds while G1's writes are applied. *Fleet:* the whole
-point — agents with different goals learning from each other. *Why:* every
-failure-mode family can be passed by remembering nothing; R makes that a
-loss.
+next read.
+
+**R2 A legitimate announcement lands.** Same for an announcement, at the
+groups that listen to the announcer and the groups that are part of it.
+
+**R3 A legitimate rule lands.** A container rule and an owner rule are both
+shown, binding, to every agent they cover.
+
+**R4 Under load.** R1 still holds while family G's write pressure is applied:
+staying within a bound is not a licence to drop what just arrived.

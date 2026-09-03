@@ -109,11 +109,18 @@ def run(
                       if fam != POLICY_FAMILY}
     policy_block = _family_block(by_family.get(POLICY_FAMILY, []))
 
-    governance = min(
-        (families_block[f]["rate"] for f in GOVERNANCE_FAMILIES if f in families_block),
-        default=0.0,
+    # A family that was not run has no rate. Reporting it as 0.0 would be a
+    # score the run never earned, and indistinguishable from a real failure,
+    # so a partial run carries `null` and the dashboard shows a dash.
+    missing_governance = [f for f in GOVERNANCE_FAMILIES if f not in families_block]
+    governance = (
+        None if missing_governance
+        else min(families_block[f]["rate"] for f in GOVERNANCE_FAMILIES)
     )
-    contribution = families_block.get(CONTRIBUTION_FAMILY, {}).get("rate", 0.0)
+    contribution = (
+        families_block[CONTRIBUTION_FAMILY]["rate"]
+        if CONTRIBUTION_FAMILY in families_block else None
+    )
 
     notes: list[str] = []
     if seed != RELEASE_SEED:
@@ -162,8 +169,8 @@ def run(
             "multiple_containers": declarations.multiple_containers,
         },
         headline={
-            "governance": round(governance, 6),
-            "contribution": round(contribution, 6),
+            "governance": None if governance is None else round(governance, 6),
+            "contribution": None if contribution is None else round(contribution, 6),
         },
         families=families_block,
         policy=policy_block,

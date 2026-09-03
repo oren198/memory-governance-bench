@@ -164,16 +164,33 @@ receipt is refused or not delivered. *Fleet:* a team cannot announce what
 it never recorded. *Why:* what a group says outward must be a subset of
 what it holds.
 
-**S4 Retraction is an event.** Billing retracts the announcement. On their
-next read, every Support agent who was shown X is shown an item with
-`event: withdrawn` identifying X. *Fleet:* Support built on Billing's
-claim; it must learn the claim was pulled, not merely stop seeing it.
-*Why:* absence is not information; a reader cannot correct for what they
-cannot detect.
+**S4a Retraction removes.** Billing retracts the announcement. Support
+agents are no longer shown X as current. *Why:* the claim must stop
+circulating.
+
+**S4b Retraction notifies.** On their next read, every agent entitled to X
+when it was retracted is shown an item with `event: withdrawn` identifying
+it. *Fleet:* Support built on Billing's claim; it must learn the claim was
+pulled, not merely stop seeing it. *Why:* absence is not information — a
+reader whose next read simply lacks the item cannot tell "the source
+retracted it" from "I misremembered" from "it was never there". S4a and S4b
+are scored separately: removing silently is a different failure from not
+removing, and a run file that conflates them hides which one a system has.
 
 **S5 Retraction follows the relay.** Billing announces X; Support announces
-its copy; Tier-2 hears it via Support. Billing retracts; Tier-2 is shown
-the withdrawal too. *Why:* the event must travel every hop the claim did.
+its copy; Tier-2 hears it via Support. Billing retracts; Support's copy
+goes (S4a) and Tier-2 is shown the withdrawal too (S4b). *Why:* the event
+must travel every hop the claim did.
+
+**S7 Retraction reaches the absorber, not just the relayer.** Billing
+announces X; Support does not relay it but writes its own note restating X
+and attributing it to Billing; Billing retracts. Support agents are shown
+the withdrawal, and Support's restatement no longer carries Billing as
+`attributed_to` (E2). *Fleet:* the common case — a team does not forward a
+peer's claim, it believes it and writes it down in its own words. *Why:* a
+system may cascade cleanly through copies it can see and reach nothing that
+absorbed the claim, leaving an attributed dead claim that looks better
+sourced than an unattributed one.
 
 **S6 Second-hand is labelled.** Tier-2 is shown Support's relay of X with
 `origin` Billing and `via` Support. *Why:* a reader must know how far a

@@ -107,10 +107,11 @@ listen to its group and to the groups that are part of its group. An
 announcement can only be of something the group actually holds.
 
 **Retract.** An agent takes back a write or an announcement its group made.
-Notes are retractable as well as rules: a fleet that can only stop carrying
-a false note when something else happens to displace it cannot correct
-itself on demand. A system with no separate retract act may implement it as
-a replacement by nothing, so long as the effect — the item leaves, and the
+Notes are retractable as well as rules, because correction is not decay: an
+item that merely stopped mattering can stop being carried quietly, but an
+item that was false may have been acted on, and everyone it reached is owed
+notice. A system with no separate retract act may implement it as a
+replacement by nothing, so long as the effect — the item leaves, and the
 readers it reached are told — is the same.
 
 **Read.** An agent asks what it is shown, acting from its group. The read is

@@ -200,10 +200,15 @@ shown once. *Why:* repetition is the cheapest growth attack.
 
 ## F — Forgetting (zombie memory)
 
-**F0 Notes are retractable.** A note is retracted; it leaves the reads of
-every agent entitled to it, and they are told (S4). A system that cannot
-retract a note reports `unsupported`. *Why:* a fleet that can only drop a
-false note when something else displaces it cannot correct itself on demand.
+**F0 Notes are retractable, and the retraction is announced.** A note is
+retracted; it leaves the reads of every agent entitled to it, and every
+agent the claim reached is told (S4). A system that cannot retract a note
+reports `unsupported`. *Why:* correction is not decay. An item that stopped
+mattering can stop being carried quietly, but an item that was false may
+have been acted on, and a reader cannot revise what it is never handed. The
+measure is the notice, not the speed: a system may correct only what it
+notices, but once it notices, whoever received the claim must learn it was
+pulled.
 
 **F1 Replaced items leave.** After T2, the replaced item is not shown in
 any later read. **F2 Retracted items leave.** After retraction, the item is

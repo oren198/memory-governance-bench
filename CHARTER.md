@@ -49,7 +49,9 @@ Each measure family catches one way the promise breaks.
 Family **P — Policy conformance** is reported separately and is not part of
 either number: it grades a system against the choices it declared, not
 against a preferred answer (MODEL.md § "Forced by the promise, and
-chosen").
+chosen"). Conforming to a declared choice earns a clean P; it does not
+exempt the system from the forced rules, which still apply to everything the
+wider choice makes the memory do.
 
 Headline, always shown together and never combined:
 

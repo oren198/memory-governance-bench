@@ -74,8 +74,12 @@ function latestBySystem(){
   // A partial run has no headline; it never appears on the leaderboard,
   // where a missing number would read as a score of zero.
   const by = {};
+  const GOVSET = GOV.concat(["R"]);
   for (const r of RUNS){
+    // A run of a subset of families has no headline to plot. Older run files
+    // recorded 0.0 instead of null, so check the families themselves.
     if (r.headline.governance === null || r.headline.contribution === null) continue;
+    if (GOVSET.some(f => !r.families[f])) continue;
     const id = r.system.id;
     if (!by[id] || r.timestamp > by[id].timestamp) by[id] = r;
   }

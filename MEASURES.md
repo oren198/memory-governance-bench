@@ -34,6 +34,12 @@ the promise, and chosen"). Each is graded against what the system declared
 in `/info`, never against a preferred answer, and reported separately from
 the governance headline.
 
+Declaring a wider policy is never a defence against a forced rule: a system
+whose notes flow downward still has to keep the resulting restatements from
+being counted as independent sources (E1), and one whose announcements travel
+further still has to label every hop (S6). P asks only whether the system did
+what it said.
+
 A declaration is scoring input the participant controls, so every P scenario
 checks it against behaviour rather than recording it. A system that declares
 `listening_is_transitive: false` and relays two hops **fails** P; so does one

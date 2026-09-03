@@ -203,6 +203,16 @@ A system **declares** its position on each chosen rule (`/info`, see
 `SPEC.md`). The benchmark then checks the system against **what it
 declared**, and reports the declaration alongside the score. Conformance to
 a declared policy is scored; the choice itself is not. A system that
-declares "notes flow down, labelled" and does exactly that loses no points —
-it loses points if its notes flow down *unlabelled*, or flow down when it
-said they would not.
+declares "notes flow down, labelled" and does exactly that conforms — it
+fails family P only if its notes flow down *unlabelled*, or flow down when
+it said they would not.
+
+**A choice never excuses a forced obligation.** Conforming to your own
+declaration earns a clean P; it does not exempt you from anything above.
+Each choice widens what the memory does, and the forced rules still apply to
+everything it now does. A system whose notes flow downward has more material
+in more readers, so it has more restatements to keep from being counted as
+independent sources; one whose announcements travel further has more hops to
+label. That extra work is the price of the wider choice, not a penalty for
+making it — and a system unwilling to do it should declare the narrower
+position, which is equally honourable and costs nothing.

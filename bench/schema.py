@@ -45,10 +45,15 @@ def validate(run: dict, *, for_submission: bool = False) -> list[str]:
         if not isinstance(value, (int, float)) or not 0.0 <= value <= 1.0:
             problems.append(f"headline.{key} must be a number in [0,1], or null")
 
+    # A partial run (`--families C,S`) legitimately reports only what it ran;
+    # it is already marked unsubmittable. Completeness is a submission rule.
     for fam in GOVERNANCE_FAMILIES + (CONTRIBUTION_FAMILY,):
         block = run["families"].get(fam)
         if block is None:
-            problems.append(f"families.{fam} is missing — every family must be reported")
+            if for_submission or run.get("submittable", False):
+                problems.append(
+                    f"families.{fam} is missing — a submitted run must report every family"
+                )
             continue
         for key in REQUIRED_FAMILY:
             if key not in block:

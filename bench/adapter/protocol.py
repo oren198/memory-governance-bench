@@ -22,12 +22,15 @@ class World:
     listens_to:   (group, source) pairs — the source's announcements are shown
                   to the group. Directed, one hop; may be mutual.
     owner_groups: groups the owner may write rules for.
+    bound:        the maximum size of any one read, in words. The benchmark
+                  counts what it was shown; this tells the system the target.
     """
 
     groups: tuple[str, ...]
     part_of: tuple[tuple[str, str], ...] = ()
     listens_to: tuple[tuple[str, str], ...] = ()
     owner_groups: tuple[str, ...] = ()
+    bound: int = 500
 
 
 @dataclass(frozen=True)
@@ -74,8 +77,20 @@ class Shown:
 
 @dataclass(frozen=True)
 class Read:
+    """What a reader is shown.
+
+    items:   everything shown, in the system's own order.
+    words:   the system's own count, recorded for cost reporting. Never used
+             for scoring — the benchmark counts what it was shown.
+    dropped: how many items the system condensed away rather than showing.
+             ``None`` means the system does not report it, which family G
+             reads as "the reader was not told". Zero is a positive claim
+             that nothing was dropped.
+    """
+
     items: tuple[Shown, ...]
     words: int = 0
+    dropped: int | None = None
 
 
 class Unsupported(Exception):
@@ -83,8 +98,31 @@ class Unsupported(Exception):
     `unsupported` — scored as failure, labelled distinctly."""
 
 
+@dataclass(frozen=True)
+class Declarations:
+    """A system's position on the rules the promise does not force
+    (MODEL.md § "Forced by the promise, and chosen"). Family P grades the
+    system against these and nothing else; missing keys default to False."""
+
+    notes_flow_down: bool = False
+    listening_is_transitive: bool = False
+    multiple_containers: bool = False
+
+
+@dataclass(frozen=True)
+class Info:
+    id: str
+    name: str
+    version: str
+    declarations: Declarations = Declarations()
+
+
 class MemorySystem(Protocol):
     name: str
+
+    def info(self) -> Info:
+        """Identity and declared policy. Read once, before any world is built."""
+        ...
 
     def world(self, world: World) -> None:
         """Replace the fleet; wipe all memory."""

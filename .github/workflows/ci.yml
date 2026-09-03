@@ -1,0 +1,55 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    name: measures bite and are passable
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -e ".[dev]"
+      - name: test suite
+        run: pytest -q
+      - name: the null baseline must fail every governance family
+        run: |
+          python -c "
+          from bench.adapter.null import NullMemory
+          from bench.runner import run, GOVERNANCE_FAMILIES
+          r = run(NullMemory())
+          bad = [f for f in GOVERNANCE_FAMILIES if r.families[f]['rate'] == 1.0]
+          assert not bad, f'families that do not bite: {bad}'
+          assert r.families['R']['rate'] == 1.0
+          print('null:', r.headline)
+          "
+      - name: the reference implementation must pass every family
+        run: |
+          python -c "
+          from bench.adapter.reference import ReferenceMemory
+          from bench.runner import run
+          r = run(ReferenceMemory())
+          assert r.headline == {'governance': 1.0, 'contribution': 1.0}, r.headline
+          print('reference:', r.headline)
+          "
+
+  results:
+    name: submitted results are valid
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -e ".[dev]"
+      - name: validate every published run file
+        run: |
+          shopt -s nullglob
+          files=(results/*/*.json)
+          if [ ${#files[@]} -eq 0 ]; then echo "no results yet"; exit 0; fi
+          fmb validate --submission "${files[@]}"

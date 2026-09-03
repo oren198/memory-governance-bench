@@ -1,0 +1,316 @@
+"""The scenario harness.
+
+A measure is a function registered with :func:`scenario`. It receives a
+:class:`Ctx`, builds a fleet, acts, reads, and records checks. The harness
+owns every rule a scenario author would otherwise have to remember:
+
+* ``settle()`` is called before every read and after every batch of writes,
+  so no scenario can forget it;
+* content is generated from the seed, so runs are reproducible;
+* an :class:`Unsupported` operation aborts the scenario and marks it
+  ``unsupported`` rather than silently passing;
+* which group each canary was written in is tracked, so origin claims are
+  checked against the truth rather than against the system's word.
+"""
+
+from __future__ import annotations
+
+import traceback
+from dataclasses import dataclass, field
+from typing import Callable, Iterable
+
+from bench.adapter.protocol import (
+    Agent,
+    Declarations,
+    Kind,
+    MemorySystem,
+    Read,
+    Receipt,
+    Shown,
+    Unsupported,
+    World,
+    Write,
+)
+from bench.canary import canary, sentence
+
+VARIANTS = 5
+
+
+@dataclass
+class Check:
+    id: str
+    passed: bool
+    detail: dict
+
+
+@dataclass
+class ScenarioResult:
+    id: str
+    measure: str
+    family: str
+    variant: int
+    passed: bool
+    unsupported: bool
+    skipped: bool = False
+    checks: list[Check] = field(default_factory=list)
+    error: str | None = None   # the scenario crashed — always a bug to fix
+    reason: str | None = None  # why it was skipped or unsupported
+
+    def to_json(self) -> dict:
+        out = {
+            "id": self.id,
+            "measure": self.measure,
+            "family": self.family,
+            "variant": self.variant,
+            "passed": self.passed,
+            "unsupported": self.unsupported,
+            "skipped": self.skipped,
+            "checks": [{"id": c.id, "passed": c.passed, "detail": c.detail} for c in self.checks],
+        }
+        if self.error:
+            out["error"] = self.error
+        if self.reason:
+            out["reason"] = self.reason
+        return out
+
+
+class Skip(Exception):
+    """The scenario does not apply to this system's declared policy."""
+
+
+class Ctx:
+    """Everything a measure needs, and nothing a measure should reimplement."""
+
+    def __init__(
+        self,
+        system: MemorySystem,
+        scenario_id: str,
+        variant: int,
+        seed: int,
+        declarations: Declarations,
+    ) -> None:
+        self.system = system
+        self.scenario_id = scenario_id
+        self.variant = variant
+        self.seed = seed
+        self.declarations = declarations
+        self.checks: list[Check] = []
+        self._origin: dict[str, str] = {}   # canary -> group it was written in
+        self._kind: dict[str, Kind] = {}    # canary -> kind it was written as
+        self._settled = False
+
+    # --- world ------------------------------------------------------------
+
+    def build(
+        self,
+        groups: Iterable[str],
+        part_of: Iterable[tuple[str, str]] = (),
+        listens_to: Iterable[tuple[str, str]] = (),
+        owner_groups: Iterable[str] = (),
+        bound: int = 500,
+    ) -> None:
+        self.system.world(
+            World(
+                groups=tuple(groups),
+                part_of=tuple(part_of),
+                listens_to=tuple(listens_to),
+                owner_groups=tuple(owner_groups),
+                bound=bound,
+            )
+        )
+        self._settled = False
+
+    def standard(self, bound: int = 500) -> dict[str, str]:
+        """The fleet of MODEL.md's worked example, plus two groups the
+        measures need: a group inside Billing, and a source Billing listens
+        to. Names are suffixed per variant so no system can key on them."""
+        v = self.variant
+        g = {
+            "company": f"company_{v}",
+            "sales": f"sales_{v}",
+            "support": f"support_{v}",
+            "tier2": f"tier2_{v}",
+            "billing": f"billing_{v}",
+            "collections": f"collections_{v}",
+            "finance": f"finance_{v}",
+        }
+        self.build(
+            groups=g.values(),
+            part_of=[
+                (g["sales"], g["company"]),
+                (g["support"], g["company"]),
+                (g["billing"], g["company"]),
+                (g["finance"], g["company"]),
+                (g["tier2"], g["support"]),
+                (g["collections"], g["billing"]),
+            ],
+            listens_to=[(g["support"], g["billing"]), (g["billing"], g["finance"])],
+            owner_groups=[g["support"], g["company"]],
+            bound=bound,
+        )
+        return g
+
+    # --- acting -----------------------------------------------------------
+
+    def agent(self, group: str, owner: bool = False) -> Agent:
+        return Agent(id=f"{'owner' if owner else 'a'}@{group}", group=group, owner=owner)
+
+    def canary(self, tag: str) -> str:
+        return canary(self.seed, self.scenario_id, self.variant, tag)
+
+    def text(self, tag: str, words: int = 12) -> str:
+        return sentence(self.seed, self.scenario_id, self.variant, tag, words)
+
+    def write(
+        self,
+        agent: Agent,
+        tag: str | None = None,
+        kind: Kind = "note",
+        *,
+        content: str | None = None,
+        replaces: str | None = None,
+        subject: str | None = None,
+        words: int = 12,
+    ) -> Receipt:
+        if content is None:
+            assert tag is not None, "write needs a tag or explicit content"
+            content = self.text(tag, words)
+        receipt = self.system.write(
+            agent, Write(content=content, kind=kind, replaces=replaces, subject=subject)
+        )
+        if tag is not None:
+            tok = self.canary(tag)
+            self._origin[tok] = agent.group
+            self._kind[tok] = kind
+        self._settled = False
+        return receipt
+
+    def announce(self, agent: Agent, receipt_id: str) -> Receipt:
+        r = self.system.announce(agent, receipt_id)
+        self._settled = False
+        return r
+
+    def retract(self, agent: Agent, receipt_id: str) -> Receipt:
+        r = self.system.retract(agent, receipt_id)
+        self._settled = False
+        return r
+
+    def read(self, agent: Agent) -> Read:
+        if not self._settled:
+            self.system.settle()
+            self._settled = True
+        return self.system.read(agent)
+
+    # --- inspecting a read ------------------------------------------------
+
+    @staticmethod
+    def items_with(read: Read, token: str, *, include_events: bool = False) -> list[Shown]:
+        """Items whose content carries the token. Withdrawal events are
+        excluded unless asked for: an event says an item is gone, so counting
+        it as the item still being shown would invert every measure."""
+        return [
+            i
+            for i in read.items
+            if token in i.content and (include_events or i.event is None)
+        ]
+
+    @staticmethod
+    def events_for(read: Read, token: str) -> list[Shown]:
+        return [i for i in read.items if i.event == "withdrawn" and token in i.content]
+
+    def shows(self, read: Read, token: str) -> bool:
+        return bool(self.items_with(read, token))
+
+    @staticmethod
+    def words_of(read: Read) -> int:
+        """The benchmark's own count of what a reader was shown. A system's
+        self-reported `words` is never used for scoring."""
+        return sum(len(i.content.split()) for i in read.items)
+
+    def true_origin(self, token: str) -> str | None:
+        return self._origin.get(token)
+
+    def true_kind(self, token: str) -> Kind | None:
+        return self._kind.get(token)
+
+    # --- recording --------------------------------------------------------
+
+    def check(self, name: str, passed: bool, **detail) -> bool:
+        self.checks.append(
+            Check(id=f"{self.scenario_id}-{name}", passed=bool(passed), detail=detail)
+        )
+        return bool(passed)
+
+    def absent(self, read: Read, token: str, name: str, **detail) -> bool:
+        found = self.items_with(read, token)
+        return self.check(
+            name, not found, shown=[i.origin for i in found], **detail
+        )
+
+    def present(self, read: Read, token: str, name: str, **detail) -> bool:
+        return self.check(name, self.shows(read, token), **detail)
+
+    def skip_unless(self, condition: bool, why: str) -> None:
+        if not condition:
+            raise Skip(why)
+
+
+# --- registry -------------------------------------------------------------
+
+Measure = Callable[[Ctx], None]
+_REGISTRY: dict[str, tuple[str, str, Measure]] = {}
+
+
+def scenario(measure: str, family: str, doc: str = "") -> Callable[[Measure], Measure]:
+    """Register a measure. `measure` is its id (e.g. "C1"), `family` its
+    letter. Each measure is run once per variant."""
+
+    def wrap(fn: Measure) -> Measure:
+        if measure in _REGISTRY:
+            raise ValueError(f"duplicate measure id {measure}")
+        _REGISTRY[measure] = (family, doc or (fn.__doc__ or "").strip(), fn)
+        return fn
+
+    return wrap
+
+
+def registry() -> dict[str, tuple[str, str, Measure]]:
+    import bench.families  # noqa: F401  (registers every measure on import)
+
+    return dict(_REGISTRY)
+
+
+def run_scenario(
+    system: MemorySystem,
+    measure: str,
+    variant: int,
+    seed: int,
+    declarations: Declarations,
+) -> ScenarioResult:
+    family, _doc, fn = registry()[measure]
+    scenario_id = f"{measure}-{variant:03d}"
+    ctx = Ctx(system, scenario_id, variant, seed, declarations)
+    try:
+        fn(ctx)
+    except Skip as exc:
+        # Not applicable to this system's declared policy: no score either way.
+        return ScenarioResult(
+            id=scenario_id, measure=measure, family=family, variant=variant,
+            passed=True, unsupported=False, skipped=True, checks=[], reason=str(exc),
+        )
+    except Unsupported as exc:
+        return ScenarioResult(
+            id=scenario_id, measure=measure, family=family, variant=variant,
+            passed=False, unsupported=True, checks=ctx.checks, reason=str(exc),
+        )
+    except Exception:  # a scenario must never take the run down
+        return ScenarioResult(
+            id=scenario_id, measure=measure, family=family, variant=variant,
+            passed=False, unsupported=False, checks=ctx.checks,
+            error=traceback.format_exc(limit=4),
+        )
+    passed = bool(ctx.checks) and all(c.passed for c in ctx.checks)
+    return ScenarioResult(
+        id=scenario_id, measure=measure, family=family, variant=variant,
+        passed=passed, unsupported=False, checks=ctx.checks,
+    )

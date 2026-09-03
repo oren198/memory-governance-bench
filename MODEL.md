@@ -128,10 +128,13 @@ Each **shown item** carries:
 - **via** — if the item reached the reader through an intermediate group's
   announcement, that group (it is **second-hand**);
 - **attributed to** — if the item is a restatement of a claim made by
-  another group, that group. Whether the attribution is still true is a
-  separate question the model does not settle structurally: a system learns
-  its source stopped holding the claim only when that source retracts, and
-  what it must do then is measured, not assumed (family E);
+  another group, that group. An attribution borrows authority: the same
+  sentence reads as better sourced with a group's name on it than without,
+  which is exactly why a dead attribution is worse than a merely stale
+  claim — it presents a named authority that has stopped standing behind it.
+  The model does not settle liveness structurally, because a system learns
+  its source stopped holding a claim only when that source retracts; what it
+  must do at that moment is measured rather than assumed (family E);
 - an **event** — when the reader is being told the item was **withdrawn**
   rather than shown it as current.
 

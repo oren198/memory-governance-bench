@@ -1,11 +1,9 @@
 # Specification
 
-> **Status: not implemented.** This file specifies the benchmark; the code
-> does not exist yet. There is no `fleet-memory-bench` package, no runner,
-> no graders and no adapters. What exists today is `MODEL.md`, `CHARTER.md`,
-> `MEASURES.md` and the Python protocol. Build order: runner + family C +
-> the `null` adapter (which must fail the measures, proving they bite),
-> then the remaining families, then real adapters and the UI.
+> **Status: implemented.** Two reference adapters ship with the benchmark:
+> `null` (ungoverned, fails every failure-mode family) and `reference`
+> (MODEL.md implemented plainly, passes all of them). The Strata adapter is
+> a skeleton — see `adapters/strata/`.
 
 How a team runs the benchmark, what their system must expose, what a result
 is, and how results are published and compared. Vocabulary: `MODEL.md`.
@@ -13,13 +11,16 @@ is, and how results are published and compared. Vocabulary: `MODEL.md`.
 ## 1. Running it
 
 ```
-pip install fleet-memory-bench            # or: pip install -e .
+pip install -e .                          # not yet published to PyPI
 fmb run  --system http://localhost:8080   # HTTP adapter (any language)
 fmb run  --system mypkg.adapter:MySystem  # Python adapter
+fmb run  --system null                    # the ungoverned baseline
+fmb run  --system bench.adapter.reference:ReferenceMemory
 fmb run  ... --families C,A,T             # subset while iterating
 fmb run  ... --repeat 5                   # repeat every scenario; record the spread
 fmb ui                                    # local dashboard: your runs + published ones
 fmb submit <run-id>                       # publish one run to this repo
+fmb validate results/*/*.json             # what CI runs on a submission PR
 ```
 
 `fmb run` writes one run file to `~/.fmb/runs/<run-id>.json` and prints the
@@ -47,20 +48,31 @@ Unsupported operation: `501` with `{"unsupported": "<op>"}`.
 
 ```
 World    { groups: [id], part_of: [[group, container]], listens_to: [[group, source]],
-           owner_groups: [id] }
+           owner_groups: [id], bound: int }
 Agent    { id, group, owner: bool }
 kind     "note" | "rule"
 Receipt  { id, accepted: bool, reason?: string }
-Read     { items: [Shown], words: int }
+Read     { items: [Shown], words: int, dropped?: int }
 Shown    { content, kind, origin, binding: bool,
            via?: group, attributed_to?: group, receipt?: id,
            event?: "withdrawn" }
 ```
 
 `Shown` fields mean exactly what `MODEL.md` § "What a reader is shown" says.
+`bound` is the maximum size of any one read, in words, that this scenario
+holds the system to; family G checks reads against it.
+
 `words` is the system's own count of the read, recorded for cost reporting.
 It is **not** used for scoring: family G counts the words of the items the
 benchmark was actually shown, so no participant supplies its own score input.
+
+`dropped` is how many items the system condensed away rather than showing.
+Omitting it means the reader was not told anything was dropped, which family
+G scores as such; `0` is a positive claim that nothing was dropped.
+
+**Governance headline.** `governance` is the **minimum family rate** across
+C, A, T, E, S, G, F — rates, not Wilson bounds, so the headline does not move
+with sample size. Each family's `wilson_low` is reported beside it.
 
 **Declarations.** `/info` returns a `declarations` object stating the
 system's position on each rule the promise does not force (MODEL.md

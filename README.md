@@ -3,8 +3,9 @@
 **A benchmark for shared memory used by a fleet of agents with different
 goals, roles and authority.**
 
-> **Status: specification.** The measures are written; the code is not.
-> There is no package, runner or adapter yet. See [Roadmap](#roadmap).
+> **Status: working.** `fmb run --system null` scores the ungoverned
+> baseline in about five seconds. Two reference adapters ship with it; see
+> [Baselines](#baselines).
 
 Most agent-memory work measures one agent remembering its own past. A fleet
 is a different problem: many agents, different jobs, different authority,
@@ -75,10 +76,29 @@ Full list with justification for each: **[MEASURES.md](MEASURES.md)**.
 ## Participating (once the runner exists)
 
 ```bash
+pip install -e .                            # not yet on PyPI
+fmb run    --system null                    # the ungoverned baseline, ~5s
 fmb run    --system http://localhost:8080   # your system, any language
 fmb ui                                      # dashboard: your runs and published ones
 fmb submit <run-id>                         # opens a PR adding your result
 ```
+
+Implement seven HTTP endpoints — `/world`, `/write`, `/announce`, `/retract`,
+`/read`, `/settle`, `/info` — and the benchmark can score you. Full contract:
+**[SPEC.md](SPEC.md)**.
+
+## Baselines
+
+Two adapters ship with the benchmark, and between them they are the argument
+that the measures mean anything:
+
+| | governance | contribution | |
+|---|---|---|---|
+| **`null`** | 0.00 | 1.00 | Appends everything, shows everyone, forgets nothing. Fails every failure-mode family. If it ever passes one, that family's graders are wrong. |
+| **`reference`** | 1.00 | 1.00 | MODEL.md implemented plainly in ~200 lines — no model, no database. Proves the measures are satisfiable, and works as an example implementation. |
+
+Both are re-run in CI on every commit: `null` must keep failing, `reference`
+must keep passing.
 
 Results are published to this repository by pull request and rendered as a
 leaderboard on the governance × contribution plane, plus per-system history
@@ -86,10 +106,13 @@ so a team can measure itself against its own earlier versions.
 
 ## Roadmap
 
-1. Runner, family **C**, and the `null` adapter — a deliberately naive
-   append-everything memory that must *fail* the measures, proving they bite.
-2. Remaining families.
-3. Real adapters, then the UI and result submission.
+Done: the runner, all nine families, both baselines, the HTTP and Python
+bindings, run files with Wilson bounds, the dashboard, and submission by
+pull request.
+
+Next: a working Strata adapter (a skeleton and its hazard notes are in
+`adapters/strata/`), publishing to PyPI, and hosting the dashboard on
+GitHub Pages.
 
 ## Honesty about where this came from
 

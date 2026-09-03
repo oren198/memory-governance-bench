@@ -88,7 +88,9 @@ def test_charter_and_model_agree_that_a_choice_is_not_an_exemption():
     """A system that declares a wider policy conforms on P but still owes
     every forced rule — stated because the graders enforce it either way, and
     an outside team must not have to discover it from a failing run."""
-    charter = (ROOT / "CHARTER.md").read_text().lower()
-    assert "does not exempt" in charter
-    assert "never excuses a forced obligation" in MODEL.lower()
-    assert "never a defence against a forced rule" in MEASURES.lower()
+    def flat(text: str) -> str:
+        return " ".join(text.lower().split())   # prose wraps; phrases must not
+
+    assert "does not exempt the system" in flat((ROOT / "CHARTER.md").read_text())
+    assert "never excuses a forced obligation" in flat(MODEL)
+    assert "never a defence against a forced rule" in flat(MEASURES)

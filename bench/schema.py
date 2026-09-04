@@ -11,7 +11,8 @@ REQUIRED = (
     "cost", "environment",
 )
 REQUIRED_SYSTEM = ("id", "name", "version")
-REQUIRED_FAMILY = ("pass", "total", "rate", "wilson_low", "unsupported")
+REQUIRED_FAMILY = ("pass", "total", "rate", "wilson_low", "unsupported", "skipped")
+POLICY_FAMILY = "P"
 DECLARATION_KEYS = ("notes_flow_down", "listening_is_transitive", "multiple_containers")
 
 
@@ -47,7 +48,7 @@ def validate(run: dict, *, for_submission: bool = False) -> list[str]:
 
     # A partial run (`--families C,S`) legitimately reports only what it ran;
     # it is already marked unsubmittable. Completeness is a submission rule.
-    for fam in GOVERNANCE_FAMILIES + (CONTRIBUTION_FAMILY,):
+    for fam in GOVERNANCE_FAMILIES + (CONTRIBUTION_FAMILY, POLICY_FAMILY):
         block = run["families"].get(fam)
         if block is None:
             if for_submission or run.get("submittable", False):
@@ -63,6 +64,16 @@ def validate(run: dict, *, for_submission: bool = False) -> list[str]:
 
     if not run["scenarios"]:
         problems.append("scenarios is empty")
+
+    # Every scenario that ran belongs to exactly one family block, so the two
+    # halves of the file must add up. A consumer summing family totals and a
+    # consumer counting scenarios must not get different answers.
+    counted = sum(b.get("total", 0) + b.get("skipped", 0) for b in run["families"].values())
+    if counted != len(run["scenarios"]):
+        problems.append(
+            f"families account for {counted} scenarios but scenarios[] holds "
+            f"{len(run['scenarios'])} — a family is missing from the record"
+        )
     for s in run["scenarios"]:
         for key in ("id", "family", "passed", "unsupported"):
             if key not in s:

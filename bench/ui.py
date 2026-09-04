@@ -66,7 +66,8 @@ _PAGE = """<!doctype html>
 <script>
 const RUNS = JSON.parse(document.getElementById('data').textContent);
 const GOV = ["C","A","T","E","S","G","F"];
-const FAMS = GOV.concat(["R"]);
+const FAMS = GOV.concat(["R"]);          // scored
+const ALL = FAMS.concat(["P"]);          // scored plus policy conformance
 const fmt = n => (n===null||n===undefined) ? "—" : n.toFixed(3);
 const esc = s => String(s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 
@@ -98,7 +99,7 @@ function board(){
      <td class="num">${fmt(r.headline.governance)}</td>
      <td class="num">${fmt(r.headline.contribution)}</td>
      ${FAMS.map(f=>`<td class="num ${r.families[f]&&r.families[f].rate===1?'ok':'bad'}">${r.families[f]?fmt(r.families[f].rate):"—"}</td>`).join("")}
-     <td class="num">${r.policy?fmt(r.policy.rate):"—"}</td>
+     <td class="num">${r.families.P?fmt(r.families.P.rate):"—"}</td>
    </tr>`).join("");
   return `<h2>Governance × contribution</h2>
     <div class="plot">${dots}
@@ -151,8 +152,10 @@ function scenarios(){
     <table><thead><tr><th>Measure</th>${rows.map(r=>`<th class="num">${esc(r.system.id)}</th>`).join("")}</tr></thead>
     <tbody>${ids.map(m=>{
       const cells = rows.map(r=>{
-        const ss = r.scenarios.filter(s=>(s.measure||s.id.split("-")[0])===m);
-        if (!ss.length) return `<td class="num">—</td>`;
+        const all = r.scenarios.filter(s=>(s.measure||s.id.split("-")[0])===m);
+        const ss = all.filter(s=>!s.skipped);
+        if (!all.length) return `<td class="num">—</td>`;
+        if (!ss.length) return `<td class="num">n/a</td>`;   // declared out of scope
         const p = ss.filter(s=>s.passed).length;
         const cls = p===ss.length ? "ok" : "bad";
         return `<td class="num ${cls}">${p}/${ss.length}</td>`;
@@ -195,7 +198,8 @@ def build_site(runs: list[dict], out_dir: Path) -> Path:
             "scenarios": [
                 {"id": s["id"], "measure": s.get("measure", s["id"].split("-")[0]),
                  "family": s["family"], "passed": s["passed"],
-                 "unsupported": s.get("unsupported", False)}
+                 "unsupported": s.get("unsupported", False),
+                 "skipped": s.get("skipped", False)}
                 for s in run["scenarios"]
             ],
             "_published": run.get("_published", False),

@@ -61,7 +61,8 @@ def cmd_run(args: argparse.Namespace) -> int:
             print(".", end="", file=sys.stderr, flush=True)
 
     result = run_bench(
-        system, families=families, seed=args.seed, repeat=args.repeat, progress=progress
+        system, families=families, seed=args.seed, repeat=args.repeat,
+        timeout=(args.timeout or None), progress=progress,
     )
     if not args.verbose:
         print(file=sys.stderr)
@@ -85,6 +86,8 @@ def print_summary(run: dict) -> None:
     print(f"  contribution {num(h['contribution'])}")
     print()
     for fam, block in run["families"].items():
+        if fam == "P":
+            continue   # printed below, with its own label
         spread = block.get("spread")
         extra = f"  spread {spread['min']:.2f}–{spread['max']:.2f}" if spread else ""
         flag = f"  unsupported:{block['unsupported']}" if block["unsupported"] else ""
@@ -92,9 +95,11 @@ def print_summary(run: dict) -> None:
             f"  {fam}  {block['rate']:.3f}  ({block['pass']}/{block['total']}"
             f", wilson≥{block['wilson_low']:.2f}){flag}{extra}"
         )
-    p = run["policy"]
-    if p["total"]:
-        print(f"  P  {p['rate']:.3f}  ({p['pass']}/{p['total']})  policy conformance, not scored")
+    p = run["families"].get("P") or run.get("policy") or {}
+    if p.get("total") or p.get("skipped"):
+        skipped = f", {p['skipped']} not applicable" if p.get("skipped") else ""
+        print(f"  P  {p['rate']:.3f}  ({p['pass']}/{p['total']}{skipped})"
+              "  policy conformance, reported but not scored")
 
 
 def cmd_validate(args: argparse.Namespace) -> int:
@@ -204,6 +209,8 @@ def main(argv: list[str] | None = None) -> int:
                        help="override the release seed (makes the run unsubmittable)")
     p_run.add_argument("--repeat", type=int, default=1,
                        help="repeat every scenario N times and record the spread")
+    p_run.add_argument("--timeout", type=float, default=120.0,
+                       help="wall-clock budget per scenario, in seconds (0 disables)")
     p_run.add_argument("-v", "--verbose", action="store_true")
     p_run.set_defaults(func=cmd_run)
 

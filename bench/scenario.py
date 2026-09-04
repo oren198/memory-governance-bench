@@ -15,6 +15,7 @@ owns every rule a scenario author would otherwise have to remember:
 
 from __future__ import annotations
 
+import time
 import traceback
 from dataclasses import dataclass, field
 from typing import Callable, Iterable
@@ -49,7 +50,7 @@ class ScenarioResult:
     measure: str
     family: str
     variant: int
-    passed: bool
+    passed: bool | None      # None when the scenario was not applicable
     unsupported: bool
     skipped: bool = False
     checks: list[Check] = field(default_factory=list)
@@ -78,6 +79,11 @@ class Skip(Exception):
     """The scenario does not apply to this system's declared policy."""
 
 
+class Timeout(Exception):
+    """The scenario exceeded its wall-clock budget. A real system can hang or
+    crawl; one slow scenario must not take the run down with it."""
+
+
 class Ctx:
     """Everything a measure needs, and nothing a measure should reimplement."""
 
@@ -88,6 +94,7 @@ class Ctx:
         variant: int,
         seed: int,
         declarations: Declarations,
+        timeout: float | None = None,
     ) -> None:
         self.system = system
         self.scenario_id = scenario_id
@@ -95,9 +102,24 @@ class Ctx:
         self.seed = seed
         self.declarations = declarations
         self.checks: list[Check] = []
+        self.calls = 0
+        self._deadline = (time.monotonic() + timeout) if timeout else None
         self._origin: dict[str, str] = {}   # canary -> group it was written in
         self._kind: dict[str, Kind] = {}    # canary -> kind it was written as
         self._settled = False
+
+    def _tick(self, operation: str) -> None:
+        """Checked on both sides of every call into the system: before, so a
+        scenario that has already run out does not start more work, and after,
+        so the call that spent the budget is the one blamed. A single call
+        that never returns is the transport's problem, which is why the HTTP
+        binding sets a socket timeout of its own."""
+        self.calls += 1
+        self._deadline_check(operation)
+
+    def _deadline_check(self, operation: str) -> None:
+        if self._deadline and time.monotonic() > self._deadline:
+            raise Timeout(f"scenario budget exhausted at {operation}")
 
     # --- world ------------------------------------------------------------
 
@@ -109,6 +131,7 @@ class Ctx:
         owner_groups: Iterable[str] = (),
         bound: int = 500,
     ) -> None:
+        self._tick("world")
         self.system.world(
             World(
                 groups=tuple(groups),
@@ -118,6 +141,7 @@ class Ctx:
                 bound=bound,
             )
         )
+        self._deadline_check("world")
         self._settled = False
 
     def standard(self, bound: int = 500) -> dict[str, str]:
@@ -175,9 +199,11 @@ class Ctx:
         if content is None:
             assert tag is not None, "write needs a tag or explicit content"
             content = self.text(tag, words)
+        self._tick("write")
         receipt = self.system.write(
             agent, Write(content=content, kind=kind, replaces=replaces, subject=subject)
         )
+        self._deadline_check("write")
         if tag is not None:
             tok = self.canary(tag)
             self._origin[tok] = agent.group
@@ -186,20 +212,28 @@ class Ctx:
         return receipt
 
     def announce(self, agent: Agent, receipt_id: str) -> Receipt:
+        self._tick("announce")
         r = self.system.announce(agent, receipt_id)
+        self._deadline_check("announce")
         self._settled = False
         return r
 
     def retract(self, agent: Agent, receipt_id: str) -> Receipt:
+        self._tick("retract")
         r = self.system.retract(agent, receipt_id)
+        self._deadline_check("retract")
         self._settled = False
         return r
 
     def read(self, agent: Agent) -> Read:
         if not self._settled:
+            self._tick("settle")
             self.system.settle()
             self._settled = True
-        return self.system.read(agent)
+        self._tick("read")
+        read = self.system.read(agent)
+        self._deadline_check("read")
+        return read
 
     # --- inspecting a read ------------------------------------------------
 
@@ -286,17 +320,24 @@ def run_scenario(
     variant: int,
     seed: int,
     declarations: Declarations,
+    timeout: float | None = None,
 ) -> ScenarioResult:
     family, _doc, fn = registry()[measure]
     scenario_id = f"{measure}-{variant:03d}"
-    ctx = Ctx(system, scenario_id, variant, seed, declarations)
+    ctx = Ctx(system, scenario_id, variant, seed, declarations, timeout=timeout)
     try:
         fn(ctx)
     except Skip as exc:
         # Not applicable to this system's declared policy: no score either way.
         return ScenarioResult(
             id=scenario_id, measure=measure, family=family, variant=variant,
-            passed=True, unsupported=False, skipped=True, checks=[], reason=str(exc),
+            passed=None, unsupported=False, skipped=True, checks=[], reason=str(exc),
+        )
+    except Timeout as exc:
+        return ScenarioResult(
+            id=scenario_id, measure=measure, family=family, variant=variant,
+            passed=False, unsupported=False, checks=ctx.checks,
+            reason=f"timeout: {exc}",
         )
     except Unsupported as exc:
         return ScenarioResult(

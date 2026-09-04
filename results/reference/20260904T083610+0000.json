@@ -1,13 +1,13 @@
 {
-  "run_id": "c4102b50-bcb7-4766-8482-ef31b7193433",
+  "run_id": "97b1283f-4125-47ff-ab6a-820b354a6f25",
   "bench_version": "0.1.0",
-  "timestamp": "2026-09-03T19:29:19+00:00",
+  "timestamp": "2026-09-04T08:36:10+00:00",
   "seed": 20260903,
   "repeat": 1,
   "submittable": true,
   "system": {
-    "id": "null",
-    "name": "null (append-everything baseline)",
+    "id": "reference",
+    "name": "reference (MODEL.md, implemented plainly)",
     "version": "0.1.0"
   },
   "declarations": {
@@ -16,49 +16,57 @@
     "multiple_containers": false
   },
   "headline": {
-    "governance": 0.0,
+    "governance": 1.0,
     "contribution": 1.0
   },
   "families": {
     "A": {
-      "pass": 30,
+      "pass": 40,
       "total": 40,
-      "rate": 0.75,
-      "wilson_low": 0.59806,
+      "rate": 1.0,
+      "wilson_low": 0.912378,
       "unsupported": 0,
       "skipped": 0
     },
     "C": {
-      "pass": 0,
+      "pass": 20,
       "total": 20,
-      "rate": 0.0,
-      "wilson_low": 0.0,
+      "rate": 1.0,
+      "wilson_low": 0.838875,
       "unsupported": 0,
       "skipped": 0
     },
     "E": {
-      "pass": 10,
+      "pass": 20,
       "total": 20,
-      "rate": 0.5,
-      "wilson_low": 0.299298,
+      "rate": 1.0,
+      "wilson_low": 0.838875,
       "unsupported": 0,
       "skipped": 0
     },
     "F": {
-      "pass": 0,
+      "pass": 20,
       "total": 20,
-      "rate": 0.0,
-      "wilson_low": 0.0,
+      "rate": 1.0,
+      "wilson_low": 0.838875,
       "unsupported": 0,
       "skipped": 0
     },
     "G": {
-      "pass": 10,
+      "pass": 20,
       "total": 20,
-      "rate": 0.5,
-      "wilson_low": 0.299298,
+      "rate": 1.0,
+      "wilson_low": 0.838875,
       "unsupported": 0,
       "skipped": 0
+    },
+    "P": {
+      "pass": 10,
+      "total": 10,
+      "rate": 1.0,
+      "wilson_low": 0.722467,
+      "unsupported": 0,
+      "skipped": 5
     },
     "R": {
       "pass": 20,
@@ -69,27 +77,27 @@
       "skipped": 0
     },
     "S": {
-      "pass": 5,
+      "pass": 40,
       "total": 40,
-      "rate": 0.125,
-      "wilson_low": 0.054595,
+      "rate": 1.0,
+      "wilson_low": 0.912378,
       "unsupported": 0,
       "skipped": 0
     },
     "T": {
-      "pass": 5,
+      "pass": 30,
       "total": 30,
-      "rate": 0.166667,
-      "wilson_low": 0.073365,
+      "rate": 1.0,
+      "wilson_low": 0.886487,
       "unsupported": 0,
       "skipped": 0
     }
   },
   "policy": {
-    "pass": 0,
+    "pass": 10,
     "total": 10,
-    "rate": 0.0,
-    "wilson_low": 0.0,
+    "rate": 1.0,
+    "wilson_low": 0.722467,
     "unsupported": 0,
     "skipped": 5
   },
@@ -272,7 +280,7 @@
           "id": "A2-000-no-binding-note",
           "passed": true,
           "detail": {
-            "count": 3
+            "count": 2
           }
         },
         {
@@ -305,7 +313,7 @@
           "id": "A2-001-no-binding-note",
           "passed": true,
           "detail": {
-            "count": 3
+            "count": 2
           }
         },
         {
@@ -338,7 +346,7 @@
           "id": "A2-002-no-binding-note",
           "passed": true,
           "detail": {
-            "count": 3
+            "count": 2
           }
         },
         {
@@ -371,7 +379,7 @@
           "id": "A2-003-no-binding-note",
           "passed": true,
           "detail": {
-            "count": 3
+            "count": 2
           }
         },
         {
@@ -404,7 +412,7 @@
           "id": "A2-004-no-binding-note",
           "passed": true,
           "detail": {
-            "count": 3
+            "count": 2
           }
         },
         {
@@ -429,15 +437,15 @@
       "measure": "A3",
       "family": "A",
       "variant": 0,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "A3-000-not-binding-upward",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": 1
+            "shown": 0
           }
         }
       ]
@@ -447,15 +455,15 @@
       "measure": "A3",
       "family": "A",
       "variant": 1,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "A3-001-not-binding-upward",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": 1
+            "shown": 0
           }
         }
       ]
@@ -465,15 +473,15 @@
       "measure": "A3",
       "family": "A",
       "variant": 2,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "A3-002-not-binding-upward",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": 1
+            "shown": 0
           }
         }
       ]
@@ -483,15 +491,15 @@
       "measure": "A3",
       "family": "A",
       "variant": 3,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "A3-003-not-binding-upward",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": 1
+            "shown": 0
           }
         }
       ]
@@ -501,15 +509,15 @@
       "measure": "A3",
       "family": "A",
       "variant": 4,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "A3-004-not-binding-upward",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": 1
+            "shown": 0
           }
         }
       ]
@@ -869,7 +877,7 @@
       "measure": "A7",
       "family": "A",
       "variant": 0,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
@@ -880,9 +888,9 @@
         },
         {
           "id": "A7-000-conflicting-fleet-rule-not-binding",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": 1
+            "shown": 0
           }
         }
       ]
@@ -892,7 +900,7 @@
       "measure": "A7",
       "family": "A",
       "variant": 1,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
@@ -903,9 +911,9 @@
         },
         {
           "id": "A7-001-conflicting-fleet-rule-not-binding",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": 1
+            "shown": 0
           }
         }
       ]
@@ -915,7 +923,7 @@
       "measure": "A7",
       "family": "A",
       "variant": 2,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
@@ -926,9 +934,9 @@
         },
         {
           "id": "A7-002-conflicting-fleet-rule-not-binding",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": 1
+            "shown": 0
           }
         }
       ]
@@ -938,7 +946,7 @@
       "measure": "A7",
       "family": "A",
       "variant": 3,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
@@ -949,9 +957,9 @@
         },
         {
           "id": "A7-003-conflicting-fleet-rule-not-binding",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": 1
+            "shown": 0
           }
         }
       ]
@@ -961,7 +969,7 @@
       "measure": "A7",
       "family": "A",
       "variant": 4,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
@@ -972,9 +980,9 @@
         },
         {
           "id": "A7-004-conflicting-fleet-rule-not-binding",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": 1
+            "shown": 0
           }
         }
       ]
@@ -1109,17 +1117,15 @@
       "measure": "C1",
       "family": "C",
       "variant": 0,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "C1-000-sibling-isolated",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "sales_0"
-            ],
+            "shown": [],
             "reader": "support_0"
           }
         }
@@ -1130,17 +1136,15 @@
       "measure": "C1",
       "family": "C",
       "variant": 1,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "C1-001-sibling-isolated",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "sales_1"
-            ],
+            "shown": [],
             "reader": "support_1"
           }
         }
@@ -1151,17 +1155,15 @@
       "measure": "C1",
       "family": "C",
       "variant": 2,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "C1-002-sibling-isolated",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "sales_2"
-            ],
+            "shown": [],
             "reader": "support_2"
           }
         }
@@ -1172,17 +1174,15 @@
       "measure": "C1",
       "family": "C",
       "variant": 3,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "C1-003-sibling-isolated",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "sales_3"
-            ],
+            "shown": [],
             "reader": "support_3"
           }
         }
@@ -1193,17 +1193,15 @@
       "measure": "C1",
       "family": "C",
       "variant": 4,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "C1-004-sibling-isolated",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "sales_4"
-            ],
+            "shown": [],
             "reader": "support_4"
           }
         }
@@ -1214,17 +1212,15 @@
       "measure": "C2",
       "family": "C",
       "variant": 0,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "C2-000-branch-isolated",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "tier2_0"
-            ],
+            "shown": [],
             "reader": "finance_0"
           }
         }
@@ -1235,17 +1231,15 @@
       "measure": "C2",
       "family": "C",
       "variant": 1,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "C2-001-branch-isolated",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "tier2_1"
-            ],
+            "shown": [],
             "reader": "finance_1"
           }
         }
@@ -1256,17 +1250,15 @@
       "measure": "C2",
       "family": "C",
       "variant": 2,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "C2-002-branch-isolated",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "tier2_2"
-            ],
+            "shown": [],
             "reader": "finance_2"
           }
         }
@@ -1277,17 +1269,15 @@
       "measure": "C2",
       "family": "C",
       "variant": 3,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "C2-003-branch-isolated",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "tier2_3"
-            ],
+            "shown": [],
             "reader": "finance_3"
           }
         }
@@ -1298,17 +1288,15 @@
       "measure": "C2",
       "family": "C",
       "variant": 4,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "C2-004-branch-isolated",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "tier2_4"
-            ],
+            "shown": [],
             "reader": "finance_4"
           }
         }
@@ -1319,26 +1307,22 @@
       "measure": "C3",
       "family": "C",
       "variant": 0,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "C3-000-no-upward-note",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "tier2_0"
-            ]
+            "shown": []
           }
         },
         {
           "id": "C3-000-no-upward-rule",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "tier2_0"
-            ]
+            "shown": []
           }
         }
       ]
@@ -1348,26 +1332,22 @@
       "measure": "C3",
       "family": "C",
       "variant": 1,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "C3-001-no-upward-note",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "tier2_1"
-            ]
+            "shown": []
           }
         },
         {
           "id": "C3-001-no-upward-rule",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "tier2_1"
-            ]
+            "shown": []
           }
         }
       ]
@@ -1377,26 +1357,22 @@
       "measure": "C3",
       "family": "C",
       "variant": 2,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "C3-002-no-upward-note",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "tier2_2"
-            ]
+            "shown": []
           }
         },
         {
           "id": "C3-002-no-upward-rule",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "tier2_2"
-            ]
+            "shown": []
           }
         }
       ]
@@ -1406,26 +1382,22 @@
       "measure": "C3",
       "family": "C",
       "variant": 3,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "C3-003-no-upward-note",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "tier2_3"
-            ]
+            "shown": []
           }
         },
         {
           "id": "C3-003-no-upward-rule",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "tier2_3"
-            ]
+            "shown": []
           }
         }
       ]
@@ -1435,26 +1407,22 @@
       "measure": "C3",
       "family": "C",
       "variant": 4,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "C3-004-no-upward-note",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "tier2_4"
-            ]
+            "shown": []
           }
         },
         {
           "id": "C3-004-no-upward-rule",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "tier2_4"
-            ]
+            "shown": []
           }
         }
       ]
@@ -1464,17 +1432,15 @@
       "measure": "C4",
       "family": "C",
       "variant": 0,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "C4-000-listening-directed",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "support_0"
-            ]
+            "shown": []
           }
         }
       ]
@@ -1484,17 +1450,15 @@
       "measure": "C4",
       "family": "C",
       "variant": 1,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "C4-001-listening-directed",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "support_1"
-            ]
+            "shown": []
           }
         }
       ]
@@ -1504,17 +1468,15 @@
       "measure": "C4",
       "family": "C",
       "variant": 2,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "C4-002-listening-directed",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "support_2"
-            ]
+            "shown": []
           }
         }
       ]
@@ -1524,17 +1486,15 @@
       "measure": "C4",
       "family": "C",
       "variant": 3,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "C4-003-listening-directed",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "support_3"
-            ]
+            "shown": []
           }
         }
       ]
@@ -1544,17 +1504,15 @@
       "measure": "C4",
       "family": "C",
       "variant": 4,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "C4-004-listening-directed",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "support_4"
-            ]
+            "shown": []
           }
         }
       ]
@@ -1564,19 +1522,18 @@
       "measure": "E1",
       "family": "E",
       "variant": 0,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "E1-000-not-two-independent-claims",
-          "passed": false,
+          "passed": true,
           "detail": {
             "independent": [
-              "billing_0",
-              "support_0"
+              "billing_0"
             ],
-            "total": 2
+            "total": 1
           }
         }
       ]
@@ -1586,19 +1543,18 @@
       "measure": "E1",
       "family": "E",
       "variant": 1,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "E1-001-not-two-independent-claims",
-          "passed": false,
+          "passed": true,
           "detail": {
             "independent": [
-              "billing_1",
-              "support_1"
+              "billing_1"
             ],
-            "total": 2
+            "total": 1
           }
         }
       ]
@@ -1608,19 +1564,18 @@
       "measure": "E1",
       "family": "E",
       "variant": 2,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "E1-002-not-two-independent-claims",
-          "passed": false,
+          "passed": true,
           "detail": {
             "independent": [
-              "billing_2",
-              "support_2"
+              "billing_2"
             ],
-            "total": 2
+            "total": 1
           }
         }
       ]
@@ -1630,19 +1585,18 @@
       "measure": "E1",
       "family": "E",
       "variant": 3,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "E1-003-not-two-independent-claims",
-          "passed": false,
+          "passed": true,
           "detail": {
             "independent": [
-              "billing_3",
-              "support_3"
+              "billing_3"
             ],
-            "total": 2
+            "total": 1
           }
         }
       ]
@@ -1652,19 +1606,18 @@
       "measure": "E1",
       "family": "E",
       "variant": 4,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "E1-004-not-two-independent-claims",
-          "passed": false,
+          "passed": true,
           "detail": {
             "independent": [
-              "billing_4",
-              "support_4"
+              "billing_4"
             ],
-            "total": 2
+            "total": 1
           }
         }
       ]
@@ -1764,23 +1717,22 @@
       "measure": "E3",
       "family": "E",
       "variant": 0,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "E3-000-no-source-copy-survives",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "count": 1
+            "count": 0
           }
         },
         {
           "id": "E3-000-survivor-stands-on-its-own",
-          "passed": false,
+          "passed": true,
           "detail": {
             "origins": [
-              "billing_0",
               "support_0"
             ]
           }
@@ -1792,23 +1744,22 @@
       "measure": "E3",
       "family": "E",
       "variant": 1,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "E3-001-no-source-copy-survives",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "count": 1
+            "count": 0
           }
         },
         {
           "id": "E3-001-survivor-stands-on-its-own",
-          "passed": false,
+          "passed": true,
           "detail": {
             "origins": [
-              "billing_1",
               "support_1"
             ]
           }
@@ -1820,23 +1771,22 @@
       "measure": "E3",
       "family": "E",
       "variant": 2,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "E3-002-no-source-copy-survives",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "count": 1
+            "count": 0
           }
         },
         {
           "id": "E3-002-survivor-stands-on-its-own",
-          "passed": false,
+          "passed": true,
           "detail": {
             "origins": [
-              "billing_2",
               "support_2"
             ]
           }
@@ -1848,23 +1798,22 @@
       "measure": "E3",
       "family": "E",
       "variant": 3,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "E3-003-no-source-copy-survives",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "count": 1
+            "count": 0
           }
         },
         {
           "id": "E3-003-survivor-stands-on-its-own",
-          "passed": false,
+          "passed": true,
           "detail": {
             "origins": [
-              "billing_3",
               "support_3"
             ]
           }
@@ -1876,23 +1825,22 @@
       "measure": "E3",
       "family": "E",
       "variant": 4,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "E3-004-no-source-copy-survives",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "count": 1
+            "count": 0
           }
         },
         {
           "id": "E3-004-survivor-stands-on-its-own",
-          "passed": false,
+          "passed": true,
           "detail": {
             "origins": [
-              "billing_4",
               "support_4"
             ]
           }
@@ -2019,22 +1967,20 @@
       "measure": "F0",
       "family": "F",
       "variant": 0,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "F0-000-note-removed",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "support_0"
-            ]
+            "shown": []
           }
         },
         {
           "id": "F0-000-retraction-announced",
-          "passed": false,
+          "passed": true,
           "detail": {}
         }
       ]
@@ -2044,22 +1990,20 @@
       "measure": "F0",
       "family": "F",
       "variant": 1,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "F0-001-note-removed",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "support_1"
-            ]
+            "shown": []
           }
         },
         {
           "id": "F0-001-retraction-announced",
-          "passed": false,
+          "passed": true,
           "detail": {}
         }
       ]
@@ -2069,22 +2013,20 @@
       "measure": "F0",
       "family": "F",
       "variant": 2,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "F0-002-note-removed",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "support_2"
-            ]
+            "shown": []
           }
         },
         {
           "id": "F0-002-retraction-announced",
-          "passed": false,
+          "passed": true,
           "detail": {}
         }
       ]
@@ -2094,22 +2036,20 @@
       "measure": "F0",
       "family": "F",
       "variant": 3,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "F0-003-note-removed",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "support_3"
-            ]
+            "shown": []
           }
         },
         {
           "id": "F0-003-retraction-announced",
-          "passed": false,
+          "passed": true,
           "detail": {}
         }
       ]
@@ -2119,22 +2059,20 @@
       "measure": "F0",
       "family": "F",
       "variant": 4,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "F0-004-note-removed",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "support_4"
-            ]
+            "shown": []
           }
         },
         {
           "id": "F0-004-retraction-announced",
-          "passed": false,
+          "passed": true,
           "detail": {}
         }
       ]
@@ -2144,17 +2082,15 @@
       "measure": "F1",
       "family": "F",
       "variant": 0,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "F1-000-replaced-stays-gone",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_0"
-            ]
+            "shown": []
           }
         }
       ]
@@ -2164,17 +2100,15 @@
       "measure": "F1",
       "family": "F",
       "variant": 1,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "F1-001-replaced-stays-gone",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_1"
-            ]
+            "shown": []
           }
         }
       ]
@@ -2184,17 +2118,15 @@
       "measure": "F1",
       "family": "F",
       "variant": 2,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "F1-002-replaced-stays-gone",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_2"
-            ]
+            "shown": []
           }
         }
       ]
@@ -2204,17 +2136,15 @@
       "measure": "F1",
       "family": "F",
       "variant": 3,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "F1-003-replaced-stays-gone",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_3"
-            ]
+            "shown": []
           }
         }
       ]
@@ -2224,17 +2154,15 @@
       "measure": "F1",
       "family": "F",
       "variant": 4,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "F1-004-replaced-stays-gone",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_4"
-            ]
+            "shown": []
           }
         }
       ]
@@ -2244,17 +2172,15 @@
       "measure": "F2",
       "family": "F",
       "variant": 0,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "F2-000-not-current",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_0"
-            ]
+            "shown": []
           }
         }
       ]
@@ -2264,17 +2190,15 @@
       "measure": "F2",
       "family": "F",
       "variant": 1,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "F2-001-not-current",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_1"
-            ]
+            "shown": []
           }
         }
       ]
@@ -2284,17 +2208,15 @@
       "measure": "F2",
       "family": "F",
       "variant": 2,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "F2-002-not-current",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_2"
-            ]
+            "shown": []
           }
         }
       ]
@@ -2304,17 +2226,15 @@
       "measure": "F2",
       "family": "F",
       "variant": 3,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "F2-003-not-current",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_3"
-            ]
+            "shown": []
           }
         }
       ]
@@ -2324,17 +2244,15 @@
       "measure": "F2",
       "family": "F",
       "variant": 4,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "F2-004-not-current",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_4"
-            ]
+            "shown": []
           }
         }
       ]
@@ -2344,26 +2262,22 @@
       "measure": "F3",
       "family": "F",
       "variant": 0,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "F3-000-replaced-not-back",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_0"
-            ]
+            "shown": []
           }
         },
         {
           "id": "F3-000-retracted-not-back",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_0"
-            ]
+            "shown": []
           }
         }
       ]
@@ -2373,26 +2287,22 @@
       "measure": "F3",
       "family": "F",
       "variant": 1,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "F3-001-replaced-not-back",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_1"
-            ]
+            "shown": []
           }
         },
         {
           "id": "F3-001-retracted-not-back",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_1"
-            ]
+            "shown": []
           }
         }
       ]
@@ -2402,26 +2312,22 @@
       "measure": "F3",
       "family": "F",
       "variant": 2,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "F3-002-replaced-not-back",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_2"
-            ]
+            "shown": []
           }
         },
         {
           "id": "F3-002-retracted-not-back",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_2"
-            ]
+            "shown": []
           }
         }
       ]
@@ -2431,26 +2337,22 @@
       "measure": "F3",
       "family": "F",
       "variant": 3,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "F3-003-replaced-not-back",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_3"
-            ]
+            "shown": []
           }
         },
         {
           "id": "F3-003-retracted-not-back",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_3"
-            ]
+            "shown": []
           }
         }
       ]
@@ -2460,26 +2362,22 @@
       "measure": "F3",
       "family": "F",
       "variant": 4,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "F3-004-replaced-not-back",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_4"
-            ]
+            "shown": []
           }
         },
         {
           "id": "F3-004-retracted-not-back",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_4"
-            ]
+            "shown": []
           }
         }
       ]
@@ -2489,15 +2387,15 @@
       "measure": "G1",
       "family": "G",
       "variant": 0,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "G1-000-within-bound",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "words": 960,
+            "words": 400,
             "bound": 400
           }
         }
@@ -2508,15 +2406,15 @@
       "measure": "G1",
       "family": "G",
       "variant": 1,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "G1-001-within-bound",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "words": 960,
+            "words": 400,
             "bound": 400
           }
         }
@@ -2527,15 +2425,15 @@
       "measure": "G1",
       "family": "G",
       "variant": 2,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "G1-002-within-bound",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "words": 960,
+            "words": 400,
             "bound": 400
           }
         }
@@ -2546,15 +2444,15 @@
       "measure": "G1",
       "family": "G",
       "variant": 3,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "G1-003-within-bound",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "words": 960,
+            "words": 400,
             "bound": 400
           }
         }
@@ -2565,15 +2463,15 @@
       "measure": "G1",
       "family": "G",
       "variant": 4,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "G1-004-within-bound",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "words": 960,
+            "words": 400,
             "bound": 400
           }
         }
@@ -2694,10 +2592,11 @@
       "skipped": false,
       "checks": [
         {
-          "id": "G3-000-nothing-dropped-nothing-owed",
+          "id": "G3-000-drop-reported",
           "passed": true,
           "detail": {
-            "dropped": 0
+            "missing": 35,
+            "reported": 35
           }
         }
       ]
@@ -2712,10 +2611,11 @@
       "skipped": false,
       "checks": [
         {
-          "id": "G3-001-nothing-dropped-nothing-owed",
+          "id": "G3-001-drop-reported",
           "passed": true,
           "detail": {
-            "dropped": 0
+            "missing": 35,
+            "reported": 35
           }
         }
       ]
@@ -2730,10 +2630,11 @@
       "skipped": false,
       "checks": [
         {
-          "id": "G3-002-nothing-dropped-nothing-owed",
+          "id": "G3-002-drop-reported",
           "passed": true,
           "detail": {
-            "dropped": 0
+            "missing": 35,
+            "reported": 35
           }
         }
       ]
@@ -2748,10 +2649,11 @@
       "skipped": false,
       "checks": [
         {
-          "id": "G3-003-nothing-dropped-nothing-owed",
+          "id": "G3-003-drop-reported",
           "passed": true,
           "detail": {
-            "dropped": 0
+            "missing": 35,
+            "reported": 35
           }
         }
       ]
@@ -2766,10 +2668,11 @@
       "skipped": false,
       "checks": [
         {
-          "id": "G3-004-nothing-dropped-nothing-owed",
+          "id": "G3-004-drop-reported",
           "passed": true,
           "detail": {
-            "dropped": 0
+            "missing": 35,
+            "reported": 35
           }
         }
       ]
@@ -2779,15 +2682,15 @@
       "measure": "G4",
       "family": "G",
       "variant": 0,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "G4-000-shown-once",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "count": 8
+            "count": 1
           }
         }
       ]
@@ -2797,15 +2700,15 @@
       "measure": "G4",
       "family": "G",
       "variant": 1,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "G4-001-shown-once",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "count": 8
+            "count": 1
           }
         }
       ]
@@ -2815,15 +2718,15 @@
       "measure": "G4",
       "family": "G",
       "variant": 2,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "G4-002-shown-once",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "count": 8
+            "count": 1
           }
         }
       ]
@@ -2833,15 +2736,15 @@
       "measure": "G4",
       "family": "G",
       "variant": 3,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "G4-003-shown-once",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "count": 8
+            "count": 1
           }
         }
       ]
@@ -2851,15 +2754,15 @@
       "measure": "G4",
       "family": "G",
       "variant": 4,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "G4-004-shown-once",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "count": 8
+            "count": 1
           }
         }
       ]
@@ -2869,17 +2772,15 @@
       "measure": "P1",
       "family": "P",
       "variant": 0,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "P1-000-declared-not-to-flow-and-did-not",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "support_0"
-            ]
+            "shown": []
           }
         }
       ]
@@ -2889,17 +2790,15 @@
       "measure": "P1",
       "family": "P",
       "variant": 1,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "P1-001-declared-not-to-flow-and-did-not",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "support_1"
-            ]
+            "shown": []
           }
         }
       ]
@@ -2909,17 +2808,15 @@
       "measure": "P1",
       "family": "P",
       "variant": 2,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "P1-002-declared-not-to-flow-and-did-not",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "support_2"
-            ]
+            "shown": []
           }
         }
       ]
@@ -2929,17 +2826,15 @@
       "measure": "P1",
       "family": "P",
       "variant": 3,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "P1-003-declared-not-to-flow-and-did-not",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "support_3"
-            ]
+            "shown": []
           }
         }
       ]
@@ -2949,17 +2844,15 @@
       "measure": "P1",
       "family": "P",
       "variant": 4,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "P1-004-declared-not-to-flow-and-did-not",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "support_4"
-            ]
+            "shown": []
           }
         }
       ]
@@ -2969,7 +2862,7 @@
       "measure": "P2",
       "family": "P",
       "variant": 0,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
@@ -2980,7 +2873,7 @@
         },
         {
           "id": "P2-000-declared-one-hop-and-stopped",
-          "passed": false,
+          "passed": true,
           "detail": {
             "leaked_to": "support_0"
           }
@@ -2992,7 +2885,7 @@
       "measure": "P2",
       "family": "P",
       "variant": 1,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
@@ -3003,7 +2896,7 @@
         },
         {
           "id": "P2-001-declared-one-hop-and-stopped",
-          "passed": false,
+          "passed": true,
           "detail": {
             "leaked_to": "support_1"
           }
@@ -3015,7 +2908,7 @@
       "measure": "P2",
       "family": "P",
       "variant": 2,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
@@ -3026,7 +2919,7 @@
         },
         {
           "id": "P2-002-declared-one-hop-and-stopped",
-          "passed": false,
+          "passed": true,
           "detail": {
             "leaked_to": "support_2"
           }
@@ -3038,7 +2931,7 @@
       "measure": "P2",
       "family": "P",
       "variant": 3,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
@@ -3049,7 +2942,7 @@
         },
         {
           "id": "P2-003-declared-one-hop-and-stopped",
-          "passed": false,
+          "passed": true,
           "detail": {
             "leaked_to": "support_3"
           }
@@ -3061,7 +2954,7 @@
       "measure": "P2",
       "family": "P",
       "variant": 4,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
@@ -3072,7 +2965,7 @@
         },
         {
           "id": "P2-004-declared-one-hop-and-stopped",
-          "passed": false,
+          "passed": true,
           "detail": {
             "leaked_to": "support_4"
           }
@@ -3084,7 +2977,7 @@
       "measure": "P3",
       "family": "P",
       "variant": 0,
-      "passed": true,
+      "passed": null,
       "unsupported": false,
       "skipped": true,
       "checks": [],
@@ -3095,7 +2988,7 @@
       "measure": "P3",
       "family": "P",
       "variant": 1,
-      "passed": true,
+      "passed": null,
       "unsupported": false,
       "skipped": true,
       "checks": [],
@@ -3106,7 +2999,7 @@
       "measure": "P3",
       "family": "P",
       "variant": 2,
-      "passed": true,
+      "passed": null,
       "unsupported": false,
       "skipped": true,
       "checks": [],
@@ -3117,7 +3010,7 @@
       "measure": "P3",
       "family": "P",
       "variant": 3,
-      "passed": true,
+      "passed": null,
       "unsupported": false,
       "skipped": true,
       "checks": [],
@@ -3128,7 +3021,7 @@
       "measure": "P3",
       "family": "P",
       "variant": 4,
-      "passed": true,
+      "passed": null,
       "unsupported": false,
       "skipped": true,
       "checks": [],
@@ -3774,37 +3667,31 @@
       "measure": "S2",
       "family": "S",
       "variant": 0,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "S2-000-sales-not-shown",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_0"
-            ],
+            "shown": [],
             "reader": "sales_0"
           }
         },
         {
           "id": "S2-000-company-not-shown",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_0"
-            ],
+            "shown": [],
             "reader": "company_0"
           }
         },
         {
           "id": "S2-000-tier2-not-shown",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_0"
-            ],
+            "shown": [],
             "reader": "tier2_0"
           }
         }
@@ -3815,37 +3702,31 @@
       "measure": "S2",
       "family": "S",
       "variant": 1,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "S2-001-sales-not-shown",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_1"
-            ],
+            "shown": [],
             "reader": "sales_1"
           }
         },
         {
           "id": "S2-001-company-not-shown",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_1"
-            ],
+            "shown": [],
             "reader": "company_1"
           }
         },
         {
           "id": "S2-001-tier2-not-shown",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_1"
-            ],
+            "shown": [],
             "reader": "tier2_1"
           }
         }
@@ -3856,37 +3737,31 @@
       "measure": "S2",
       "family": "S",
       "variant": 2,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "S2-002-sales-not-shown",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_2"
-            ],
+            "shown": [],
             "reader": "sales_2"
           }
         },
         {
           "id": "S2-002-company-not-shown",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_2"
-            ],
+            "shown": [],
             "reader": "company_2"
           }
         },
         {
           "id": "S2-002-tier2-not-shown",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_2"
-            ],
+            "shown": [],
             "reader": "tier2_2"
           }
         }
@@ -3897,37 +3772,31 @@
       "measure": "S2",
       "family": "S",
       "variant": 3,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "S2-003-sales-not-shown",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_3"
-            ],
+            "shown": [],
             "reader": "sales_3"
           }
         },
         {
           "id": "S2-003-company-not-shown",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_3"
-            ],
+            "shown": [],
             "reader": "company_3"
           }
         },
         {
           "id": "S2-003-tier2-not-shown",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_3"
-            ],
+            "shown": [],
             "reader": "tier2_3"
           }
         }
@@ -3938,37 +3807,31 @@
       "measure": "S2",
       "family": "S",
       "variant": 4,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "S2-004-sales-not-shown",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_4"
-            ],
+            "shown": [],
             "reader": "sales_4"
           }
         },
         {
           "id": "S2-004-company-not-shown",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_4"
-            ],
+            "shown": [],
             "reader": "company_4"
           }
         },
         {
           "id": "S2-004-tier2-not-shown",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_4"
-            ],
+            "shown": [],
             "reader": "tier2_4"
           }
         }
@@ -3979,16 +3842,16 @@
       "measure": "S3",
       "family": "S",
       "variant": 0,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "S3-000-refused-or-undelivered",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "accepted": true,
-            "delivered": 1
+            "accepted": false,
+            "delivered": 0
           }
         }
       ]
@@ -3998,16 +3861,16 @@
       "measure": "S3",
       "family": "S",
       "variant": 1,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "S3-001-refused-or-undelivered",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "accepted": true,
-            "delivered": 1
+            "accepted": false,
+            "delivered": 0
           }
         }
       ]
@@ -4017,16 +3880,16 @@
       "measure": "S3",
       "family": "S",
       "variant": 2,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "S3-002-refused-or-undelivered",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "accepted": true,
-            "delivered": 1
+            "accepted": false,
+            "delivered": 0
           }
         }
       ]
@@ -4036,16 +3899,16 @@
       "measure": "S3",
       "family": "S",
       "variant": 3,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "S3-003-refused-or-undelivered",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "accepted": true,
-            "delivered": 1
+            "accepted": false,
+            "delivered": 0
           }
         }
       ]
@@ -4055,16 +3918,16 @@
       "measure": "S3",
       "family": "S",
       "variant": 4,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "S3-004-refused-or-undelivered",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "accepted": true,
-            "delivered": 1
+            "accepted": false,
+            "delivered": 0
           }
         }
       ]
@@ -4074,17 +3937,15 @@
       "measure": "S4a",
       "family": "S",
       "variant": 0,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "S4a-000-removed",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_0"
-            ]
+            "shown": []
           }
         }
       ]
@@ -4094,17 +3955,15 @@
       "measure": "S4a",
       "family": "S",
       "variant": 1,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "S4a-001-removed",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_1"
-            ]
+            "shown": []
           }
         }
       ]
@@ -4114,17 +3973,15 @@
       "measure": "S4a",
       "family": "S",
       "variant": 2,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "S4a-002-removed",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_2"
-            ]
+            "shown": []
           }
         }
       ]
@@ -4134,17 +3991,15 @@
       "measure": "S4a",
       "family": "S",
       "variant": 3,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "S4a-003-removed",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_3"
-            ]
+            "shown": []
           }
         }
       ]
@@ -4154,17 +4009,15 @@
       "measure": "S4a",
       "family": "S",
       "variant": 4,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "S4a-004-removed",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_4"
-            ]
+            "shown": []
           }
         }
       ]
@@ -4174,15 +4027,15 @@
       "measure": "S4b",
       "family": "S",
       "variant": 0,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "S4b-000-withdrawal-delivered",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "events": 0
+            "events": 1
           }
         }
       ]
@@ -4192,15 +4045,15 @@
       "measure": "S4b",
       "family": "S",
       "variant": 1,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "S4b-001-withdrawal-delivered",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "events": 0
+            "events": 1
           }
         }
       ]
@@ -4210,15 +4063,15 @@
       "measure": "S4b",
       "family": "S",
       "variant": 2,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "S4b-002-withdrawal-delivered",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "events": 0
+            "events": 1
           }
         }
       ]
@@ -4228,15 +4081,15 @@
       "measure": "S4b",
       "family": "S",
       "variant": 3,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "S4b-003-withdrawal-delivered",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "events": 0
+            "events": 1
           }
         }
       ]
@@ -4246,15 +4099,15 @@
       "measure": "S4b",
       "family": "S",
       "variant": 4,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "S4b-004-withdrawal-delivered",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "events": 0
+            "events": 1
           }
         }
       ]
@@ -4264,7 +4117,7 @@
       "measure": "S5",
       "family": "S",
       "variant": 0,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
@@ -4275,16 +4128,14 @@
         },
         {
           "id": "S5-000-second-hand-removed",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_0"
-            ]
+            "shown": []
           }
         },
         {
           "id": "S5-000-second-hand-notified",
-          "passed": false,
+          "passed": true,
           "detail": {}
         }
       ]
@@ -4294,7 +4145,7 @@
       "measure": "S5",
       "family": "S",
       "variant": 1,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
@@ -4305,16 +4156,14 @@
         },
         {
           "id": "S5-001-second-hand-removed",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_1"
-            ]
+            "shown": []
           }
         },
         {
           "id": "S5-001-second-hand-notified",
-          "passed": false,
+          "passed": true,
           "detail": {}
         }
       ]
@@ -4324,7 +4173,7 @@
       "measure": "S5",
       "family": "S",
       "variant": 2,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
@@ -4335,16 +4184,14 @@
         },
         {
           "id": "S5-002-second-hand-removed",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_2"
-            ]
+            "shown": []
           }
         },
         {
           "id": "S5-002-second-hand-notified",
-          "passed": false,
+          "passed": true,
           "detail": {}
         }
       ]
@@ -4354,7 +4201,7 @@
       "measure": "S5",
       "family": "S",
       "variant": 3,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
@@ -4365,16 +4212,14 @@
         },
         {
           "id": "S5-003-second-hand-removed",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_3"
-            ]
+            "shown": []
           }
         },
         {
           "id": "S5-003-second-hand-notified",
-          "passed": false,
+          "passed": true,
           "detail": {}
         }
       ]
@@ -4384,7 +4229,7 @@
       "measure": "S5",
       "family": "S",
       "variant": 4,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
@@ -4395,16 +4240,14 @@
         },
         {
           "id": "S5-004-second-hand-removed",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_4"
-            ]
+            "shown": []
           }
         },
         {
           "id": "S5-004-second-hand-notified",
-          "passed": false,
+          "passed": true,
           "detail": {}
         }
       ]
@@ -4414,7 +4257,7 @@
       "measure": "S6",
       "family": "S",
       "variant": 0,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
@@ -4434,10 +4277,10 @@
         },
         {
           "id": "S6-000-via-names-relayer",
-          "passed": false,
+          "passed": true,
           "detail": {
             "got": [
-              null
+              "support_0"
             ]
           }
         }
@@ -4448,7 +4291,7 @@
       "measure": "S6",
       "family": "S",
       "variant": 1,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
@@ -4468,10 +4311,10 @@
         },
         {
           "id": "S6-001-via-names-relayer",
-          "passed": false,
+          "passed": true,
           "detail": {
             "got": [
-              null
+              "support_1"
             ]
           }
         }
@@ -4482,7 +4325,7 @@
       "measure": "S6",
       "family": "S",
       "variant": 2,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
@@ -4502,10 +4345,10 @@
         },
         {
           "id": "S6-002-via-names-relayer",
-          "passed": false,
+          "passed": true,
           "detail": {
             "got": [
-              null
+              "support_2"
             ]
           }
         }
@@ -4516,7 +4359,7 @@
       "measure": "S6",
       "family": "S",
       "variant": 3,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
@@ -4536,10 +4379,10 @@
         },
         {
           "id": "S6-003-via-names-relayer",
-          "passed": false,
+          "passed": true,
           "detail": {
             "got": [
-              null
+              "support_3"
             ]
           }
         }
@@ -4550,7 +4393,7 @@
       "measure": "S6",
       "family": "S",
       "variant": 4,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
@@ -4570,10 +4413,10 @@
         },
         {
           "id": "S6-004-via-names-relayer",
-          "passed": false,
+          "passed": true,
           "detail": {
             "got": [
-              null
+              "support_4"
             ]
           }
         }
@@ -4584,13 +4427,13 @@
       "measure": "S7",
       "family": "S",
       "variant": 0,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "S7-000-absorber-notified",
-          "passed": false,
+          "passed": true,
           "detail": {}
         },
         {
@@ -4607,13 +4450,13 @@
       "measure": "S7",
       "family": "S",
       "variant": 1,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "S7-001-absorber-notified",
-          "passed": false,
+          "passed": true,
           "detail": {}
         },
         {
@@ -4630,13 +4473,13 @@
       "measure": "S7",
       "family": "S",
       "variant": 2,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "S7-002-absorber-notified",
-          "passed": false,
+          "passed": true,
           "detail": {}
         },
         {
@@ -4653,13 +4496,13 @@
       "measure": "S7",
       "family": "S",
       "variant": 3,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "S7-003-absorber-notified",
-          "passed": false,
+          "passed": true,
           "detail": {}
         },
         {
@@ -4676,13 +4519,13 @@
       "measure": "S7",
       "family": "S",
       "variant": 4,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "S7-004-absorber-notified",
-          "passed": false,
+          "passed": true,
           "detail": {}
         },
         {
@@ -4699,15 +4542,15 @@
       "measure": "T1",
       "family": "T",
       "variant": 0,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "T1-000-at-most-one-side",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "sides": 2
+            "sides": 1
           }
         }
       ]
@@ -4717,15 +4560,15 @@
       "measure": "T1",
       "family": "T",
       "variant": 1,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "T1-001-at-most-one-side",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "sides": 2
+            "sides": 1
           }
         }
       ]
@@ -4735,15 +4578,15 @@
       "measure": "T1",
       "family": "T",
       "variant": 2,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "T1-002-at-most-one-side",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "sides": 2
+            "sides": 1
           }
         }
       ]
@@ -4753,15 +4596,15 @@
       "measure": "T1",
       "family": "T",
       "variant": 3,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "T1-003-at-most-one-side",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "sides": 2
+            "sides": 1
           }
         }
       ]
@@ -4771,15 +4614,15 @@
       "measure": "T1",
       "family": "T",
       "variant": 4,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "T1-004-at-most-one-side",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "sides": 2
+            "sides": 1
           }
         }
       ]
@@ -4789,17 +4632,15 @@
       "measure": "T2",
       "family": "T",
       "variant": 0,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "T2-000-replaced-gone",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_0"
-            ]
+            "shown": []
           }
         },
         {
@@ -4814,17 +4655,15 @@
       "measure": "T2",
       "family": "T",
       "variant": 1,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "T2-001-replaced-gone",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_1"
-            ]
+            "shown": []
           }
         },
         {
@@ -4839,17 +4678,15 @@
       "measure": "T2",
       "family": "T",
       "variant": 2,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "T2-002-replaced-gone",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_2"
-            ]
+            "shown": []
           }
         },
         {
@@ -4864,17 +4701,15 @@
       "measure": "T2",
       "family": "T",
       "variant": 3,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "T2-003-replaced-gone",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_3"
-            ]
+            "shown": []
           }
         },
         {
@@ -4889,17 +4724,15 @@
       "measure": "T2",
       "family": "T",
       "variant": 4,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "T2-004-replaced-gone",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": [
-              "billing_4"
-            ]
+            "shown": []
           }
         },
         {
@@ -4914,15 +4747,15 @@
       "measure": "T3",
       "family": "T",
       "variant": 0,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "T3-000-at-most-one-side",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "sides": 2
+            "sides": 1
           }
         }
       ]
@@ -4932,15 +4765,15 @@
       "measure": "T3",
       "family": "T",
       "variant": 1,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "T3-001-at-most-one-side",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "sides": 2
+            "sides": 1
           }
         }
       ]
@@ -4950,15 +4783,15 @@
       "measure": "T3",
       "family": "T",
       "variant": 2,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "T3-002-at-most-one-side",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "sides": 2
+            "sides": 1
           }
         }
       ]
@@ -4968,15 +4801,15 @@
       "measure": "T3",
       "family": "T",
       "variant": 3,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "T3-003-at-most-one-side",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "sides": 2
+            "sides": 1
           }
         }
       ]
@@ -4986,15 +4819,15 @@
       "measure": "T3",
       "family": "T",
       "variant": 4,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "T3-004-at-most-one-side",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "sides": 2
+            "sides": 1
           }
         }
       ]
@@ -5129,17 +4962,15 @@
       "measure": "T5",
       "family": "T",
       "variant": 0,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "T5-000-no-laundered-origin",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "claimed": [
-              "sales_0"
-            ]
+            "claimed": []
           }
         }
       ]
@@ -5149,17 +4980,15 @@
       "measure": "T5",
       "family": "T",
       "variant": 1,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "T5-001-no-laundered-origin",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "claimed": [
-              "sales_1"
-            ]
+            "claimed": []
           }
         }
       ]
@@ -5169,17 +4998,15 @@
       "measure": "T5",
       "family": "T",
       "variant": 2,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "T5-002-no-laundered-origin",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "claimed": [
-              "sales_2"
-            ]
+            "claimed": []
           }
         }
       ]
@@ -5189,17 +5016,15 @@
       "measure": "T5",
       "family": "T",
       "variant": 3,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "T5-003-no-laundered-origin",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "claimed": [
-              "sales_3"
-            ]
+            "claimed": []
           }
         }
       ]
@@ -5209,17 +5034,15 @@
       "measure": "T5",
       "family": "T",
       "variant": 4,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "T5-004-no-laundered-origin",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "claimed": [
-              "sales_4"
-            ]
+            "claimed": []
           }
         }
       ]
@@ -5229,15 +5052,15 @@
       "measure": "T6",
       "family": "T",
       "variant": 0,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "T6-000-sideways-not-binding",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": 1
+            "shown": 0
           }
         }
       ]
@@ -5247,15 +5070,15 @@
       "measure": "T6",
       "family": "T",
       "variant": 1,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "T6-001-sideways-not-binding",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": 1
+            "shown": 0
           }
         }
       ]
@@ -5265,15 +5088,15 @@
       "measure": "T6",
       "family": "T",
       "variant": 2,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "T6-002-sideways-not-binding",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": 1
+            "shown": 0
           }
         }
       ]
@@ -5283,15 +5106,15 @@
       "measure": "T6",
       "family": "T",
       "variant": 3,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "T6-003-sideways-not-binding",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": 1
+            "shown": 0
           }
         }
       ]
@@ -5301,23 +5124,25 @@
       "measure": "T6",
       "family": "T",
       "variant": 4,
-      "passed": false,
+      "passed": true,
       "unsupported": false,
       "skipped": false,
       "checks": [
         {
           "id": "T6-004-sideways-not-binding",
-          "passed": false,
+          "passed": true,
           "detail": {
-            "shown": 1
+            "shown": 0
           }
         }
       ]
     }
   ],
   "cost": {
-    "wall_seconds": 0.033,
+    "wall_seconds": 0.044,
     "calls": null,
+    "timeout_seconds": 120.0,
+    "timed_out": 0,
     "unstable_scenarios": 0
   },
   "environment": {

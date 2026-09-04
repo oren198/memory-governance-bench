@@ -59,3 +59,20 @@ def test_unsupported_is_reported_not_passed():
     assert unsupported, "an unsupported operation must be recorded, never silently passed"
     assert all(not s["passed"] for s in unsupported)
     assert result.families["F"]["unsupported"] == len(unsupported)
+
+
+def test_a_slow_system_does_not_take_the_run_down():
+    """A real system can hang or crawl. One scenario's budget is its own."""
+    import time
+
+    class Slow(NullMemory):
+        def read(self, agent):
+            time.sleep(0.05)
+            return super().read(agent)
+
+    result = run(Slow(), families=["C"], timeout=0.01)
+    timed_out = [s for s in result.scenarios if (s.get("reason") or "").startswith("timeout")]
+    assert timed_out, "a scenario over its budget must be recorded as timed out"
+    assert all(not s["passed"] for s in timed_out)
+    assert result.cost["timed_out"] == len(timed_out)
+    assert result.families["C"]["total"] > 0, "the run still completes and reports"

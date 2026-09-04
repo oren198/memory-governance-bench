@@ -67,3 +67,39 @@ def test_a_null_headline_cannot_claim_to_be_submittable():
     result["submittable"] = True
     problems = validate(result)
     assert any("submittable" in p for p in problems)
+
+
+def test_policy_family_is_in_the_record():
+    """P is excluded from the headline, never from the file. Its result is the
+    evidence a system's declaration was checked rather than merely repeated."""
+    result = run(NullMemory()).to_json()
+    assert "P" in result["families"], "family P must be recorded like any other"
+    assert result["families"]["P"]["total"] > 0
+    assert result["policy"] == result["families"]["P"], (
+        "the policy key is a convenience alias for families.P and must agree"
+    )
+
+
+def test_families_and_scenarios_reconcile():
+    """Summing family totals and counting scenarios must give one answer."""
+    result = run(NullMemory()).to_json()
+    counted = sum(b["total"] + b["skipped"] for b in result["families"].values())
+    assert counted == len(result["scenarios"]), (
+        f"families account for {counted}, scenarios[] holds {len(result['scenarios'])}"
+    )
+
+
+def test_a_missing_family_breaks_reconciliation():
+    result = run(NullMemory()).to_json()
+    result["families"].pop("P")
+    assert any("a family is missing from the record" in p for p in validate(result))
+
+
+def test_a_skipped_scenario_is_neither_pass_nor_fail():
+    """A scenario a system's declaration puts out of scope did not pass; it
+    was never asked. Recording it as passed inflates the count silently."""
+    result = run(NullMemory()).to_json()
+    skipped = [s for s in result["scenarios"] if s["skipped"]]
+    assert skipped, "the null adapter declares a tree, so P3 is not applicable"
+    assert all(s["passed"] is None for s in skipped)
+    assert all(s.get("reason") for s in skipped), "a skip must say why"

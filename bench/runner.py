@@ -78,6 +78,7 @@ def run(
     families: list[str] | None = None,
     seed: int = RELEASE_SEED,
     repeat: int = 1,
+    timeout: float | None = 120.0,
     progress=None,
 ) -> Run:
     info = system.info()
@@ -92,7 +93,9 @@ def run(
         results: list[ScenarioResult] = []
         for measure in wanted:
             for variant in range(VARIANTS):
-                result = run_scenario(system, measure, variant, seed, declarations)
+                result = run_scenario(
+                    system, measure, variant, seed, declarations, timeout=timeout
+                )
                 results.append(result)
                 if progress:
                     progress(result, attempt)
@@ -105,9 +108,12 @@ def run(
     for r in primary:
         by_family.setdefault(r.family, []).append(r)
 
-    families_block = {fam: _family_block(rs) for fam, rs in sorted(by_family.items())
-                      if fam != POLICY_FAMILY}
-    policy_block = _family_block(by_family.get(POLICY_FAMILY, []))
+    # Every family that ran is recorded, P included. "Not scored" governs the
+    # HEADLINE only: P is excluded from the min() below, never from the record.
+    # A P result is the evidence a system's declaration was checked rather than
+    # merely repeated, so a run file that omits it hides the wrong thing.
+    families_block = {fam: _family_block(rs) for fam, rs in sorted(by_family.items())}
+    policy_block = families_block.get(POLICY_FAMILY, _family_block([]))
 
     # A family that was not run has no rate. Reporting it as 0.0 would be a
     # score the run never earned, and indistinguishable from a real failure,
@@ -125,6 +131,9 @@ def run(
     notes: list[str] = []
     if seed != RELEASE_SEED:
         notes.append("seed overridden — not submittable")
+    timed_out = [r.id for r in primary if (r.reason or "").startswith("timeout")]
+    if timed_out:
+        notes.append(f"{len(timed_out)} scenario(s) timed out after {timeout}s")
     if families is not None:
         notes.append(f"partial run: families {','.join(sorted(families))} — not submittable")
 
@@ -178,6 +187,8 @@ def run(
         cost={
             "wall_seconds": round(elapsed, 3),
             "calls": calls,
+            "timeout_seconds": timeout,
+            "timed_out": len(timed_out),
             "unstable_scenarios": families_block_unstable,
         },
         environment={

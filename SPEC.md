@@ -129,10 +129,10 @@ score, so a reader knows which fleet shape was measured.
   "headline":      { "governance": 0.83, "contribution": 0.97 },
   "declarations":  { "notes_flow_down": false, "listening_is_transitive": false,
                      "multiple_containers": false },
-  "policy":        { "pass": 12, "total": 12 },
+  "policy":        { ... },        // convenience alias for families.P
   "repeat":        1,
   "families":      { "C": {"pass": 118, "total": 120, "rate": .983,
-                           "wilson_low": .95, "unsupported": 0}, ... },
+                           "wilson_low": .95, "unsupported": 0, "skipped": 0}, ... },
   "scenarios":     [ {"id": "C1-007", "family": "C", "passed": true,
                       "unsupported": false, "detail": {...}} ... ],
   "cost":          { "wall_seconds": 412, "calls": 9381 },
@@ -142,6 +142,18 @@ score, so a reader knows which fleet shape was measured.
 
 `system.id` is the stable identity across versions; `system.version` is
 whatever the team versions by.
+
+**Every family that ran appears in `families`, P included.** "Not scored"
+governs the headline only — P is left out of the `min()`, never out of the
+record, because a P result is the evidence that a system's declaration was
+checked against its behaviour rather than simply repeated back.
+
+**The two halves of the file reconcile:** summing every family's `total` plus
+its `skipped` equals `len(scenarios)`. A `skipped` scenario is one the
+system's declaration makes inapplicable (P3 against a system that declares
+containment is a tree); its `passed` is `null`, never `true`, because it was
+never asked. Validation rejects a file where these disagree, since a consumer
+summing families and one counting scenarios must not get different answers.
 
 ## 5. Publishing a result
 

@@ -238,3 +238,26 @@ def test_the_read_bound_sets_the_scope_word_budget(memory):
     default, so a run measures the system against the stated bound."""
     _standard(memory)
     assert memory._summary_max_words() == 400
+
+
+def test_two_pending_changes_are_drained_as_one_batch(memory):
+    """ADR 0014 D4 / ADR 0011 D3. Two announcements before the child's next
+    read coalesce into ONE refresh — the batch judge path, which a single
+    pending notice never reaches (`_judge_batch_and_record` routes a batch of
+    one to `judge` verbatim)."""
+    g = _standard(memory)
+    support, tier2 = _agent(g["support"]), _agent(g["tier2"])
+    memory.read(tier2)
+
+    for tag in ("CANARY-B1", "CANARY-B2"):
+        receipt = memory.write(support, Write(content=f"{tag} escalate over $500", kind="note"))
+        assert memory.announce(support, receipt.id).accepted
+
+    pending = memory._record.list_change_events(scope_id=g["tier2"], unprocessed_only=True)
+    assert len(pending) == 2, pending
+
+    read = memory.read(tier2)
+    assert _shows(read, "CANARY-B1") and _shows(read, "CANARY-B2"), _contents(read)
+    assert not memory._record.list_change_events(scope_id=g["tier2"], unprocessed_only=True)
+    for event in pending:
+        assert memory._record.get_judgment(event.contribution_id) is not None

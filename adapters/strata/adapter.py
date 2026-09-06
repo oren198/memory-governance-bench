@@ -113,6 +113,7 @@ class _Held:
     published_id: str | None = None   # set once announced (a published item id)
     contribution_id: str | None = None  # the record row a write produced
     retracted: bool = False           # taken back; the group no longer holds it
+    operator: bool = False            # operator memory, not an agent's contribution
 
 
 class _StrataBase:
@@ -260,7 +261,9 @@ class _StrataBase:
                 # effect on a reader's next read.
                 fleet=self._fleet,
             )
-            self._held[rid] = _Held(agent.group, write.content, write.kind, write.subject)
+            self._held[rid] = _Held(
+                agent.group, write.content, write.kind, write.subject, operator=True
+            )
             self._held[rid].published_id = item.id
             self._by_item[item.id] = rid
             return Receipt(id=rid, accepted=True)
@@ -322,7 +325,7 @@ class _StrataBase:
           from the source item. Provenance is never asserted by this adapter —
           `propose_publish` refuses to take an origin from its caller.
         """
-        from strata.publication import propose_publish, read_publication  # noqa: PLC0415
+        from strata.publication import propose_publish  # noqa: PLC0415
 
         rid = self._next_id("a")
         held = self._held.get(receipt_id)
@@ -371,7 +374,6 @@ class _StrataBase:
             # retracts the write's receipt as often as the announcement's.
             held.published_id = item_id
             self._by_item[item_id] = receipt_id
-            _ = read_publication  # imported for the relay path's docstring parity
         return Receipt(id=rid, accepted=accepted, reason=None if accepted else "declined")
 
     def _announce_relay(self, agent: Agent, receipt_id: str, rid: str) -> Receipt:
@@ -472,7 +474,7 @@ class _StrataBase:
         rid = self._next_id("r")
         withdrawn: bool | None = None
 
-        if held.published_id is not None and held.contribution_id is None:
+        if held.operator:
             # Operator memory: the owner's own control path, not an agent act.
             raise Unsupported("retract of operator memory")
 

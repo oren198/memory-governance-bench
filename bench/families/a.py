@@ -119,9 +119,9 @@ def a7(ctx: Ctx) -> None:
     # content, and a system entitled to read content will find no conflict
     # between two unrelated rules that happen to be filed together.
     ctx.write(ctx.agent(g["support"], owner=True), "owner", kind="rule", subject=subj,
-              content=ctx.claim("owner", "refunds above 100 require a manager's approval."))
+              content=ctx.claim("owner", "refunds above 100 on the refund queue require a manager's approval"))
     ctx.write(ctx.agent(g["support"]), "fleet", kind="rule", subject=subj,
-              content=ctx.claim("fleet", "refunds above 100 do not require any approval."))
+              content=ctx.claim("fleet", "refunds above 100 on the refund queue require no approval"))
     read = ctx.read(ctx.agent(g["support"]))
     owner_shown = ctx.items_with(read, ctx.canary("owner"))
     fleet_shown = ctx.items_with(read, ctx.canary("fleet"))

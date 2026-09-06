@@ -317,6 +317,7 @@ constraint without asking what the resulting sentence *claimed*.
 | Reach the floor | the same trailer twice | Verbatim repetition asserts an emphasis the item does not mean. |
 | Say something durable | "the queue was 141 long on Tuesday" | A measurement is true when taken and worth nothing afterwards. A system may decline to hold what nobody should remember, and a benchmark of memory should not plant it. |
 | Say twelve different things | two frames a reader takes as one property — "keeps only 313 days of history" beside another retention claim for the same noun | Two claims about one property with different numbers are a contradiction, and a system declining one of them is resolving a conflict the benchmark planted by accident. |
+| Carry an identifier | "CNRY…: the proration check should not be scaled below N workers" | A bare token at the head of a sentence reads as the thing the item is about, and a system reading its input will fairly ask what it is. The token trails as a reference instead. |
 | Name something | a billing group observing a search index | An item that names nothing its group would hold invites a system to weigh whether it belongs there — a judgement the benchmark did not intend to test, and one that came out differently on a re-run. |
 
 The rules that follow from this, for anyone extending the generator:
@@ -332,6 +333,9 @@ The rules that follow from this, for anyone extending the generator:
 - No two frames are about the same property, and every number is plausible
   for the property it measures. "Retried more than 347 times" is not a
   belief anyone holds.
+- The canary trails as a reference — `... (ref CNRY…)` — never as the
+  sentence's subject. A hand-written claim in a scenario names something
+  concrete for the same reason.
 - Where a measure needs two items to conflict, the texts must be
   incompatible in what they say. A shared subject is not a contradiction,
   and a system entitled to read content will say so.

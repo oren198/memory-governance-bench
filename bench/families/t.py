@@ -11,9 +11,9 @@ def t1(ctx: Ctx) -> None:
     incompatible content; a reader is shown at most one."""
     g = ctx.standard()
     subj = f"timeout-{ctx.variant}"
-    ctx.write(ctx.agent(g["billing"]), "yes", content=ctx.claim("yes", "the retry timeout is 200 milliseconds."),
+    ctx.write(ctx.agent(g["billing"]), "yes", content=ctx.claim("yes", "the invoice run's retry timeout must stay at 200 milliseconds"),
               subject=subj)
-    ctx.write(ctx.agent(g["billing"]), "no", content=ctx.claim("no", "the retry timeout is not 200 milliseconds."),
+    ctx.write(ctx.agent(g["billing"]), "no", content=ctx.claim("no", "the invoice run's retry timeout must not be 200 milliseconds"),
               subject=subj)
     read = ctx.read(ctx.agent(g["billing"]))
     sides = sum(1 for tag in ("yes", "no") if ctx.shows(read, ctx.canary(tag)))
@@ -42,8 +42,8 @@ def t3(ctx: Ctx) -> None:
     g = ctx.standard()
     subj = f"quota-{ctx.variant}"
     a = ctx.agent(g["billing"])
-    ctx.write(a, "yes", content=ctx.claim("yes", "the monthly quota is 40 exports."), subject=subj)
-    ctx.write(a, "no", content=ctx.claim("no", "the monthly quota is not 40 exports."), subject=subj)
+    ctx.write(a, "yes", content=ctx.claim("yes", "the statement export is capped at 40 runs a month"), subject=subj)
+    ctx.write(a, "no", content=ctx.claim("no", "the statement export is not capped at 40 runs a month"), subject=subj)
     read = ctx.read(a)
     sides = sum(1 for tag in ("yes", "no") if ctx.shows(read, ctx.canary(tag)))
     # Exactly one side, not at most one: a system that held neither would

@@ -103,6 +103,7 @@ class Ctx:
         self.declarations = declarations
         self.checks: list[Check] = []
         self.calls = 0
+        self._ordinals: dict[str, int] = {}
         self._deadline = (time.monotonic() + timeout) if timeout else None
         self._origin: dict[str, str] = {}   # canary -> group it was written in
         self._kind: dict[str, Kind] = {}    # canary -> kind it was written as
@@ -182,8 +183,17 @@ class Ctx:
     def canary(self, tag: str) -> str:
         return canary(self.seed, self.scenario_id, self.variant, tag)
 
+    def _ordinal(self, tag: str) -> int:
+        """This item's position among the distinct items the scenario plants.
+
+        Two planted items must be two different claims: a system that reads
+        its input may treat a near-identical restatement as a duplicate rather
+        than as new evidence, and be right to."""
+        return self._ordinals.setdefault(tag, len(self._ordinals))
+
     def text(self, tag: str, words: int = 12, kind: Kind = "note") -> str:
-        return sentence(self.seed, self.scenario_id, self.variant, tag, words, kind)
+        return sentence(self.seed, self.scenario_id, self.variant, tag, words,
+                        kind, self._ordinal(tag))
 
     def claim(self, tag: str, statement: str) -> str:
         """A canary in front of a statement the scenario writes itself.

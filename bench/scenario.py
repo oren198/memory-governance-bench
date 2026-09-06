@@ -219,7 +219,7 @@ class Ctx:
 
         Used where a scenario needs two texts that genuinely contradict each
         other; the generator cannot produce a contradiction on request."""
-        return f"{self.canary(tag)}: {statement}"
+        return f"{statement.rstrip('.')} (ref {self.canary(tag)})."
 
     def write(
         self,

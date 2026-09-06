@@ -101,8 +101,9 @@ score, so a reader knows which fleet shape was measured.
 - The system is not called concurrently within a scenario unless the
   scenario says so (family T has explicit concurrent cases).
 - Every content string contains a **canary** — a token unique to that item
-  in that scenario. Graders look for canaries in reads; they never
-  interpret prose.
+  in that scenario, written as a trailing reference (`... (ref CNRY…)`) so
+  that it reads as a label on the claim rather than as the thing the claim
+  is about. Graders look for canaries in reads; they never interpret prose.
 - The prose around the canary is an ordinary operational statement: a rule
   reads as an instruction, a note as an observation. This is not decoration.
   A system is entitled to decline what it cannot make sense of, and a system

@@ -56,8 +56,8 @@ def _template_patterns():
 
 
 def _clauses(text, tok):
-    assert text.startswith(f"{tok}: ")
-    rest = text[len(tok) + 2:]
+    assert f"(ref {tok})" in text, text
+    rest = text.replace(f" (ref {tok})", "")
     parts = [c.strip() for c in rest.split(". ") if c.strip()]
     return [c if c.endswith(".") else c + "." for c in parts]
 
@@ -81,7 +81,7 @@ def test_two_planted_items_are_two_different_claims():
     declined as a restatement of the first."""
     # 60 is the largest flood any scenario plants (family G).
     texts = [sentence(11, "G1", 0, f"n{i}", 12, "note", i) for i in range(60)]
-    bodies = [t.split(": ", 1)[1] for t in texts]
+    bodies = [t.split(" (ref ")[0] for t in texts]
     assert len(set(bodies)) == len(bodies)
     shapes = set()
     for body in bodies:
@@ -96,7 +96,7 @@ def test_a_rule_reads_as_an_instruction():
 
     instructions = {t.format(s=s) for s in _SUBJECTS for t in _RULES}
     text = sentence(3, "A1", 1, "rule", 12, "rule")
-    body = text.split(": ", 1)[1].split(". ")[0].rstrip(".")
+    body = text.split(" (ref ")[0]
     assert body in instructions
 
 

@@ -117,7 +117,10 @@ _NOTE_TAILS = (
 
 
 def canary(seed: int, scenario_id: str, variant: int, tag: str) -> str:
-    """A token unique to this planted item, stable across runs."""
+    """A token unique to this planted item, stable across runs.
+
+    Graders look for it in what a reader is shown. It is written into content
+    as a trailing reference, never as the sentence's subject."""
     h = hashlib.sha256(f"{seed}|{scenario_id}|{variant}|{tag}".encode()).hexdigest()
     return f"CNRY{h[:12].upper()}"
 
@@ -168,7 +171,11 @@ def sentence(
             d=1 + (h[4] + ordinal) % 28,
         )
         tails = _NOTE_TAILS
-    parts = [f"{tok}: {body}."]
+    # The token trails as a reference rather than leading as a subject. A bare
+    # identifier at the head of a sentence reads as something the item is
+    # about, and a system reading its input will fairly ask what it is; as a
+    # trailing reference it is what it actually is — a label on the claim.
+    parts = [f"{body} (ref {tok})."]
     # Distinct trailers only, and the floor yields when they run out: the same
     # sentence twice reads as noise, and a system that declines noise is right
     # to. A short item is honest; a padded one is not.

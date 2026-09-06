@@ -1,7 +1,7 @@
 {
-  "run_id": "fd0cc041-b9dd-4306-904e-dcbbe25b1ea0",
+  "run_id": "8d580fbb-0802-4ae7-a615-6e10736b08a2",
   "bench_version": "0.1.0",
-  "timestamp": "2026-09-06T15:33:36+00:00",
+  "timestamp": "2026-09-06T15:36:27+00:00",
   "seed": 20260903,
   "repeat": 1,
   "submittable": true,
@@ -3125,7 +3125,7 @@
           "id": "G1-000-within-bound",
           "passed": false,
           "detail": {
-            "words": 1065,
+            "words": 1075,
             "bound": 400
           }
         }
@@ -3144,7 +3144,7 @@
           "id": "G1-001-within-bound",
           "passed": false,
           "detail": {
-            "words": 1077,
+            "words": 1080,
             "bound": 400
           }
         }
@@ -3163,7 +3163,7 @@
           "id": "G1-002-within-bound",
           "passed": false,
           "detail": {
-            "words": 1076,
+            "words": 1079,
             "bound": 400
           }
         }
@@ -3182,7 +3182,7 @@
           "id": "G1-003-within-bound",
           "passed": false,
           "detail": {
-            "words": 1077,
+            "words": 1080,
             "bound": 400
           }
         }
@@ -3201,7 +3201,7 @@
           "id": "G1-004-within-bound",
           "passed": false,
           "detail": {
-            "words": 1065,
+            "words": 1075,
             "bound": 400
           }
         }

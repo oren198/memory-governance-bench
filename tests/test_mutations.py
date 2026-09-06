@@ -134,7 +134,7 @@ class AdmitsNothing(ReferenceMemory):
         return Receipt(id=f"i{self.seq}", accepted=True)
 
 
-@pytest.mark.parametrize("family", ["C", "S", "F", "T", "E"])
+@pytest.mark.parametrize("family", ["C", "S", "F", "T", "E", "G"])
 def test_a_system_that_holds_nothing_passes_no_absence(family):
     """An absence must be earned: the plant is shown to a reader entitled to
     it first, so declining the write fails the precondition instead of

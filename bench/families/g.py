@@ -65,4 +65,6 @@ def g4(ctx: Ctx) -> None:
         ctx.write(a, "dup", content=content, subject=subj)
     read = ctx.read(a)
     shown = ctx.items_with(read, ctx.canary("dup"))
-    ctx.check("shown-once", len(shown) <= 1, count=len(shown))
+    # Exactly one, not at most one: a system that admitted none of the eight
+    # copies would satisfy "no more than one" while holding nothing.
+    ctx.check("shown-once", len(shown) == 1, count=len(shown))

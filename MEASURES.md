@@ -278,6 +278,11 @@ shown something. A system that never admitted the item satisfies every one
 of them for free, and the two baselines cannot reveal it: the null baseline
 admits everything, and the reference admits everything legitimate.
 
+The same hole hides inside "at most one": G4's repeats-collapse, T1/T3's
+one-side-survives and E1's not-two-independent-claims were all satisfied by
+a system holding nothing. Those now require exactly one, so collapsing eight
+copies to none is a failure rather than a perfect score.
+
 So each of these measures first asserts the positive precondition — the
 plant is shown to a reader plainly entitled to it, usually its own group —
 and only then checks the absence. A system that declined the write fails a

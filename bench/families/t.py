@@ -17,7 +17,9 @@ def t1(ctx: Ctx) -> None:
               subject=subj)
     read = ctx.read(ctx.agent(g["billing"]))
     sides = sum(1 for tag in ("yes", "no") if ctx.shows(read, ctx.canary(tag)))
-    ctx.check("at-most-one-side", sides <= 1, sides=sides)
+    # Exactly one side, not at most one: a system that held neither would
+    # pass "no more than one" without ever resolving anything.
+    ctx.check("one-side-survives", sides == 1, sides=sides)
 
 
 @scenario("T2", "T")
@@ -44,7 +46,9 @@ def t3(ctx: Ctx) -> None:
     ctx.write(a, "no", content=ctx.claim("no", "the monthly quota is not 40 exports."), subject=subj)
     read = ctx.read(a)
     sides = sum(1 for tag in ("yes", "no") if ctx.shows(read, ctx.canary(tag)))
-    ctx.check("at-most-one-side", sides <= 1, sides=sides)
+    # Exactly one side, not at most one: a system that held neither would
+    # pass "no more than one" without ever resolving anything.
+    ctx.check("one-side-survives", sides == 1, sides=sides)
 
 
 @scenario("T4", "T")

@@ -97,9 +97,10 @@ def sentence(
 ) -> str:
     """A plausible statement carrying a canary, deterministic across runs.
 
-    `words` is a floor, not a cut: the text grows by whole clauses until it is
-    long enough, because truncating mid-clause would put back the nonsense
-    this generator exists to avoid. `ordinal` distinguishes this item from the
+    `words` is a soft floor: the text grows by whole clauses until it is long
+    enough, because truncating mid-clause would put back the nonsense this
+    generator exists to avoid — but it never repeats a clause to get there,
+    so an item may fall short of the floor. `ordinal` distinguishes this item from the
     others its scenario plants, so no two are the same claim.
     """
     tok = canary(seed, scenario_id, variant, tag)
@@ -128,8 +129,11 @@ def sentence(
         )
         tails = _NOTE_TAILS
     parts = [f"{tok}: {body}."]
-    n = 5
-    while len(" ".join(parts).split()) < words:
-        parts.append(f"{tails[(h[n % len(h)] + ordinal) % len(tails)]}.")
-        n += 1
+    # Distinct trailers only, and the floor yields when they run out: the same
+    # sentence twice reads as noise, and a system that declines noise is right
+    # to. A short item is honest; a padded one is not.
+    for k in range(len(tails)):
+        if len(" ".join(parts).split()) >= words:
+            break
+        parts.append(f"{tails[(rot + ordinal + k) % len(tails)]}.")
     return " ".join(parts)

@@ -1,7 +1,7 @@
 {
-  "run_id": "3f97e538-6b2a-44bd-951c-961ebe7f52ad",
+  "run_id": "96f66f09-7610-4db9-b7be-10421fb80150",
   "bench_version": "0.1.0",
-  "timestamp": "2026-09-06T14:00:34+00:00",
+  "timestamp": "2026-09-06T14:02:23+00:00",
   "seed": 20260903,
   "repeat": 1,
   "submittable": true,
@@ -121,17 +121,46 @@
         {
           "id": "A1-000-binding",
           "passed": true,
-          "detail": {}
+          "detail": {
+            "statuses": [
+              [
+                "rule",
+                true,
+                "company_0"
+              ]
+            ]
+          }
         },
         {
           "id": "A1-000-kind-rule",
           "passed": true,
-          "detail": {}
+          "detail": {
+            "statuses": [
+              [
+                "rule",
+                true,
+                "company_0"
+              ]
+            ]
+          }
         },
         {
           "id": "A1-000-verbatim",
           "passed": true,
           "detail": {}
+        },
+        {
+          "id": "A1-000-one-status",
+          "passed": true,
+          "detail": {
+            "copies": 1,
+            "statuses": [
+              [
+                "rule",
+                true
+              ]
+            ]
+          }
         }
       ]
     },
@@ -154,17 +183,46 @@
         {
           "id": "A1-001-binding",
           "passed": true,
-          "detail": {}
+          "detail": {
+            "statuses": [
+              [
+                "rule",
+                true,
+                "company_1"
+              ]
+            ]
+          }
         },
         {
           "id": "A1-001-kind-rule",
           "passed": true,
-          "detail": {}
+          "detail": {
+            "statuses": [
+              [
+                "rule",
+                true,
+                "company_1"
+              ]
+            ]
+          }
         },
         {
           "id": "A1-001-verbatim",
           "passed": true,
           "detail": {}
+        },
+        {
+          "id": "A1-001-one-status",
+          "passed": true,
+          "detail": {
+            "copies": 1,
+            "statuses": [
+              [
+                "rule",
+                true
+              ]
+            ]
+          }
         }
       ]
     },
@@ -187,17 +245,46 @@
         {
           "id": "A1-002-binding",
           "passed": true,
-          "detail": {}
+          "detail": {
+            "statuses": [
+              [
+                "rule",
+                true,
+                "company_2"
+              ]
+            ]
+          }
         },
         {
           "id": "A1-002-kind-rule",
           "passed": true,
-          "detail": {}
+          "detail": {
+            "statuses": [
+              [
+                "rule",
+                true,
+                "company_2"
+              ]
+            ]
+          }
         },
         {
           "id": "A1-002-verbatim",
           "passed": true,
           "detail": {}
+        },
+        {
+          "id": "A1-002-one-status",
+          "passed": true,
+          "detail": {
+            "copies": 1,
+            "statuses": [
+              [
+                "rule",
+                true
+              ]
+            ]
+          }
         }
       ]
     },
@@ -220,17 +307,46 @@
         {
           "id": "A1-003-binding",
           "passed": true,
-          "detail": {}
+          "detail": {
+            "statuses": [
+              [
+                "rule",
+                true,
+                "company_3"
+              ]
+            ]
+          }
         },
         {
           "id": "A1-003-kind-rule",
           "passed": true,
-          "detail": {}
+          "detail": {
+            "statuses": [
+              [
+                "rule",
+                true,
+                "company_3"
+              ]
+            ]
+          }
         },
         {
           "id": "A1-003-verbatim",
           "passed": true,
           "detail": {}
+        },
+        {
+          "id": "A1-003-one-status",
+          "passed": true,
+          "detail": {
+            "copies": 1,
+            "statuses": [
+              [
+                "rule",
+                true
+              ]
+            ]
+          }
         }
       ]
     },
@@ -253,17 +369,46 @@
         {
           "id": "A1-004-binding",
           "passed": true,
-          "detail": {}
+          "detail": {
+            "statuses": [
+              [
+                "rule",
+                true,
+                "company_4"
+              ]
+            ]
+          }
         },
         {
           "id": "A1-004-kind-rule",
           "passed": true,
-          "detail": {}
+          "detail": {
+            "statuses": [
+              [
+                "rule",
+                true,
+                "company_4"
+              ]
+            ]
+          }
         },
         {
           "id": "A1-004-verbatim",
           "passed": true,
           "detail": {}
+        },
+        {
+          "id": "A1-004-one-status",
+          "passed": true,
+          "detail": {
+            "copies": 1,
+            "statuses": [
+              [
+                "rule",
+                true
+              ]
+            ]
+          }
         }
       ]
     },
@@ -5324,7 +5469,7 @@
     }
   ],
   "cost": {
-    "wall_seconds": 0.016,
+    "wall_seconds": 0.019,
     "calls": null,
     "timeout_seconds": 120.0,
     "timed_out": 0,

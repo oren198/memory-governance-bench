@@ -14,9 +14,20 @@ def a1(ctx: Ctx) -> None:
     read = ctx.read(ctx.agent(g["tier2"]))
     shown = ctx.items_with(read, ctx.canary("rule"))
     ctx.check("reaches-depth", bool(shown), depth=3)
-    ctx.check("binding", bool(shown) and all(i.binding for i in shown))
-    ctx.check("kind-rule", bool(shown) and all(i.kind == "rule" for i in shown))
+    ctx.check("binding", bool(shown) and all(i.binding for i in shown),
+              statuses=[(i.kind, i.binding, i.origin) for i in shown])
+    ctx.check("kind-rule", bool(shown) and all(i.kind == "rule" for i in shown),
+              statuses=[(i.kind, i.binding, i.origin) for i in shown])
     ctx.check("verbatim", any(i.content.strip() == content.strip() for i in shown))
+    # A rule restated alongside itself with a different status is a
+    # contradiction about whether the reader is bound. Checked separately so
+    # the failure names itself rather than surfacing as a puzzling `binding`.
+    ctx.check(
+        "one-status",
+        len({(i.kind, i.binding) for i in shown}) <= 1,
+        copies=len(shown),
+        statuses=sorted({(i.kind, i.binding) for i in shown}),
+    )
 
 
 @scenario("A2", "A")

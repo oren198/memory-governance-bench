@@ -102,6 +102,18 @@ def _retraction_text(held: "_Held") -> str:
 _UNKIND = {"context": "note", "directive": "rule"}
 
 
+def _log_decline(content: str, reason: str | None) -> None:
+    """Append a declined write to ``$FMB_DECLINE_LOG`` when that is set."""
+    import json  # noqa: PLC0415
+    import os  # noqa: PLC0415
+
+    path = os.environ.get("FMB_DECLINE_LOG")
+    if not path:
+        return
+    with open(path, "a", encoding="utf-8") as fh:
+        fh.write(json.dumps({"content": content, "reason": reason}) + "\n")
+
+
 @dataclass
 class _Held:
     """What a receipt id refers to, so announce/retract can find it again."""
@@ -297,6 +309,11 @@ class _StrataBase:
             summary_max_words=self._summary_max_words(),
         )
         accepted = outcome.decision.startswith("accept")
+        if not accepted:
+            # Evidence for the benchmark's author, never for the score: a
+            # write declined at admission is the signature of planted text a
+            # judge will not take, and the exact content is what they need.
+            _log_decline(write.content, outcome.reasoning)
         self._held[rid] = _Held(
             agent.group,
             write.content,

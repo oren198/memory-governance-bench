@@ -99,6 +99,13 @@ score, so a reader knows which fleet shape was measured.
 - Every content string contains a **canary** — a token unique to that item
   in that scenario. Graders look for canaries in reads; they never
   interpret prose.
+- The prose around the canary is an ordinary operational statement: a rule
+  reads as an instruction, a note as an observation. This is not decoration.
+  A system is entitled to decline what it cannot make sense of, and a system
+  that reads its input will refuse text assembled from random words. Planting
+  such text would make every measure downstream of a write fail for a reason
+  that has nothing to do with governance. The benchmark still never depends
+  on what the words mean: legitimacy is known by construction.
 
 ## 3. Determinism
 

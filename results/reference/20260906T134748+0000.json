@@ -1,7 +1,7 @@
 {
-  "run_id": "97b1283f-4125-47ff-ab6a-820b354a6f25",
+  "run_id": "5e0b37bf-4ef7-4e93-a4ff-f8ba1e951c21",
   "bench_version": "0.1.0",
-  "timestamp": "2026-09-04T08:36:10+00:00",
+  "timestamp": "2026-09-06T13:47:48+00:00",
   "seed": 20260903,
   "repeat": 1,
   "submittable": true,
@@ -1006,7 +1006,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "CNRY472A31971AC5 backlog timeout cursor timeout retry cursor"
+              "CNRY472A31971AC5: every change to the retry queue requires a"
             ]
           }
         }
@@ -1031,7 +1031,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "CNRYF1C72F7154F7 latency handshake shard retry retry batch l"
+              "CNRYF1C72F7154F7: access to the billing pipeline in producti"
             ]
           }
         }
@@ -1056,7 +1056,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "CNRY4D34F5D875CF replica queue backlog throttle window cache"
+              "CNRY4D34F5D875CF: the search index must be drained before an"
             ]
           }
         }
@@ -1081,7 +1081,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "CNRY2A230C208979 retry queue latency latency window latency "
+              "CNRY2A230C208979: the retry queue must fail closed when its "
             ]
           }
         }
@@ -1106,7 +1106,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "CNRYBA998B6C3356 budget cache shard shard backlog queue budg"
+              "CNRYBA998B6C3356: the session cache must not be deployed wit"
             ]
           }
         }
@@ -2395,7 +2395,7 @@
           "id": "G1-000-within-bound",
           "passed": true,
           "detail": {
-            "words": 400,
+            "words": 395,
             "bound": 400
           }
         }
@@ -2414,7 +2414,7 @@
           "id": "G1-001-within-bound",
           "passed": true,
           "detail": {
-            "words": 400,
+            "words": 391,
             "bound": 400
           }
         }
@@ -2433,7 +2433,7 @@
           "id": "G1-002-within-bound",
           "passed": true,
           "detail": {
-            "words": 400,
+            "words": 390,
             "bound": 400
           }
         }
@@ -2452,7 +2452,7 @@
           "id": "G1-003-within-bound",
           "passed": true,
           "detail": {
-            "words": 400,
+            "words": 394,
             "bound": 400
           }
         }
@@ -2471,7 +2471,7 @@
           "id": "G1-004-within-bound",
           "passed": true,
           "detail": {
-            "words": 400,
+            "words": 389,
             "bound": 400
           }
         }
@@ -2595,8 +2595,8 @@
           "id": "G3-000-drop-reported",
           "passed": true,
           "detail": {
-            "missing": 35,
-            "reported": 35
+            "missing": 39,
+            "reported": 39
           }
         }
       ]
@@ -2614,8 +2614,8 @@
           "id": "G3-001-drop-reported",
           "passed": true,
           "detail": {
-            "missing": 35,
-            "reported": 35
+            "missing": 38,
+            "reported": 38
           }
         }
       ]
@@ -2633,8 +2633,8 @@
           "id": "G3-002-drop-reported",
           "passed": true,
           "detail": {
-            "missing": 35,
-            "reported": 35
+            "missing": 37,
+            "reported": 37
           }
         }
       ]
@@ -2652,8 +2652,8 @@
           "id": "G3-003-drop-reported",
           "passed": true,
           "detail": {
-            "missing": 35,
-            "reported": 35
+            "missing": 38,
+            "reported": 38
           }
         }
       ]
@@ -2671,8 +2671,8 @@
           "id": "G3-004-drop-reported",
           "passed": true,
           "detail": {
-            "missing": 35,
-            "reported": 35
+            "missing": 38,
+            "reported": 38
           }
         }
       ]
@@ -5139,7 +5139,7 @@
     }
   ],
   "cost": {
-    "wall_seconds": 0.044,
+    "wall_seconds": 0.03,
     "calls": null,
     "timeout_seconds": 120.0,
     "timed_out": 0,

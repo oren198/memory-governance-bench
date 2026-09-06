@@ -99,3 +99,13 @@ history, not an independent execution.
 test need not be. A system that decides with a model will see its scores
 vary between runs. That variance is the system's property and the benchmark
 reports it (`--repeat N` records the spread) rather than hiding it.
+
+This reaches further than it first appears. It is tempting to sort the
+families into ones a model touches and ones it does not, but the benchmark
+cannot draw that line from outside: staying within a bound is plumbing in
+one system and a judgment call in the next, and the same is true of deciding
+what a rule conflicts with or what a claim is about. The benchmark grades
+the read, not the mechanism behind it, so a measure is never disqualified
+because a system chose to implement it with a model. What varies is the
+confidence of a single run, which is why a published result covering a
+model-driven system should carry a spread and not one number.

@@ -1,7 +1,7 @@
 {
-  "run_id": "1e8c3198-5c6d-4f19-80ea-3855b08f3209",
+  "run_id": "32cb8e94-1eb4-470b-b57f-c76b2dabf2e1",
   "bench_version": "0.1.0",
-  "timestamp": "2026-09-04T08:36:10+00:00",
+  "timestamp": "2026-09-06T13:47:48+00:00",
   "seed": 20260903,
   "repeat": 1,
   "submittable": true,
@@ -1006,7 +1006,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "CNRY472A31971AC5 backlog timeout cursor timeout retry cursor"
+              "CNRY472A31971AC5: every change to the retry queue requires a"
             ]
           }
         }
@@ -1031,7 +1031,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "CNRYF1C72F7154F7 latency handshake shard retry retry batch l"
+              "CNRYF1C72F7154F7: access to the billing pipeline in producti"
             ]
           }
         }
@@ -1056,7 +1056,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "CNRY4D34F5D875CF replica queue backlog throttle window cache"
+              "CNRY4D34F5D875CF: the search index must be drained before an"
             ]
           }
         }
@@ -1081,7 +1081,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "CNRY2A230C208979 retry queue latency latency window latency "
+              "CNRY2A230C208979: the retry queue must fail closed when its "
             ]
           }
         }
@@ -1106,7 +1106,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "CNRYBA998B6C3356 budget cache shard shard backlog queue budg"
+              "CNRYBA998B6C3356: the session cache must not be deployed wit"
             ]
           }
         }
@@ -2505,7 +2505,7 @@
           "id": "G1-000-within-bound",
           "passed": false,
           "detail": {
-            "words": 960,
+            "words": 1052,
             "bound": 400
           }
         }
@@ -2524,7 +2524,7 @@
           "id": "G1-001-within-bound",
           "passed": false,
           "detail": {
-            "words": 960,
+            "words": 1038,
             "bound": 400
           }
         }
@@ -2543,7 +2543,7 @@
           "id": "G1-002-within-bound",
           "passed": false,
           "detail": {
-            "words": 960,
+            "words": 1025,
             "bound": 400
           }
         }
@@ -2562,7 +2562,7 @@
           "id": "G1-003-within-bound",
           "passed": false,
           "detail": {
-            "words": 960,
+            "words": 1052,
             "bound": 400
           }
         }
@@ -2581,7 +2581,7 @@
           "id": "G1-004-within-bound",
           "passed": false,
           "detail": {
-            "words": 960,
+            "words": 1047,
             "bound": 400
           }
         }
@@ -5324,7 +5324,7 @@
     }
   ],
   "cost": {
-    "wall_seconds": 0.023,
+    "wall_seconds": 0.014,
     "calls": null,
     "timeout_seconds": 120.0,
     "timed_out": 0,

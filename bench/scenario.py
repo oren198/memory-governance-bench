@@ -182,8 +182,15 @@ class Ctx:
     def canary(self, tag: str) -> str:
         return canary(self.seed, self.scenario_id, self.variant, tag)
 
-    def text(self, tag: str, words: int = 12) -> str:
-        return sentence(self.seed, self.scenario_id, self.variant, tag, words)
+    def text(self, tag: str, words: int = 12, kind: Kind = "note") -> str:
+        return sentence(self.seed, self.scenario_id, self.variant, tag, words, kind)
+
+    def claim(self, tag: str, statement: str) -> str:
+        """A canary in front of a statement the scenario writes itself.
+
+        Used where a scenario needs two texts that genuinely contradict each
+        other; the generator cannot produce a contradiction on request."""
+        return f"{self.canary(tag)}: {statement}"
 
     def write(
         self,
@@ -198,7 +205,7 @@ class Ctx:
     ) -> Receipt:
         if content is None:
             assert tag is not None, "write needs a tag or explicit content"
-            content = self.text(tag, words)
+            content = self.text(tag, words, kind)
         self._tick("write")
         receipt = self.system.write(
             agent, Write(content=content, kind=kind, replaces=replaces, subject=subject)

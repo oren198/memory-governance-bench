@@ -38,3 +38,31 @@ def test_a_different_seed_changes_content_but_not_outcomes():
         "measures must not depend on the particular canary strings"
     )
     assert reseeded.submittable is False
+
+
+def test_planted_text_is_a_statement_not_word_salad():
+    """A system may decline text that means nothing. If the benchmark plants
+    word salad, such a system fails every measure downstream of a write for a
+    reason that has nothing to do with governance."""
+    from bench.canary import _NOTES, _RULES, _SUBJECTS, _TAILS
+
+    known = {t.format(s=s) + "." for s in _SUBJECTS for t in _RULES + _NOTES}
+    known |= {t + "." for t in _TAILS}
+    for kind, words in (("rule", 20), ("note", 12), ("note", 30)):
+        text = sentence(7, "A1", 0, "rule", words, kind)
+        tok = canary(7, "A1", 0, "rule")
+        assert text.startswith(f"{tok}: ")
+        rest = text[len(tok) + 2:]
+        parts = [p.strip() + "." for p in rest.split(". ")]
+        parts[-1] = parts[-1].rstrip(".") + "."
+        assert all(p in known for p in parts), parts
+        assert len(text.split()) >= words
+
+
+def test_a_rule_reads_as_an_instruction():
+    from bench.canary import _RULES, _SUBJECTS
+
+    instructions = {t.format(s=s) for s in _SUBJECTS for t in _RULES}
+    text = sentence(3, "A1", 1, "rule", 12, "rule")
+    body = text.split(": ", 1)[1].split(". ")[0].rstrip(".")
+    assert body in instructions

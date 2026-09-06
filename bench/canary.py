@@ -66,20 +66,33 @@ _RULES = (
 # afterwards — and a benchmark that planted only measurements would fail
 # systems for declining to remember what nobody should remember. Each frame
 # below says something that stays true, and carries a number so that no two
-# planted items are the same claim.
+# planted items are the same claim. The twelve are about twelve different
+# properties — retries, timeout, concurrency, ownership, backlog, scaling,
+# retention, log noise, manual work, scheduling, cost, breakage — and worded
+# so that no two can be read as claims about the same one. Two frames a
+# reader could take as the same property, filled with different numbers for
+# one subject, are a contradiction the benchmark planted by accident.
 _OBSERVED = (
-    "{s} retries too eagerly, so duplicate work shows up after about {v} attempts",
+    "{s} starts duplicating work if it is retried more than {v} times",
     "{s} needs its timeout kept at {v} seconds, since below that it fails in the {w} window",
-    "{s} cannot run twice in the {w} window without leaving about {v} records to reconcile",
+    "{s} cannot run twice at once, and the second run stalls for about {v} minutes",
     "{s} still depends on a config file nobody owns, last changed on day {d}",
-    "{s} is the usual cause when more than {v} items are left unprocessed overnight",
-    "{s} keeps a backlog that clears only after the {w} window, typically {v} items",
-    "{s} should not be scaled below {v} workers, or it falls behind in the {w} window",
-    "{s} produces about {v} duplicate rows whenever the {w} window overlaps a deploy",
-    "{s} has needed manual intervention on day {d} of the month since the last migration",
+    "{s} carries a backlog of roughly {v} items that clears only after the {w} window",
+    "{s} falls behind whenever it is scaled below {v} workers",
     "{s} keeps only {v} days of history, which is too little to investigate a late report",
     "{s} logs a warning roughly {v} times a day that can safely be ignored",
-    "{s} is safe to retry only once its {w} window has closed, after about {v} minutes",
+    "{s} has needed manual intervention on day {d} of the month since the last migration",
+    "{s} must not start until the {w} window has closed, about {v} minutes in",
+    "{s} accounts for about {v} percent of the team's compute spend",
+    "{s} stops working whenever the {w} window shifts, as it did on day {d}",
+)
+
+# A plausible magnitude per frame: "retried more than 347 times" is not a
+# belief anyone would hold, and a number out of range makes the sentence
+# false in a way a reader would notice.
+_RANGES = (
+    (2, 6), (5, 120), (3, 45), (1, 28), (20, 400), (2, 12),
+    (7, 90), (2, 60), (1, 28), (5, 90), (2, 40), (1, 28),
 )
 
 _WINDOWS = ("morning", "overnight", "end-of-month", "release", "peak-traffic")
@@ -144,11 +157,13 @@ def sentence(
         # first len(_OBSERVED) * len(_SUBJECTS) items a scenario plants — more
         # than the largest flood — and no frame is reused with a fresh noun.
         combo = (rot + ordinal) % (len(_OBSERVED) * len(subjects))
-        frame = _OBSERVED[combo % len(_OBSERVED)]
+        index = combo % len(_OBSERVED)
+        frame = _OBSERVED[index]
+        lo, hi = _RANGES[index]
         subject = subjects[combo // len(_OBSERVED)]
         body = frame.format(
             s=subject,
-            v=101 + ordinal * 7 + h[2],       # unique to this item
+            v=lo + (ordinal * 7 + h[2]) % (hi - lo + 1),
             w=_WINDOWS[(h[3] + ordinal) % len(_WINDOWS)],
             d=1 + (h[4] + ordinal) % 28,
         )

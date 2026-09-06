@@ -158,3 +158,25 @@ def test_the_role_banks_do_not_overlap():
         for n in nouns:
             assert n not in seen, f"{n!r} is in both {seen.get(n)} and {role}"
             seen[n] = role
+
+
+def test_no_two_frames_claim_the_same_property():
+    """Two frames a reader could take as claims about one property, filled
+    with different numbers for one subject, are a contradiction the benchmark
+    planted by accident. Found by the architect: two notes about a chat
+    widget's history, 313 days and 339, declined as incompatible."""
+    from bench.canary import _OBSERVED, _RANGES
+
+    assert len(_RANGES) == len(_OBSERVED), "every frame needs a plausible range"
+    # The property a frame is about is carried by its content words; two
+    # frames sharing all of them would be two ways of saying one thing.
+    stop = {"the", "a", "an", "it", "is", "its", "of", "to", "in", "at", "on",
+            "for", "and", "or", "that", "than", "as", "if", "since", "which",
+            "about", "only", "more", "not", "no", "s", "v", "w", "d", "{s}",
+            "{v}", "{w}", "{d}", "whenever", "after", "before", "still", "day"}
+    shapes = []
+    for frame in _OBSERVED:
+        words = {w.strip(",.").lower() for w in frame.split()} - stop
+        for other in shapes:
+            assert not (words <= other or other <= words), (frame, other)
+        shapes.append(words)

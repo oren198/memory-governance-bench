@@ -60,19 +60,26 @@ _RULES = (
     "access to {s} in production is granted for a single named change only",
 )
 
+# A note is a standing belief about how something behaves, not a reading off
+# a dial. A memory system may reasonably decline to hold "the queue was 141
+# long on Tuesday" — it is a measurement, true when taken and worth nothing
+# afterwards — and a benchmark that planted only measurements would fail
+# systems for declining to remember what nobody should remember. Each frame
+# below says something that stays true, and carries a number so that no two
+# planted items are the same claim.
 _OBSERVED = (
-    "{s} handled {v} requests in the hour after the {w} window opened",
-    "{s} spent {v} milliseconds in its slowest call on day {d} of the month",
-    "{s} retried {v} times before it succeeded during the {w} window",
-    "{s} left {v} items unprocessed when the {w} window closed",
-    "{s} logged {v} warnings on day {d}, none of which were acted on",
-    "{s} ran {v} seconds behind its schedule for most of day {d}",
-    "{s} dropped {v} connections while the {w} window was open",
-    "{s} was restarted {v} times on day {d} without a clear trigger",
-    "{s} held {v} rows in its buffer at the end of the {w} window",
-    "{s} answered {v} health checks late on day {d}",
-    "{s} used {v} percent more memory during the {w} window than the week before",
-    "{s} queued {v} jobs that were still waiting when day {d} ended",
+    "{s} retries too eagerly, so duplicate work shows up after about {v} attempts",
+    "{s} needs its timeout kept at {v} seconds, since below that it fails in the {w} window",
+    "{s} cannot run twice in the {w} window without leaving about {v} records to reconcile",
+    "{s} still depends on a config file nobody owns, last changed on day {d}",
+    "{s} is the usual cause when more than {v} items are left unprocessed overnight",
+    "{s} keeps a backlog that clears only after the {w} window, typically {v} items",
+    "{s} should not be scaled below {v} workers, or it falls behind in the {w} window",
+    "{s} produces about {v} duplicate rows whenever the {w} window overlaps a deploy",
+    "{s} has needed manual intervention on day {d} of the month since the last migration",
+    "{s} keeps only {v} days of history, which is too little to investigate a late report",
+    "{s} logs a warning roughly {v} times a day that can safely be ignored",
+    "{s} is safe to retry only once its {w} window has closed, after about {v} minutes",
 )
 
 _WINDOWS = ("morning", "overnight", "end-of-month", "release", "peak-traffic")

@@ -310,6 +310,7 @@ constraint without asking what the resulting sentence *claimed*.
 | Sound plausible | "this was agreed with the owning team", "nobody has objected" | An item asserting a ratification it cannot show is borrowing authority. Guarding against that is governance, not pedantry. |
 | Be unique | one template, one noun swapped, planted twice | Two items differing only in a noun are one claim restated, not new evidence. |
 | Reach the floor | the same trailer twice | Verbatim repetition asserts an emphasis the item does not mean. |
+| Say something durable | "the queue was 141 long on Tuesday" | A measurement is true when taken and worth nothing afterwards. A system may decline to hold what nobody should remember, and a benchmark of memory should not plant it. |
 | Name something | a billing group observing a search index | An item that names nothing its group would hold invites a system to weigh whether it belongs there — a judgement the benchmark did not intend to test, and one that came out differently on a re-run. |
 
 The rules that follow from this, for anyone extending the generator:
@@ -320,7 +321,8 @@ The rules that follow from this, for anyone extending the generator:
   benchmark did not create.
 - A soft constraint yields before the text repeats itself. A short item is
   honest; a padded one is not.
-- An item names something its own group would plausibly hold.
+- An item names something its own group would plausibly hold, and says
+  something that stays true rather than a reading off a dial.
 - Where a measure needs two items to conflict, the texts must be
   incompatible in what they say. A shared subject is not a contradiction,
   and a system entitled to read content will say so.

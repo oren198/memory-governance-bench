@@ -54,7 +54,11 @@ def e2(ctx: Ctx) -> None:
     r = ctx.write(ctx.agent(g["billing"]), "claim", content=claim)
     ctx.announce(ctx.agent(g["billing"]), r.id)
     ctx.write(ctx.agent(g["support"]), None, content=f"According to {g['billing']}, {claim}")
-    ctx.read(ctx.agent(g["support"]))
+    # Without this, a system that never admitted the restatement passes: there
+    # is no stale attribution because there is no attribution.
+    before = ctx.items_with(ctx.read(ctx.agent(g["support"])), ctx.canary("claim"))
+    ctx.check("restatement-admitted", any(i.origin == g["support"] for i in before),
+              origins=[i.origin for i in before])
     ctx.retract(ctx.agent(g["billing"]), r.id)
     read = ctx.read(ctx.agent(g["support"]))
     stale = [i for i in ctx.items_with(read, ctx.canary("claim"))
@@ -72,6 +76,9 @@ def e3(ctx: Ctx) -> None:
     r = ctx.write(ctx.agent(g["billing"]), "claim", content=claim)
     ctx.announce(ctx.agent(g["billing"]), r.id)
     ctx.write(ctx.agent(g["support"]), None, content=f"According to {g['billing']}, {claim}")
+    before = ctx.items_with(ctx.read(ctx.agent(g["support"])), ctx.canary("claim"))
+    ctx.check("restatement-admitted", any(i.origin == g["support"] for i in before),
+              origins=[i.origin for i in before])
     ctx.retract(ctx.agent(g["billing"]), r.id)
     read = ctx.read(ctx.agent(g["support"]))
     surviving = ctx.items_with(read, ctx.canary("claim"))

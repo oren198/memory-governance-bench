@@ -12,7 +12,7 @@ def f0(ctx: Ctx) -> None:
     g = ctx.standard()
     a = ctx.agent(g["support"])
     r = ctx.write(a, "note")
-    ctx.read(a)
+    ctx.admitted(a, "note")
     ctx.retract(a, r.id)
     read = ctx.read(a)
     ctx.absent(read, ctx.canary("note"), "note-removed")
@@ -26,8 +26,8 @@ def f1(ctx: Ctx) -> None:
     a = ctx.agent(g["billing"])
     subj = f"batch-{ctx.variant}"
     first = ctx.write(a, "old", subject=subj)
+    ctx.admitted(a, "old")
     ctx.write(a, "new", subject=subj, replaces=first.id)
-    ctx.read(a)
     for n in range(5):
         ctx.write(a, f"noise{n}")
     read = ctx.read(a)
@@ -41,6 +41,7 @@ def f2(ctx: Ctx) -> None:
     g = ctx.standard()
     a = ctx.agent(g["billing"])
     r = ctx.write(a, "claim")
+    ctx.admitted(a, "claim")
     ctx.retract(a, r.id)
     read = ctx.read(a)
     ctx.absent(read, ctx.canary("claim"), "not-current")
@@ -54,8 +55,10 @@ def f3(ctx: Ctx) -> None:
     a = ctx.agent(g["billing"])
     subj = f"cursor-{ctx.variant}"
     first = ctx.write(a, "old", subject=subj)
+    ctx.admitted(a, "old", "replaced-was-admitted")
     ctx.write(a, "new", subject=subj, replaces=first.id)
     gone = ctx.write(a, "retracted")
+    ctx.admitted(a, "retracted", "retracted-was-admitted")
     ctx.retract(a, gone.id)
     for n in range(10):
         ctx.write(a, f"noise{n}")

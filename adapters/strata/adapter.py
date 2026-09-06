@@ -112,6 +112,7 @@ class _Held:
     subject: str | None
     published_id: str | None = None   # set once announced (a published item id)
     contribution_id: str | None = None  # the record row a write produced
+    retracted: bool = False           # taken back; the group no longer holds it
 
 
 class _StrataBase:
@@ -329,6 +330,16 @@ class _StrataBase:
         if held is None:
             return self._announce_relay(agent, receipt_id, rid)
 
+        if held.retracted:
+            # "An announcement can only be of something the group actually
+            # holds" (MODEL.md). This is the adapter's own receipt table
+            # answering, not a Strata refusal: `propose_publish` takes the
+            # content it is handed, and by this point the content is no longer
+            # in the scope's memory — so announcing it would put back what the
+            # retraction took out. Saying "accepted" for something the group
+            # stopped holding is the answer that would be false.
+            return Receipt(id=rid, accepted=False, reason="not held: retracted")
+
         try:
             outcome = propose_publish(
                 held.group,
@@ -504,6 +515,16 @@ class _StrataBase:
             retracted = outcome.decision.startswith("accept")
 
         accepted = bool(withdrawn) or bool(retracted)
+        if accepted:
+            held.retracted = True
+            # Every receipt that names this item is retracted, not just the one
+            # the caller passed: a write and its announcement are two receipts
+            # for one claim.
+            for other in self._held.values():
+                if other.contribution_id is not None and (
+                    other.contribution_id == held.contribution_id
+                ):
+                    other.retracted = True
         return Receipt(
             id=rid,
             accepted=accepted,

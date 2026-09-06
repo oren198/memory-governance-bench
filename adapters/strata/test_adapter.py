@@ -213,3 +213,28 @@ def test_read_drains_pending_input_changes(memory):
     ]
     assert judged, "the drain ran no judgment against the change notice"
     assert not memory._record.list_change_events(scope_id=g["tier2"], unprocessed_only=True)
+
+
+# --- S3 -------------------------------------------------------------------
+
+
+def test_a_retracted_item_cannot_be_announced(memory):
+    """S3. Only held items are announced: after a retraction the receipt names
+    nothing the group holds, so the announcement is refused and never lands."""
+    g = _standard(memory)
+    billing, support = _agent(g["billing"]), _agent(g["support"])
+    receipt = memory.write(billing, Write(content="CANARY-S3 the limit is 200", kind="note"))
+    assert memory.retract(billing, receipt.id).accepted
+
+    result = memory.announce(billing, receipt.id)
+
+    assert not result.accepted, result.reason
+    assert not _shows(memory.read(support), "CANARY-S3")
+
+
+def test_the_read_bound_sets_the_scope_word_budget(memory):
+    """G1's precondition. MODEL.md's `bound` is the target the World states;
+    Strata's own word budget is set from it rather than left at the engine
+    default, so a run measures the system against the stated bound."""
+    _standard(memory)
+    assert memory._summary_max_words() == 400

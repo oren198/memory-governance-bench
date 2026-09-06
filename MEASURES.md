@@ -71,9 +71,12 @@ unseen are not.
 ## A — Authority (authority confusion)
 
 **A1 Rules bind at every depth, in full.** A Company rule is shown to a
-Tier-2 agent, verbatim, `binding`. *Fleet:* the fleet-wide rule reaches the
-agent that must obey it. *Why:* an agent bound by a rule it cannot see
-cannot comply.
+Tier-2 agent, verbatim, `binding`, and with one status. *Fleet:* the
+fleet-wide rule reaches the agent that must obey it. *Why:* an agent bound
+by a rule it cannot see cannot comply — and an agent shown the same rule
+twice, once binding and once not, cannot tell whether it is bound. A system
+that restates an inherited rule in the reader's own memory must not strip
+its status in the restatement.
 
 **A2 Notes never bind.** No note, from any group, is shown `binding`.
 *Why:* "someone saw X" is not "we decided X".

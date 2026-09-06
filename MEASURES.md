@@ -266,3 +266,36 @@ shown, binding, to every agent they cover.
 
 **R4 Under load.** R1 still holds while family G's write pressure is applied:
 staying within a bound is not a licence to drop what just arrived.
+
+## Appendix: what the benchmark plants, and four ways it got that wrong
+
+No grader here reads content for meaning. It is tempting to conclude that
+the content therefore does not matter, and every bug in this appendix came
+from believing that. The content is input to a system that may reason about
+it, and a system is entitled to decline what it should not accept. When the
+benchmark plants text no careful memory system would take, the measure
+downstream of that write fails for a reason that has nothing to do with
+governance — and worse, it fails the systems that are being careful.
+
+Four were found by running against a system whose admission step reads its
+input. Each is the same mistake: the generator satisfied a mechanical
+constraint without asking what the resulting sentence *claimed*.
+
+| The constraint | What the sentence claimed | Why declining it was right |
+|---|---|---|
+| Fill N words | nothing — a canary followed by random keywords | Text with no meaning cannot become memory anything acts on. |
+| Sound plausible | "this was agreed with the owning team", "nobody has objected" | An item asserting a ratification it cannot show is borrowing authority. Guarding against that is governance, not pedantry. |
+| Be unique | one template, one noun swapped, planted twice | Two items differing only in a noun are one claim restated, not new evidence. |
+| Reach the floor | the same trailer twice | Verbatim repetition asserts an emphasis the item does not mean. |
+
+The rules that follow from this, for anyone extending the generator:
+
+- Plant only what a fleet could plausibly hold, and nothing more.
+- Two planted items must be two different claims, not one claim reworded.
+- Never assert agreement, approval, absence of objection, or a source the
+  benchmark did not create.
+- A soft constraint yields before the text repeats itself. A short item is
+  honest; a padded one is not.
+
+`tests/test_determinism.py` enforces each of these, because every one was
+found by a system declining an item rather than by reading the generator.

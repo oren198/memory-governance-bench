@@ -38,6 +38,10 @@ class Run:
     cost: dict
     environment: dict
     notes: list[str] = field(default_factory=list)
+    # `notes` is the runner's own account of why a run is what it is; `remarks`
+    # is the team's, and the two are kept apart so a team cannot write a line
+    # that reads as the benchmark's verdict on its own run.
+    remarks: list[str] = field(default_factory=list)
 
     def to_json(self) -> dict:
         return {
@@ -56,6 +60,7 @@ class Run:
             "cost": self.cost,
             "environment": self.environment,
             "notes": self.notes,
+            "remarks": self.remarks,
         }
 
 
@@ -80,6 +85,7 @@ def run(
     repeat: int = 1,
     timeout: float | None = 120.0,
     progress=None,
+    remarks: list[str] | None = None,
 ) -> Run:
     info = system.info()
     declarations: Declarations = info.declarations
@@ -196,4 +202,5 @@ def run(
             "platform": platform.platform(),
         },
         notes=notes,
+        remarks=list(remarks or []),
     )

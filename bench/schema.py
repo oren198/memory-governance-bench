@@ -16,6 +16,10 @@ POLICY_FAMILY = "P"
 DECLARATION_KEYS = ("notes_flow_down", "listening_is_transitive", "multiple_containers")
 
 
+MAX_REMARKS = 10
+MAX_REMARK_CHARS = 500
+
+
 def validate(run: dict, *, for_submission: bool = False) -> list[str]:
     """Return a list of problems; empty means valid."""
     problems: list[str] = []
@@ -34,6 +38,18 @@ def validate(run: dict, *, for_submission: bool = False) -> list[str]:
             problems.append(f"declarations.{key} is missing")
         elif not isinstance(run["declarations"][key], bool):
             problems.append(f"declarations.{key} must be a boolean")
+
+    # Remarks are the team's own words and nothing checks them, so they are
+    # bounded: a run file is a record, not a place to publish an argument.
+    remarks = run.get("remarks", [])
+    if not isinstance(remarks, list) or any(not isinstance(r, str) for r in remarks):
+        problems.append("remarks must be a list of strings")
+    else:
+        if len(remarks) > MAX_REMARKS:
+            problems.append(f"at most {MAX_REMARKS} remarks")
+        for r in remarks:
+            if len(r) > MAX_REMARK_CHARS:
+                problems.append(f"a remark is over {MAX_REMARK_CHARS} characters")
 
     for key in ("governance", "contribution"):
         value = run["headline"].get(key, "missing")

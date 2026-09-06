@@ -143,12 +143,23 @@ score, so a reader knows which fleet shape was measured.
   "scenarios":     [ {"id": "C1-007", "family": "C", "passed": true,
                       "unsupported": false, "detail": {...}} ... ],
   "cost":          { "wall_seconds": 412, "calls": 9381 },
-  "environment":   { "python": "...", "platform": "..." }
+  "environment":   { "python": "...", "platform": "..." },
+  "notes":         [ "..." ],      // the runner's account: seed override, timeouts, partial run
+  "remarks":       [ "..." ]       // the team's, from `--note`; at most 10, 500 chars each
 }
 ```
 
 `system.id` is the stable identity across versions; `system.version` is
 whatever the team versions by.
+
+`notes` and `remarks` are kept apart on purpose. `notes` is the benchmark's
+own account of why a run is what it is, and nothing but the runner writes
+it. `remarks` is the team's, supplied with `fmb run --note "..."`: context a
+reader of the result needs and the run file cannot derive — a known open
+issue behind a failing family, a configuration that differs from the
+default. Nothing validates a remark beyond its length, so a run file must
+never let one read as the benchmark's verdict on its own run; the dashboard
+shows remarks attributed to the team and to the run they came from.
 
 **Every family that ran appears in `families`, P included.** "Not scored"
 governs the headline only — P is left out of the `min()`, never out of the

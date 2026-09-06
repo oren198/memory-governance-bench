@@ -130,6 +130,15 @@ function systemView(){
     <table><thead><tr><th>Version</th><th>When</th><th class="num">Gov</th><th class="num">Contrib</th>
       ${FAMS.map(f=>`<th class="num">${f}</th>`).join("")}</tr></thead><tbody>${rows}</tbody></table>
     ${partial?`<p class="sub">${partial} partial run(s) shown: a run of a subset of families reports no headline, because a family that was never run has no rate.</p>`:""}
+    ${(() => {
+      // Remarks are the team's words, shown as theirs and attributed to the
+      // run they belong to, never merged into the benchmark's own account.
+      const withRemarks = runs.filter(r=>(r.remarks||[]).length);
+      if (!withRemarks.length) return "";
+      return `<h3>Remarks from the team</h3>` + withRemarks.map(r=>
+        `<p class="sub"><b>${esc(r.timestamp)}</b>${(r.remarks||[]).map(x=>`<br>${esc(x)}`).join("")}</p>`
+      ).join("");
+    })()}
     <h3>Declared policy</h3>
     <table><tbody>${Object.entries(d).map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v}</td></tr>`).join("")}</tbody></table>`;
 }

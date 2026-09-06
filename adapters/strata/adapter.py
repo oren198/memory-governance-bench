@@ -15,7 +15,8 @@ MAPPING (MODEL.md term -> Strata term)
     note / rule     -> context / directive
     write           -> contribution, judged by the scope's scope-manager
     announce        -> publish act, judged by the publishing scope
-    retract         -> withdraw (published items only; see below)
+    retract         -> withdraw of the published item, and a
+                       superseding contribution against the scope's own memory
     read            -> composed perspective
     origin / via    -> origin_scope_id / relay_scope_id on a published item
 
@@ -35,21 +36,31 @@ TWO CONFIGURATIONS, and they are two systems, not one.
                           is reported under its own system.id and is never
                           submittable.
 
+READS DRAIN FIRST (ADR 0014 D6). `read()` mirrors the MCP server's read
+path: pending input changes are drained under the scope's lock before the
+perspective is composed, so an ancestor's new directive, an operator
+correction and an upstream withdrawal all take effect on the next read with
+no further write. Under `strata` that drain is a model call; under
+`strata-stubjudge` it is the mechanical judge, which changes nothing.
+
 WHAT STRATA CANNOT DO, raised as Unsupported so a run reports "cannot"
 rather than "did not":
 
-    retract of a note   retirement exists for binding items only; a note is
-                        dropped when memory is next curated, not un-said by
-                        act. See Strata issue #188 (closed: the owner's
-                        control path is not part of the mechanism) and the
-                        benchmark's own F0.
+    owner note          operator memory is directives only; everything the
+                        owner attaches binds.
+    retract of          the owner's control path is not an agent act
+    operator memory     (Strata issue #188, closed).
     multiple containers a scope has at most one chain parent.
 
-KNOWN FAILURES, expected and understood before the first run: nothing in a
-composed read carries a withdrawal EVENT, and nothing reaches a scope that
-absorbed a claim into its own memory rather than relaying it. That is Strata
-issue #186, open, and it is why S4b and S7 should fail. The engine version
-under test is release-blocked on it.
+KNOWN GAP, understood before the run: a scope is never told about its OWN
+retraction. ADR 0014 D1 — "a scope's own contribution is not a trigger; it
+already has a path" — and `change_events.affected_scopes` excludes the source
+scope for every publication change, so an agent retracting its group's own
+note leaves no withdrawal notice for that group's readers. The item does
+leave (the retraction contribution supersedes it), but nobody is TOLD. That
+is F0's "retraction-announced" check, and Strata issue #197. This adapter
+emits no event there: inventing one would score a pass the engine has not
+earned.
 """
 
 from __future__ import annotations
@@ -72,6 +83,22 @@ from bench.adapter.protocol import (
 )
 
 _KIND = {"note": "context", "rule": "directive"}
+_RETRACTION_PREFIX = "Retract "
+
+
+def _retraction_text(held: "_Held") -> str:
+    """The wording of a retraction contribution.
+
+    It never restates the retracted text. A retraction that repeats the claim
+    puts the false claim back in front of the judge and leaves it in the
+    scope's own words if the judge admits the retraction verbatim — which is
+    the opposite of retracting it.
+    """
+    subject = held.subject or "(no subject)"
+    return (
+        f"{_RETRACTION_PREFIX}{held.kind} {held.contribution_id} on {subject}: "
+        "it no longer holds; remove it from memory, do not restate it."
+    )
 _UNKIND = {"context": "note", "directive": "rule"}
 
 
@@ -83,7 +110,8 @@ class _Held:
     content: str
     kind: str          # benchmark kind: note | rule
     subject: str | None
-    published_id: str | None = None   # set once announced
+    published_id: str | None = None   # set once announced (a published item id)
+    contribution_id: str | None = None  # the record row a write produced
 
 
 class _StrataBase:
@@ -96,6 +124,10 @@ class _StrataBase:
         self._root = Path(workdir) if workdir else None
         self._tmp: Path | None = None
         self._held: dict[str, _Held] = {}
+        # Strata item id (published item, or contribution) -> bench receipt id.
+        # A withdrawal notice names a Strata id; the benchmark grades receipts.
+        self._by_item: dict[str, str] = {}
+        self._bound = 500
         self._n = 0
         # Imported here, not at module scope: the benchmark itself does not
         # depend on Strata, and this file must import cleanly without it.
@@ -130,7 +162,13 @@ class _StrataBase:
         self._teardown()
         self._tmp = Path(tempfile.mkdtemp(prefix="fmb-strata-", dir=self._root))
         self._held.clear()
+        self._by_item.clear()
         self._n = 0
+        # MODEL.md's `bound` is "the maximum size of any one read, in words",
+        # and the World hands it to the system as the target. Strata's own word
+        # budget is the same quantity for the scope's own memory, so it is set
+        # from the bound rather than left at the engine default.
+        self._bound = world.bound
 
         container = {g: c for g, c in world.part_of}
         for g, c in world.part_of:
@@ -215,9 +253,15 @@ class _StrataBase:
                 write.subject,
                 record_store=self._record,
                 summaries_dir=str(self._summaries.summaries_dir),
+                # Without a fleet this primitive informs nobody (ADR 0014 D3:
+                # "a call without one informs nobody, which is a silent gap"),
+                # so no descendant ever refreshes and an owner rule never takes
+                # effect on a reader's next read.
+                fleet=self._fleet,
             )
             self._held[rid] = _Held(agent.group, write.content, write.kind, write.subject)
             self._held[rid].published_id = item.id
+            self._by_item[item.id] = rid
             return Receipt(id=rid, accepted=True)
 
         scope = self._fleet.get_scope(agent.group)
@@ -232,7 +276,15 @@ class _StrataBase:
             content=write.content,
             proposed_classification=_KIND[write.kind],
             subject=write.subject,
-            supersedes=self._held[write.replaces].published_id if write.replaces else None,
+            # A contribution supersedes a CONTRIBUTION (record_store's
+            # `supersedes` is a contribution id and a directive id IS its
+            # contribution id) — never a published item id, which is what this
+            # adapter used to pass and why a replacement replaced nothing.
+            supersedes=(
+                self._held[write.replaces].contribution_id
+                if write.replaces and write.replaces in self._held
+                else None
+            ),
             contributor=self._contributor(agent),
             fleet=self._fleet,
             record_store=self._record,
@@ -241,7 +293,14 @@ class _StrataBase:
             summary_max_words=self._summary_max_words(),
         )
         accepted = outcome.decision.startswith("accept")
-        self._held[rid] = _Held(agent.group, write.content, write.kind, write.subject)
+        self._held[rid] = _Held(
+            agent.group,
+            write.content,
+            write.kind,
+            write.subject,
+            contribution_id=outcome.contribution_id,
+        )
+        self._by_item[outcome.contribution_id] = rid
         return Receipt(
             id=rid,
             accepted=accepted,
@@ -249,14 +308,27 @@ class _StrataBase:
         )
 
     def announce(self, agent: Agent, receipt_id: str) -> Receipt:
-        """Offer a held item outward — a judged publish act."""
-        from strata.publication import propose_publish  # noqa: PLC0415
+        """Offer a held item outward — a judged publish act.
 
-        held = self._held.get(receipt_id)
-        if held is None:
-            return Receipt(id=self._next_id("a"), accepted=False, reason="unknown receipt")
+        Two shapes, and the second is what MODEL.md calls a relay:
+
+        * the receipt names something this adapter wrote for the agent's own
+          group: an ordinary publish act from that group;
+        * the receipt names a published item the agent was SHOWN (the
+          `receipt` on a Shown from another group's publication): a
+          REPUBLICATION, made with Strata's own relay path so that
+          `origin_scope_id` and `relay_scope_id` are derived by the engine
+          from the source item. Provenance is never asserted by this adapter —
+          `propose_publish` refuses to take an origin from its caller.
+        """
+        from strata.publication import propose_publish, read_publication  # noqa: PLC0415
 
         rid = self._next_id("a")
+        held = self._held.get(receipt_id)
+
+        if held is None:
+            return self._announce_relay(agent, receipt_id, rid)
+
         try:
             outcome = propose_publish(
                 held.group,
@@ -269,19 +341,84 @@ class _StrataBase:
                 record_store=self._record,
                 summary_store=self._summaries,
                 scope_manager=self._judge(),
+                publication_max_words=self._bound,
             )
         except Exception as exc:  # a structural refusal, not a verdict
             return Receipt(id=rid, accepted=False, reason=str(exc))
 
         accepted = getattr(outcome, "decision", "") == "accept"
         if accepted:
-            from strata.publication import read_publication  # noqa: PLC0415
-
-            items = read_publication(held.group, summaries_dir=str(self._summaries.summaries_dir))
-            match = next((i for i in items if i.content == held.content), None)
-            self._held[rid] = _Held(held.group, held.content, held.kind, held.subject)
-            self._held[rid].published_id = match.id if match else None
+            # The publish ACT id is the published item's id (ADR 0007 D1),
+            # so there is no content matching to get wrong when two items
+            # say the same thing.
+            item_id = outcome.act_id
+            self._held[rid] = _Held(
+                held.group, held.content, held.kind, held.subject,
+                published_id=item_id, contribution_id=held.contribution_id,
+            )
+            # The item is now announced under BOTH receipts: the benchmark
+            # retracts the write's receipt as often as the announcement's.
+            held.published_id = item_id
+            self._by_item[item_id] = receipt_id
+            _ = read_publication  # imported for the relay path's docstring parity
         return Receipt(id=rid, accepted=accepted, reason=None if accepted else "declined")
+
+    def _announce_relay(self, agent: Agent, receipt_id: str, rid: str) -> Receipt:
+        """Republish an item the agent was shown, from the agent's own group.
+
+        The receipt is a Strata published-item id. Its source must be a scope
+        the agent's group actually composes one hop away — its chain parent or
+        a scope it references — which is the same surface the MCP server
+        enforces before relaying (`_relay_source_scope_ids`). Origin and relay
+        provenance come from `propose_publish` reading the source item, not
+        from anything said here.
+        """
+        from strata.publication import propose_publish, read_publication  # noqa: PLC0415
+
+        sdir = str(self._summaries.summaries_dir)
+        parent = self._fleet.inter_stratum_parent(agent.group)
+        sources = [s.id for s in self._fleet.references_from(agent.group)]
+        if parent is not None:
+            sources.append(parent.id)
+
+        for source_id in sources:
+            item = next(
+                (i for i in read_publication(source_id, summaries_dir=sdir) if i.id == receipt_id),
+                None,
+            )
+            if item is None:
+                continue
+            try:
+                outcome = propose_publish(
+                    agent.group,
+                    item.content,
+                    item.kind,
+                    item.subject,
+                    [f"subject:{item.subject or item.id}"],
+                    self._contributor(agent),
+                    fleet=self._fleet,
+                    record_store=self._record,
+                    summary_store=self._summaries,
+                    scope_manager=self._judge(),
+                    relay_source_scope_id=source_id,
+                    relay_source_item_id=item.id,
+                    publication_max_words=self._bound,
+                )
+            except Exception as exc:
+                return Receipt(id=rid, accepted=False, reason=str(exc))
+            accepted = getattr(outcome, "decision", "") == "accept"
+            if accepted:
+                self._held[rid] = _Held(
+                    agent.group,
+                    item.content,
+                    _UNKIND.get(item.kind, "note"),
+                    item.subject,
+                    published_id=outcome.act_id,
+                )
+                self._by_item[outcome.act_id] = rid
+            return Receipt(id=rid, accepted=accepted, reason=None if accepted else "declined")
+
+        return Receipt(id=rid, accepted=False, reason="unknown receipt")
 
     @staticmethod
     def _anchor_subject(receipt_id: str, held: _Held) -> str:
@@ -298,42 +435,125 @@ class _StrataBase:
         return held.subject or receipt_id
 
     def retract(self, agent: Agent, receipt_id: str) -> Receipt:
-        """Withdraw a published item.
+        """Take back a write or an announcement.
 
-        A note that was never announced cannot be retracted: retirement exists
-        for binding items only, and a note leaves when memory is next curated
-        rather than by an act. Reported as Unsupported so the run says "cannot".
+        A published item is withdrawn — the judged act on the scope's outward
+        face — and that is what emits the withdrawal change events readers
+        are told by. But the outward face is not the scope's memory: the item
+        is still in the scope's own summary, so a retraction is ALSO an
+        ordinary contribution that supersedes the original.
+
+        That contribution is the whole of the retraction for a note that was
+        never announced. ADR 0014's own framing: a changed input triggers a
+        judge cycle and the judge decides — "if someone in the scope says
+        'this is false' it's the ordinary contribution path". Nothing here is
+        `Unsupported` any more.
+
+        The contribution never restates the retracted text. It names the
+        contribution id and the subject, and asks for removal: restating a
+        false claim to get rid of it puts it back in front of the judge, and
+        would leave it in the reader's own words in memory.
         """
         held = self._held.get(receipt_id)
         if held is None:
             return Receipt(id=self._next_id("r"), accepted=False, reason="unknown receipt")
-        if held.published_id is None:
-            raise Unsupported("retract of an unannounced item")
-
-        from strata.publication import propose_withdraw  # noqa: PLC0415
 
         rid = self._next_id("r")
-        try:
-            outcome = propose_withdraw(
-                held.group,
-                held.published_id,
-                self._contributor(agent),
+        withdrawn: bool | None = None
+
+        if held.published_id is not None and held.contribution_id is None:
+            # Operator memory: the owner's own control path, not an agent act.
+            raise Unsupported("retract of operator memory")
+
+        if held.published_id is not None:
+            from strata.publication import propose_withdraw  # noqa: PLC0415
+
+            try:
+                outcome = propose_withdraw(
+                    held.group,
+                    held.published_id,
+                    self._contributor(agent),
+                    fleet=self._fleet,
+                    record_store=self._record,
+                    summary_store=self._summaries,
+                    scope_manager=self._judge(),
+                )
+            except Exception as exc:
+                return Receipt(id=rid, accepted=False, reason=str(exc))
+            withdrawn = getattr(outcome, "decision", "") == "accept"
+
+        retracted: bool | None = None
+        if held.contribution_id is not None:
+            scope = self._fleet.get_scope(held.group)
+            from strata.app import run_contribution  # noqa: PLC0415
+
+            outcome = run_contribution(
+                scope=scope,
+                stratum=self._stratum(scope.stratum_id),
+                content=_retraction_text(held),
+                proposed_classification=_KIND[held.kind],
+                subject=held.subject,
+                supersedes=held.contribution_id,
+                contributor=self._contributor(agent),
                 fleet=self._fleet,
                 record_store=self._record,
                 summary_store=self._summaries,
                 scope_manager=self._judge(),
+                summary_max_words=self._summary_max_words(),
             )
-        except Exception as exc:
-            return Receipt(id=rid, accepted=False, reason=str(exc))
-        return Receipt(id=rid, accepted=getattr(outcome, "decision", "") == "accept")
+            retracted = outcome.decision.startswith("accept")
+
+        accepted = bool(withdrawn) or bool(retracted)
+        return Receipt(
+            id=rid,
+            accepted=accepted,
+            reason=None if accepted else "declined",
+        )
 
     # -- reading ------------------------------------------------------------
 
     def read(self, agent: Agent) -> Read:
-        """Everything the agent is shown, acting from its group."""
+        """Everything the agent is shown, acting from its group.
+
+        Mirrors the MCP server's read path (ADR 0014 D6): the scope's pending
+        input changes are DRAINED before composition, so nobody reads a scope
+        without the engine first attempting to bring it up to date. That is
+        where an ancestor's new directive, an operator correction and an
+        upstream withdrawal actually take effect for this reader.
+
+        The pending events are snapshotted BEFORE the drain because the drain
+        consumes them: `compose_perspective` filters `input_changes` to
+        UNPROCESSED events (ADR 0014 D5 — "an event is consumed once a refresh
+        has processed it"), so a read that successfully drains would otherwise
+        compose an empty `input_changes` and the reader would never be told.
+        Both are used: the snapshot is what this read processed, and the
+        composed section is whatever the drain could not.
+        """
+        from strata.app import DrainFailed, drain_is_noop, drain_scope  # noqa: PLC0415
         from strata.operator import read_operator_layer  # noqa: PLC0415
         from strata.perspective import compose_perspective  # noqa: PLC0415
         from strata.publication import read_publication  # noqa: PLC0415
+
+        pending = self._record.list_change_events(scope_id=agent.group, unprocessed_only=True)
+        if not drain_is_noop(
+            agent.group,
+            fleet=self._fleet,
+            record_store=self._record,
+            summary_store=self._summaries,
+        ):
+            try:
+                drain_scope(
+                    agent.group,
+                    fleet=self._fleet,
+                    record_store=self._record,
+                    summary_store=self._summaries,
+                    scope_manager=self._judge(),
+                    summary_max_words=self._summary_max_words(),
+                )
+            except DrainFailed:
+                # A read must not fail because a refresh could not run (ADR
+                # 0014 D6): the events stay pending and are still composed.
+                pass
 
         sdir = str(self._summaries.summaries_dir)
         perspective = compose_perspective(
@@ -342,6 +562,9 @@ class _StrataBase:
             summary_store=self._summaries,
             publication_reader=lambda s: read_publication(s, summaries_dir=sdir),
             operator_reader=lambda s: read_operator_layer(s, summaries_dir=sdir),
+            change_event_reader=lambda s: self._record.list_change_events(
+                scope_id=s, unprocessed_only=False
+            ),
         )
 
         shown: list[Shown] = []
@@ -371,19 +594,69 @@ class _StrataBase:
                     Shown(
                         content=item["content"],
                         kind=_UNKIND.get(item.get("kind", "context"), "note"),
+                        # ADR 0013 D4: `origin_scope_id` is the ULTIMATE author
+                        # and is set only on a relay. MODEL.md's `via` is "the
+                        # intermediate group whose announcement the item
+                        # reached the reader through" — that is the scope whose
+                        # publication is being composed here, NOT Strata's
+                        # `relay_scope_id`, which names the predecessor the
+                        # copy was taken FROM (for a one-hop relay, the origin
+                        # itself). `attributed_to` is not set: MODEL.md
+                        # reserves it for a RESTATEMENT of another group's
+                        # claim, and a relay is the claim itself.
                         origin=item.get("origin_scope_id") or origin,
                         binding=False,
-                        via=item.get("relay_scope_id"),
-                        attributed_to=item.get("origin_scope_id"),
+                        via=origin if item.get("origin_scope_id") else None,
                         receipt=item.get("id"),
                     )
                 )
-        # No `event="withdrawn"` is ever emitted: a composed read carries no
-        # withdrawal event, so a reader is never TOLD an item was retracted —
-        # it simply stops appearing. Strata issue #186. Emitting nothing is the
-        # honest answer; inventing one would score a pass the engine has not
-        # earned.
+
+        shown.extend(self._withdrawal_events(pending, perspective["input_changes"]))
         return Read(items=tuple(shown), words=sum(len(s.content.split()) for s in shown))
+
+    def _withdrawal_events(self, drained, composed) -> list[Shown]:
+        """The `withdrawn` notices this read delivers (ADR 0014 D5).
+
+        One per change event of kind `withdrawn` — an engine-written row, not
+        an inference: `propose_withdraw` and the relay cascade both emit it
+        carrying the item's own content as `before`, which is what makes a
+        notice identify what was pulled rather than merely say that something
+        was. This is D5's notice reaching the READER; before ADR 0014 nothing
+        in a composed read carried it, which is why this adapter used to
+        return none.
+        """
+        seen: set[tuple[str, str]] = set()
+        events: list[Shown] = []
+        rows = [
+            {
+                "change_id": e.change_id,
+                "item_id": e.item_id,
+                "kind": e.kind,
+                "before": e.before,
+                "source_scope_id": e.source_scope_id,
+            }
+            for e in drained
+        ] + list(composed)
+        for row in rows:
+            if row["kind"] != "withdrawn" or not row.get("before"):
+                continue
+            key = (row["change_id"], row["item_id"])
+            if key in seen:
+                continue
+            seen.add(key)
+            receipt = self._by_item.get(row["item_id"], row["item_id"])
+            held = self._held.get(receipt)
+            events.append(
+                Shown(
+                    content=row["before"],
+                    kind=held.kind if held else "note",
+                    origin=row["source_scope_id"] or (held.group if held else ""),
+                    binding=False,
+                    receipt=receipt,
+                    event="withdrawn",
+                )
+            )
+        return events
 
     @staticmethod
     def _layer_directives(layer: dict) -> list[dict]:
@@ -410,9 +683,14 @@ class _StrataBase:
     # -- configuration hooks ------------------------------------------------
 
     def _summary_max_words(self) -> int:
-        from strata.settings import get_settings  # noqa: PLC0415
+        """The scope's own word budget — the World's `bound`, not a setting.
 
-        return get_settings().summary_max_words
+        The benchmark states the target per read (`World.bound`); leaving the
+        engine default of 500 against a stated bound of 400 would measure the
+        default rather than the system. Threaded as a parameter, so nothing
+        global is mutated and two adapters can coexist in one process.
+        """
+        return self._bound
 
     def _judge(self):
         raise NotImplementedError
@@ -445,21 +723,98 @@ class StrataStubJudgeMemory(_StrataBase):
     system_id = "strata-stubjudge"
 
     def _judge(self):
-        return _MechanicalJudge()
+        return _MechanicalJudge(self._record)
 
 
 class _MechanicalJudge:
     """Accept everything, in the writer's own words. No model call.
 
-    The resulting summary is built with the ENGINE's own `_apply_amendment`,
-    not by hand: a stub that wrote summaries its own way would be measuring
-    the stub. This applies the same ops the real judge would emit and lets
-    Strata do the applying.
+    The resulting summary is built with the ENGINE's own `_apply_amendment` /
+    `_apply_batch_amendment`, not by hand: a stub that wrote summaries its own
+    way would be measuring the stub. This applies the same ops the real judge
+    would emit and lets Strata do the applying.
+
+    It is handed the record store so it can read the CONTENT of a contribution
+    that a new one supersedes — a real judge is shown the summary it is
+    amending and the contribution's `supersedes` reference; a mechanical one
+    has to look the text up to know which context line the replacement
+    replaces. Nothing is decided with it; it is only how "remove the line that
+    said X" is carried out without the stub inventing its own summary format.
+
+    Three rules, and nothing else:
+
+    * a directive is appended; a context line is appended to the context;
+    * a contribution that SUPERSEDES another removes the superseded row or
+      line first — and adds nothing back when it is a retraction, whose whole
+      content is "remove this";
+    * an input-change refresh changes nothing at all. Mechanical means
+      mechanical: the notice is accepted, the memory is left exactly as it
+      was. Every judgment a refresh could reach is a judgment, and this
+      configuration exists precisely to have none.
     """
+
+    def __init__(self, record_store=None) -> None:
+        self._record = record_store
+
+    # -- the rules ---------------------------------------------------------
+
+    def _superseded_content(self, contribution) -> str | None:
+        target = getattr(contribution, "supersedes", None)
+        if not target or self._record is None:
+            return None
+        row = self._record.get_contribution(target)
+        return row.content if row is not None else None
+
+    @staticmethod
+    def _is_retraction(contribution) -> bool:
+        return bool(getattr(contribution, "supersedes", None)) and getattr(
+            contribution, "content", ""
+        ).startswith(_RETRACTION_PREFIX)
+
+    @staticmethod
+    def _is_refresh(contribution, mode: str) -> bool:
+        return mode == "input_change_refresh" or (
+            getattr(contribution, "subject", None) == "manager-refresh"
+        )
+
+    def _amendment(self, contribution, current, *, attribute: bool):
+        """The ops and context one contribution produces. No verdict here."""
+        from strata.scope_manager import DirectiveOp  # noqa: PLC0415
+
+        cid = getattr(contribution, "id", None)
+        target = getattr(contribution, "supersedes", None)
+        retraction = self._is_retraction(contribution)
+        proposed = getattr(contribution, "proposed_classification", "context")
+        attribution = {"contribution_id": cid} if attribute else {}
+
+        if proposed == "directive":
+            ops: list = []
+            if target:
+                # A directive id IS its contribution id, so the id the
+                # contribution supersedes names the row to remove. An op
+                # naming something that is not in this summary is dropped by
+                # the engine's own validation, which is the right outcome.
+                ops.append(
+                    DirectiveOp(op="retire" if retraction else "supersede", id=target, **attribution)
+                )
+            if not retraction:
+                ops.append(DirectiveOp(op="append", **attribution))
+            return ops, None
+
+        existing = (getattr(current, "context", "") or "").strip()
+        lines = [line for line in existing.split("\n") if line.strip()]
+        superseded = self._superseded_content(contribution)
+        if superseded:
+            dropped = {ln.strip() for ln in superseded.split("\n") if ln.strip()}
+            lines = [line for line in lines if line.strip() not in dropped]
+        if not retraction:
+            lines.append(getattr(contribution, "content", ""))
+        return [], "\n".join(lines).strip()
+
+    # -- the judge surface -------------------------------------------------
 
     def judge(self, **kwargs):
         from strata.scope_manager import (  # noqa: PLC0415
-            DirectiveOp,
             ScopeManagerJudgment,
             _apply_amendment,
         )
@@ -467,16 +822,13 @@ class _MechanicalJudge:
         contribution = kwargs.get("new_contribution")
         scope = kwargs.get("scope")
         current = kwargs.get("current_summary")
+        mode = kwargs.get("mode", "ordinary")
         proposed = getattr(contribution, "proposed_classification", "context")
 
-        if proposed == "directive":
-            ops = [DirectiveOp(op="append")]
-            new_context = None
+        if self._is_refresh(contribution, mode):
+            ops, new_context, proposed = [], None, "context"
         else:
-            ops = []
-            existing = (getattr(current, "context", "") or "").strip()
-            body = getattr(contribution, "content", "")
-            new_context = f"{existing}\n{body}".strip() if existing else body
+            ops, new_context = self._amendment(contribution, current, attribute=False)
 
         new_summary = _apply_amendment(
             scope=scope,
@@ -491,6 +843,79 @@ class _MechanicalJudge:
             reasoning="mechanical admission (instrumented configuration)",
             directive_ops=ops,
             new_context=new_context,
+            # ADR 0014 D4: the wave id and hop are PARAMETERS of the call,
+            # carried back on the judgment so whatever the engine derives from
+            # this refresh inherits them. A judgment that dropped them would
+            # restart the wave and break termination.
+            change_id=kwargs.get("change_id"),
+            hop=kwargs.get("hop", 0),
+        )
+
+    def judge_batch(self, **kwargs):
+        """Judge a coalesced batch — what a drain of several notices produces.
+
+        A batch of one never reaches here: `_judge_batch_and_record` routes it
+        to `judge` verbatim (ADR 0011 D3), which is most drains. This is the
+        coalesced case, and it is built with `_apply_batch_amendment` for the
+        same reason `judge` uses `_apply_amendment` — the engine applies its
+        own amendments.
+        """
+        from strata.scope_manager import (  # noqa: PLC0415
+            BatchVerdict,
+            ScopeManagerBatchJudgment,
+            _apply_batch_amendment,
+        )
+
+        scope = kwargs.get("scope")
+        current = kwargs.get("current_summary")
+        mode = kwargs.get("mode", "ordinary")
+        contributions = list(kwargs.get("new_contributions") or [])
+
+        ops: list = []
+        new_context: str | None = None
+        verdicts: list[BatchVerdict] = []
+        working = current
+        for contribution in contributions:
+            if self._is_refresh(contribution, mode):
+                decision = "accept_as_context"
+            else:
+                member_ops, member_context = self._amendment(
+                    contribution, working, attribute=True
+                )
+                ops.extend(member_ops)
+                if member_context is not None:
+                    new_context = member_context
+                    working = _apply_batch_amendment(
+                        scope=scope,
+                        current_summary=working,
+                        contributions={c.id: c for c in contributions},
+                        ops=[],
+                        new_context=member_context,
+                    )
+                proposed = getattr(contribution, "proposed_classification", "context")
+                decision = f"accept_as_{proposed}"
+            verdicts.append(
+                BatchVerdict(
+                    contribution_id=contribution.id,
+                    decision=decision,
+                    reasoning="mechanical admission (instrumented configuration)",
+                )
+            )
+
+        new_summary = _apply_batch_amendment(
+            scope=scope,
+            current_summary=current,
+            contributions={c.id: c for c in contributions},
+            ops=ops,
+            new_context=new_context,
+        )
+        return ScopeManagerBatchJudgment(
+            new_summary=new_summary,
+            verdicts=verdicts,
+            directive_ops=ops,
+            new_context=new_context,
+            change_ids=list(dict.fromkeys(kwargs.get("change_ids") or ())),
+            hop=kwargs.get("hop", 0),
         )
 
     def judge_publication(self, **kwargs):

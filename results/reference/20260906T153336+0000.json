@@ -1,7 +1,7 @@
 {
-  "run_id": "03929046-c5eb-4528-837d-0397ca67087f",
+  "run_id": "6a22a8b2-7e53-435b-82b4-ea95adf087a9",
   "bench_version": "0.1.0",
-  "timestamp": "2026-09-06T14:58:08+00:00",
+  "timestamp": "2026-09-06T15:33:36+00:00",
   "seed": 20260903,
   "repeat": 1,
   "submittable": true,
@@ -126,7 +126,7 @@
               [
                 "rule",
                 true,
-                "company_0"
+                "company_a1-000_0"
               ]
             ]
           }
@@ -139,7 +139,7 @@
               [
                 "rule",
                 true,
-                "company_0"
+                "company_a1-000_0"
               ]
             ]
           }
@@ -188,7 +188,7 @@
               [
                 "rule",
                 true,
-                "company_1"
+                "company_a1-001_1"
               ]
             ]
           }
@@ -201,7 +201,7 @@
               [
                 "rule",
                 true,
-                "company_1"
+                "company_a1-001_1"
               ]
             ]
           }
@@ -250,7 +250,7 @@
               [
                 "rule",
                 true,
-                "company_2"
+                "company_a1-002_2"
               ]
             ]
           }
@@ -263,7 +263,7 @@
               [
                 "rule",
                 true,
-                "company_2"
+                "company_a1-002_2"
               ]
             ]
           }
@@ -312,7 +312,7 @@
               [
                 "rule",
                 true,
-                "company_3"
+                "company_a1-003_3"
               ]
             ]
           }
@@ -325,7 +325,7 @@
               [
                 "rule",
                 true,
-                "company_3"
+                "company_a1-003_3"
               ]
             ]
           }
@@ -374,7 +374,7 @@
               [
                 "rule",
                 true,
-                "company_4"
+                "company_a1-004_4"
               ]
             ]
           }
@@ -387,7 +387,7 @@
               [
                 "rule",
                 true,
-                "company_4"
+                "company_a1-004_4"
               ]
             ]
           }
@@ -1278,7 +1278,7 @@
           "passed": true,
           "detail": {
             "shown": [],
-            "reader": "support_0"
+            "reader": "support_c1-000_0"
           }
         }
       ]
@@ -1304,7 +1304,7 @@
           "passed": true,
           "detail": {
             "shown": [],
-            "reader": "support_1"
+            "reader": "support_c1-001_1"
           }
         }
       ]
@@ -1330,7 +1330,7 @@
           "passed": true,
           "detail": {
             "shown": [],
-            "reader": "support_2"
+            "reader": "support_c1-002_2"
           }
         }
       ]
@@ -1356,7 +1356,7 @@
           "passed": true,
           "detail": {
             "shown": [],
-            "reader": "support_3"
+            "reader": "support_c1-003_3"
           }
         }
       ]
@@ -1382,7 +1382,7 @@
           "passed": true,
           "detail": {
             "shown": [],
-            "reader": "support_4"
+            "reader": "support_c1-004_4"
           }
         }
       ]
@@ -1408,7 +1408,7 @@
           "passed": true,
           "detail": {
             "shown": [],
-            "reader": "finance_0"
+            "reader": "finance_c2-000_0"
           }
         }
       ]
@@ -1434,7 +1434,7 @@
           "passed": true,
           "detail": {
             "shown": [],
-            "reader": "finance_1"
+            "reader": "finance_c2-001_1"
           }
         }
       ]
@@ -1460,7 +1460,7 @@
           "passed": true,
           "detail": {
             "shown": [],
-            "reader": "finance_2"
+            "reader": "finance_c2-002_2"
           }
         }
       ]
@@ -1486,7 +1486,7 @@
           "passed": true,
           "detail": {
             "shown": [],
-            "reader": "finance_3"
+            "reader": "finance_c2-003_3"
           }
         }
       ]
@@ -1512,7 +1512,7 @@
           "passed": true,
           "detail": {
             "shown": [],
-            "reader": "finance_4"
+            "reader": "finance_c2-004_4"
           }
         }
       ]
@@ -1856,7 +1856,7 @@
           "passed": true,
           "detail": {
             "independent": [
-              "billing_0"
+              "billing_e1-000_0"
             ],
             "total": 1
           }
@@ -1882,7 +1882,7 @@
           "passed": true,
           "detail": {
             "independent": [
-              "billing_1"
+              "billing_e1-001_1"
             ],
             "total": 1
           }
@@ -1908,7 +1908,7 @@
           "passed": true,
           "detail": {
             "independent": [
-              "billing_2"
+              "billing_e1-002_2"
             ],
             "total": 1
           }
@@ -1934,7 +1934,7 @@
           "passed": true,
           "detail": {
             "independent": [
-              "billing_3"
+              "billing_e1-003_3"
             ],
             "total": 1
           }
@@ -1960,7 +1960,7 @@
           "passed": true,
           "detail": {
             "independent": [
-              "billing_4"
+              "billing_e1-004_4"
             ],
             "total": 1
           }
@@ -1981,8 +1981,8 @@
           "passed": true,
           "detail": {
             "origins": [
-              "billing_0",
-              "support_0"
+              "billing_e2-000_0",
+              "support_e2-000_0"
             ]
           }
         },
@@ -2009,8 +2009,8 @@
           "passed": true,
           "detail": {
             "origins": [
-              "billing_1",
-              "support_1"
+              "billing_e2-001_1",
+              "support_e2-001_1"
             ]
           }
         },
@@ -2037,8 +2037,8 @@
           "passed": true,
           "detail": {
             "origins": [
-              "billing_2",
-              "support_2"
+              "billing_e2-002_2",
+              "support_e2-002_2"
             ]
           }
         },
@@ -2065,8 +2065,8 @@
           "passed": true,
           "detail": {
             "origins": [
-              "billing_3",
-              "support_3"
+              "billing_e2-003_3",
+              "support_e2-003_3"
             ]
           }
         },
@@ -2093,8 +2093,8 @@
           "passed": true,
           "detail": {
             "origins": [
-              "billing_4",
-              "support_4"
+              "billing_e2-004_4",
+              "support_e2-004_4"
             ]
           }
         },
@@ -2121,8 +2121,8 @@
           "passed": true,
           "detail": {
             "origins": [
-              "billing_0",
-              "support_0"
+              "billing_e3-000_0",
+              "support_e3-000_0"
             ]
           }
         },
@@ -2138,7 +2138,7 @@
           "passed": true,
           "detail": {
             "origins": [
-              "support_0"
+              "support_e3-000_0"
             ]
           }
         }
@@ -2158,8 +2158,8 @@
           "passed": true,
           "detail": {
             "origins": [
-              "billing_1",
-              "support_1"
+              "billing_e3-001_1",
+              "support_e3-001_1"
             ]
           }
         },
@@ -2175,7 +2175,7 @@
           "passed": true,
           "detail": {
             "origins": [
-              "support_1"
+              "support_e3-001_1"
             ]
           }
         }
@@ -2195,8 +2195,8 @@
           "passed": true,
           "detail": {
             "origins": [
-              "billing_2",
-              "support_2"
+              "billing_e3-002_2",
+              "support_e3-002_2"
             ]
           }
         },
@@ -2212,7 +2212,7 @@
           "passed": true,
           "detail": {
             "origins": [
-              "support_2"
+              "support_e3-002_2"
             ]
           }
         }
@@ -2232,8 +2232,8 @@
           "passed": true,
           "detail": {
             "origins": [
-              "billing_3",
-              "support_3"
+              "billing_e3-003_3",
+              "support_e3-003_3"
             ]
           }
         },
@@ -2249,7 +2249,7 @@
           "passed": true,
           "detail": {
             "origins": [
-              "support_3"
+              "support_e3-003_3"
             ]
           }
         }
@@ -2269,8 +2269,8 @@
           "passed": true,
           "detail": {
             "origins": [
-              "billing_4",
-              "support_4"
+              "billing_e3-004_4",
+              "support_e3-004_4"
             ]
           }
         },
@@ -2286,7 +2286,7 @@
           "passed": true,
           "detail": {
             "origins": [
-              "support_4"
+              "support_e3-004_4"
             ]
           }
         }
@@ -3495,7 +3495,7 @@
           "id": "P2-000-declared-one-hop-and-stopped",
           "passed": true,
           "detail": {
-            "leaked_to": "support_0"
+            "leaked_to": "support_p2-000_0"
           }
         }
       ]
@@ -3518,7 +3518,7 @@
           "id": "P2-001-declared-one-hop-and-stopped",
           "passed": true,
           "detail": {
-            "leaked_to": "support_1"
+            "leaked_to": "support_p2-001_1"
           }
         }
       ]
@@ -3541,7 +3541,7 @@
           "id": "P2-002-declared-one-hop-and-stopped",
           "passed": true,
           "detail": {
-            "leaked_to": "support_2"
+            "leaked_to": "support_p2-002_2"
           }
         }
       ]
@@ -3564,7 +3564,7 @@
           "id": "P2-003-declared-one-hop-and-stopped",
           "passed": true,
           "detail": {
-            "leaked_to": "support_3"
+            "leaked_to": "support_p2-003_3"
           }
         }
       ]
@@ -3587,7 +3587,7 @@
           "id": "P2-004-declared-one-hop-and-stopped",
           "passed": true,
           "detail": {
-            "leaked_to": "support_4"
+            "leaked_to": "support_p2-004_4"
           }
         }
       ]
@@ -4080,7 +4080,7 @@
           "id": "S1-000-support-shown",
           "passed": true,
           "detail": {
-            "reader": "support_0"
+            "reader": "support_s1-000_0"
           }
         },
         {
@@ -4088,7 +4088,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "billing_0"
+              "billing_s1-000_0"
             ]
           }
         },
@@ -4096,7 +4096,7 @@
           "id": "S1-000-collections-shown",
           "passed": true,
           "detail": {
-            "reader": "collections_0"
+            "reader": "collections_s1-000_0"
           }
         },
         {
@@ -4104,7 +4104,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "billing_0"
+              "billing_s1-000_0"
             ]
           }
         }
@@ -4123,7 +4123,7 @@
           "id": "S1-001-support-shown",
           "passed": true,
           "detail": {
-            "reader": "support_1"
+            "reader": "support_s1-001_1"
           }
         },
         {
@@ -4131,7 +4131,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "billing_1"
+              "billing_s1-001_1"
             ]
           }
         },
@@ -4139,7 +4139,7 @@
           "id": "S1-001-collections-shown",
           "passed": true,
           "detail": {
-            "reader": "collections_1"
+            "reader": "collections_s1-001_1"
           }
         },
         {
@@ -4147,7 +4147,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "billing_1"
+              "billing_s1-001_1"
             ]
           }
         }
@@ -4166,7 +4166,7 @@
           "id": "S1-002-support-shown",
           "passed": true,
           "detail": {
-            "reader": "support_2"
+            "reader": "support_s1-002_2"
           }
         },
         {
@@ -4174,7 +4174,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "billing_2"
+              "billing_s1-002_2"
             ]
           }
         },
@@ -4182,7 +4182,7 @@
           "id": "S1-002-collections-shown",
           "passed": true,
           "detail": {
-            "reader": "collections_2"
+            "reader": "collections_s1-002_2"
           }
         },
         {
@@ -4190,7 +4190,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "billing_2"
+              "billing_s1-002_2"
             ]
           }
         }
@@ -4209,7 +4209,7 @@
           "id": "S1-003-support-shown",
           "passed": true,
           "detail": {
-            "reader": "support_3"
+            "reader": "support_s1-003_3"
           }
         },
         {
@@ -4217,7 +4217,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "billing_3"
+              "billing_s1-003_3"
             ]
           }
         },
@@ -4225,7 +4225,7 @@
           "id": "S1-003-collections-shown",
           "passed": true,
           "detail": {
-            "reader": "collections_3"
+            "reader": "collections_s1-003_3"
           }
         },
         {
@@ -4233,7 +4233,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "billing_3"
+              "billing_s1-003_3"
             ]
           }
         }
@@ -4252,7 +4252,7 @@
           "id": "S1-004-support-shown",
           "passed": true,
           "detail": {
-            "reader": "support_4"
+            "reader": "support_s1-004_4"
           }
         },
         {
@@ -4260,7 +4260,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "billing_4"
+              "billing_s1-004_4"
             ]
           }
         },
@@ -4268,7 +4268,7 @@
           "id": "S1-004-collections-shown",
           "passed": true,
           "detail": {
-            "reader": "collections_4"
+            "reader": "collections_s1-004_4"
           }
         },
         {
@@ -4276,7 +4276,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "billing_4"
+              "billing_s1-004_4"
             ]
           }
         }
@@ -4301,7 +4301,7 @@
           "passed": true,
           "detail": {
             "shown": [],
-            "reader": "sales_0"
+            "reader": "sales_s2-000_0"
           }
         },
         {
@@ -4309,7 +4309,7 @@
           "passed": true,
           "detail": {
             "shown": [],
-            "reader": "company_0"
+            "reader": "company_s2-000_0"
           }
         },
         {
@@ -4317,7 +4317,7 @@
           "passed": true,
           "detail": {
             "shown": [],
-            "reader": "tier2_0"
+            "reader": "tier2_s2-000_0"
           }
         }
       ]
@@ -4341,7 +4341,7 @@
           "passed": true,
           "detail": {
             "shown": [],
-            "reader": "sales_1"
+            "reader": "sales_s2-001_1"
           }
         },
         {
@@ -4349,7 +4349,7 @@
           "passed": true,
           "detail": {
             "shown": [],
-            "reader": "company_1"
+            "reader": "company_s2-001_1"
           }
         },
         {
@@ -4357,7 +4357,7 @@
           "passed": true,
           "detail": {
             "shown": [],
-            "reader": "tier2_1"
+            "reader": "tier2_s2-001_1"
           }
         }
       ]
@@ -4381,7 +4381,7 @@
           "passed": true,
           "detail": {
             "shown": [],
-            "reader": "sales_2"
+            "reader": "sales_s2-002_2"
           }
         },
         {
@@ -4389,7 +4389,7 @@
           "passed": true,
           "detail": {
             "shown": [],
-            "reader": "company_2"
+            "reader": "company_s2-002_2"
           }
         },
         {
@@ -4397,7 +4397,7 @@
           "passed": true,
           "detail": {
             "shown": [],
-            "reader": "tier2_2"
+            "reader": "tier2_s2-002_2"
           }
         }
       ]
@@ -4421,7 +4421,7 @@
           "passed": true,
           "detail": {
             "shown": [],
-            "reader": "sales_3"
+            "reader": "sales_s2-003_3"
           }
         },
         {
@@ -4429,7 +4429,7 @@
           "passed": true,
           "detail": {
             "shown": [],
-            "reader": "company_3"
+            "reader": "company_s2-003_3"
           }
         },
         {
@@ -4437,7 +4437,7 @@
           "passed": true,
           "detail": {
             "shown": [],
-            "reader": "tier2_3"
+            "reader": "tier2_s2-003_3"
           }
         }
       ]
@@ -4461,7 +4461,7 @@
           "passed": true,
           "detail": {
             "shown": [],
-            "reader": "sales_4"
+            "reader": "sales_s2-004_4"
           }
         },
         {
@@ -4469,7 +4469,7 @@
           "passed": true,
           "detail": {
             "shown": [],
-            "reader": "company_4"
+            "reader": "company_s2-004_4"
           }
         },
         {
@@ -4477,7 +4477,7 @@
           "passed": true,
           "detail": {
             "shown": [],
-            "reader": "tier2_4"
+            "reader": "tier2_s2-004_4"
           }
         }
       ]
@@ -5026,7 +5026,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "billing_0"
+              "billing_s6-000_0"
             ]
           }
         },
@@ -5035,7 +5035,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "support_0"
+              "support_s6-000_0"
             ]
           }
         }
@@ -5060,7 +5060,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "billing_1"
+              "billing_s6-001_1"
             ]
           }
         },
@@ -5069,7 +5069,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "support_1"
+              "support_s6-001_1"
             ]
           }
         }
@@ -5094,7 +5094,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "billing_2"
+              "billing_s6-002_2"
             ]
           }
         },
@@ -5103,7 +5103,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "support_2"
+              "support_s6-002_2"
             ]
           }
         }
@@ -5128,7 +5128,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "billing_3"
+              "billing_s6-003_3"
             ]
           }
         },
@@ -5137,7 +5137,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "support_3"
+              "support_s6-003_3"
             ]
           }
         }
@@ -5162,7 +5162,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "billing_4"
+              "billing_s6-004_4"
             ]
           }
         },
@@ -5171,7 +5171,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "support_4"
+              "support_s6-004_4"
             ]
           }
         }

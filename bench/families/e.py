@@ -7,12 +7,11 @@ from bench.scenario import Ctx, scenario
 def _echo_world(ctx: Ctx) -> dict[str, str]:
     """Tier-2 hears Billing directly and is also part of Support, so a claim
     can reach it twice: once first-hand, once as Support's restatement."""
-    v = ctx.variant
     g = {
-        "billing": f"billing_{v}",
-        "support": f"support_{v}",
-        "tier2": f"tier2_{v}",
-        "company": f"company_{v}",
+        "billing": ctx.gid("billing"),
+        "support": ctx.gid("support"),
+        "tier2": ctx.gid("tier2"),
+        "company": ctx.gid("company"),
     }
     ctx.build(
         roles={gid: role for role, gid in g.items()},
@@ -97,8 +96,7 @@ def e4(ctx: Ctx) -> None:
     """Mutual listening terminates. Two groups that listen to each other do
     not circulate one claim as many, and it never returns to its source as
     something new."""
-    v = ctx.variant
-    g = {"billing": f"billing_{v}", "support": f"support_{v}", "company": f"company_{v}"}
+    g = {"billing": ctx.gid("billing"), "support": ctx.gid("support"), "company": ctx.gid("company")}
     ctx.build(
         roles={gid: role for role, gid in g.items()},
         groups=g.values(),

@@ -91,7 +91,11 @@ score, so a reader knows which fleet shape was measured.
 
 **What the benchmark promises the system**
 
-- `/world` is called once per scenario; scenarios are independent.
+- `/world` is called once per scenario; scenarios are independent. Group
+  names are unique per scenario as well as per variant, so a system that
+  keys storage on the name cannot carry one scenario's items into the next
+  even if its wipe is incomplete. A system that leaks across scenarios will
+  see contradictions and duplicates the benchmark never planted.
 - `/settle` is called after every batch of writes and before every read.
   A system that decides synchronously implements it as a no-op.
 - The system is not called concurrently within a scenario unless the

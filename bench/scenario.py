@@ -150,19 +150,28 @@ class Ctx:
         self._deadline_check("world")
         self._settled = False
 
+    def gid(self, role: str) -> str:
+        """A group name unique to this scenario and variant.
+
+        `/world` is specified to wipe all memory, but a system that keys its
+        storage on the group name and wipes imperfectly would carry one
+        scenario's items into the next, and shared names make that invisible.
+        Unique names make the contract impossible to half-keep.
+        """
+        return f"{role}_{self.scenario_id.lower()}_{self.variant}"
+
     def standard(self, bound: int = 500) -> dict[str, str]:
         """The fleet of MODEL.md's worked example, plus two groups the
         measures need: a group inside Billing, and a source Billing listens
         to. Names are suffixed per variant so no system can key on them."""
-        v = self.variant
         g = {
-            "company": f"company_{v}",
-            "sales": f"sales_{v}",
-            "support": f"support_{v}",
-            "tier2": f"tier2_{v}",
-            "billing": f"billing_{v}",
-            "collections": f"collections_{v}",
-            "finance": f"finance_{v}",
+            "company": self.gid("company"),
+            "sales": self.gid("sales"),
+            "support": self.gid("support"),
+            "tier2": self.gid("tier2"),
+            "billing": self.gid("billing"),
+            "collections": self.gid("collections"),
+            "finance": self.gid("finance"),
         }
         self.build(
             groups=g.values(),

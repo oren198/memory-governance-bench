@@ -59,8 +59,7 @@ def p3(ctx: Ctx) -> None:
     resolved. Not issued to systems that declare containment is a tree."""
     ctx.skip_unless(ctx.declarations.multiple_containers,
                     "system declares containment is a tree")
-    v = ctx.variant
-    g = {"eng": f"eng_{v}", "infra": f"infra_{v}", "platform": f"platform_{v}"}
+    g = {r: ctx.gid(r) for r in ("eng", "infra", "platform")}
     ctx.build(
         groups=g.values(),
         part_of=[(g["platform"], g["eng"]), (g["platform"], g["infra"])],

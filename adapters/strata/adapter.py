@@ -725,9 +725,14 @@ class StrataMemory(_StrataBase):
     system_id = "strata"
 
     def _judge(self):
+        # Built the way Strata's own MCP server builds it (mcp/server.py::
+        # _build_scope_manager): the configured judge client and model, from
+        # the same settings the served engine reads. Nothing bench-specific.
         from strata.scope_manager import ScopeManager  # noqa: PLC0415
+        from strata.settings import get_settings  # noqa: PLC0415
 
-        return ScopeManager()
+        settings = get_settings()
+        return ScopeManager(client=settings.build_judge_client(), model=settings.manager_model)
 
 
 class StrataStubJudgeMemory(_StrataBase):

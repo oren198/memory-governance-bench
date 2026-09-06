@@ -1,7 +1,7 @@
 {
-  "run_id": "36043f37-1d09-4dd8-a859-ce0b57d3ab5d",
+  "run_id": "8b7061ce-e3c3-4479-921b-a70b5b0117eb",
   "bench_version": "0.1.0",
-  "timestamp": "2026-09-06T14:22:39+00:00",
+  "timestamp": "2026-09-06T14:49:03+00:00",
   "seed": 20260903,
   "repeat": 1,
   "submittable": true,
@@ -2990,7 +2990,7 @@
           "id": "G1-000-within-bound",
           "passed": true,
           "detail": {
-            "words": 392,
+            "words": 391,
             "bound": 400
           }
         }
@@ -3009,7 +3009,7 @@
           "id": "G1-001-within-bound",
           "passed": true,
           "detail": {
-            "words": 394,
+            "words": 390,
             "bound": 400
           }
         }
@@ -3028,7 +3028,7 @@
           "id": "G1-002-within-bound",
           "passed": true,
           "detail": {
-            "words": 400,
+            "words": 382,
             "bound": 400
           }
         }
@@ -3047,7 +3047,7 @@
           "id": "G1-003-within-bound",
           "passed": true,
           "detail": {
-            "words": 397,
+            "words": 390,
             "bound": 400
           }
         }
@@ -3066,7 +3066,7 @@
           "id": "G1-004-within-bound",
           "passed": true,
           "detail": {
-            "words": 396,
+            "words": 392,
             "bound": 400
           }
         }
@@ -3190,8 +3190,8 @@
           "id": "G3-000-drop-reported",
           "passed": true,
           "detail": {
-            "missing": 37,
-            "reported": 37
+            "missing": 38,
+            "reported": 38
           }
         }
       ]
@@ -3209,8 +3209,8 @@
           "id": "G3-001-drop-reported",
           "passed": true,
           "detail": {
-            "missing": 37,
-            "reported": 37
+            "missing": 38,
+            "reported": 38
           }
         }
       ]
@@ -3228,8 +3228,8 @@
           "id": "G3-002-drop-reported",
           "passed": true,
           "detail": {
-            "missing": 37,
-            "reported": 37
+            "missing": 38,
+            "reported": 38
           }
         }
       ]
@@ -3247,8 +3247,8 @@
           "id": "G3-003-drop-reported",
           "passed": true,
           "detail": {
-            "missing": 37,
-            "reported": 37
+            "missing": 38,
+            "reported": 38
           }
         }
       ]
@@ -3266,8 +3266,8 @@
           "id": "G3-004-drop-reported",
           "passed": true,
           "detail": {
-            "missing": 37,
-            "reported": 37
+            "missing": 38,
+            "reported": 38
           }
         }
       ]

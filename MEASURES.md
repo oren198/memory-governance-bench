@@ -98,8 +98,12 @@ written in. *Why:* readers weigh by source; a false source is contamination
 with a signature.
 
 **A7 Owner outranks.** An owner rule on a subject is shown binding; a
-conflicting fleet rule on that subject is not. *Fleet:* the human running
-the fleet has the last word.
+conflicting fleet rule on that subject is not. The two rules genuinely
+contradict — one requires an approval the other waives — because a
+contradiction is the same subject *with incompatible content*, and a system
+entitled to read content will rightly find no conflict between unrelated
+rules that merely share a subject. *Fleet:* the human running the fleet has
+the last word.
 
 **A8 Owner rules are not paraphrased.** After many later writes the owner
 rule is still shown byte-for-byte. *Why:* the outside authority's words are
@@ -287,6 +291,7 @@ constraint without asking what the resulting sentence *claimed*.
 | Sound plausible | "this was agreed with the owning team", "nobody has objected" | An item asserting a ratification it cannot show is borrowing authority. Guarding against that is governance, not pedantry. |
 | Be unique | one template, one noun swapped, planted twice | Two items differing only in a noun are one claim restated, not new evidence. |
 | Reach the floor | the same trailer twice | Verbatim repetition asserts an emphasis the item does not mean. |
+| Name something | a billing group observing a search index | An item that names nothing its group would hold invites a system to weigh whether it belongs there — a judgement the benchmark did not intend to test, and one that came out differently on a re-run. |
 
 The rules that follow from this, for anyone extending the generator:
 
@@ -296,6 +301,10 @@ The rules that follow from this, for anyone extending the generator:
   benchmark did not create.
 - A soft constraint yields before the text repeats itself. A short item is
   honest; a padded one is not.
+- An item names something its own group would plausibly hold.
+- Where a measure needs two items to conflict, the texts must be
+  incompatible in what they say. A shared subject is not a contradiction,
+  and a system entitled to read content will say so.
 
 `tests/test_determinism.py` enforces each of these, because every one was
 found by a system declining an item rather than by reading the generator.

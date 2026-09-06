@@ -104,6 +104,7 @@ class Ctx:
         self.checks: list[Check] = []
         self.calls = 0
         self._ordinals: dict[str, int] = {}
+        self._roles: dict[str, str] = {}   # group id -> its role in the fleet
         self._deadline = (time.monotonic() + timeout) if timeout else None
         self._origin: dict[str, str] = {}   # canary -> group it was written in
         self._kind: dict[str, Kind] = {}    # canary -> kind it was written as
@@ -131,7 +132,11 @@ class Ctx:
         listens_to: Iterable[tuple[str, str]] = (),
         owner_groups: Iterable[str] = (),
         bound: int = 500,
+        roles: dict[str, str] | None = None,
     ) -> None:
+        # Roles belong to the fleet just built; a scenario that builds its own
+        # gets the generic nouns unless it says which group plays which part.
+        self._roles = dict(roles or {})
         self._tick("world")
         self.system.world(
             World(
@@ -172,6 +177,7 @@ class Ctx:
             listens_to=[(g["support"], g["billing"]), (g["billing"], g["finance"])],
             owner_groups=[g["support"], g["company"]],
             bound=bound,
+            roles={gid: role for role, gid in g.items()},
         )
         return g
 
@@ -191,9 +197,13 @@ class Ctx:
         than as new evidence, and be right to."""
         return self._ordinals.setdefault(tag, len(self._ordinals))
 
-    def text(self, tag: str, words: int = 12, kind: Kind = "note") -> str:
+    def text(self, tag: str, words: int = 12, kind: Kind = "note",
+             group: str | None = None) -> str:
+        """Text for an item planted in `group`. The group decides which nouns
+        the item may name: a system may weigh whether an item belongs where it
+        was written, and the benchmark should not plant one that does not."""
         return sentence(self.seed, self.scenario_id, self.variant, tag, words,
-                        kind, self._ordinal(tag))
+                        kind, self._ordinal(tag), self._roles.get(group or ""))
 
     def claim(self, tag: str, statement: str) -> str:
         """A canary in front of a statement the scenario writes itself.
@@ -215,7 +225,7 @@ class Ctx:
     ) -> Receipt:
         if content is None:
             assert tag is not None, "write needs a tag or explicit content"
-            content = self.text(tag, words, kind)
+            content = self.text(tag, words, kind, agent.group)
         self._tick("write")
         receipt = self.system.write(
             agent, Write(content=content, kind=kind, replaces=replaces, subject=subject)

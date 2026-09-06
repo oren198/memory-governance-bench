@@ -59,7 +59,7 @@ def g4(ctx: Ctx) -> None:
     """Repeats collapse: the same claim written many times is shown once."""
     g = ctx.standard(bound=BOUND)
     a = ctx.agent(g["support"])
-    content = ctx.text("dup", words=15)
+    content = ctx.text("dup", words=15, group=g["support"])
     subj = f"dup-{ctx.variant}"
     for _ in range(8):
         ctx.write(a, "dup", content=content, subject=subj)

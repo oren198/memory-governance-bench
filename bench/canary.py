@@ -27,10 +27,26 @@ from __future__ import annotations
 
 import hashlib
 
+# An item names something the group it is written in could plausibly hold an
+# observation about. A system may weigh relevance when deciding what to admit,
+# and a note about the search index written into a billing group is a fair
+# thing to hesitate over — so the benchmark does not plant one. The nouns are
+# the group's own; nothing else about the measure changes.
+_SUBJECTS_BY_ROLE = {
+    "company": ("the deploy pipeline", "the release train", "the access review job", "the status page updater", "the audit log shipper", "the config service", "the build cache", "the artifact store"),
+    "sales": ("the lead import", "the CRM sync", "the quote generator", "the trial provisioning job", "the demo reset job", "the renewal reminder", "the pricing service", "the territory assigner"),
+    "support": ("the ticket queue", "the macro sync", "the escalation router", "the chat widget", "the survey sender", "the backlog sweeper", "the transcript store", "the handoff report builder"),
+    "tier2": ("the diagnostics runner", "the replay tool", "the escalation backlog", "the log search", "the repro harness", "the trace collector", "the defect sync", "the crash grouper"),
+    "billing": ("the invoice run", "the payments gateway", "the dunning job", "the refund queue", "the tax lookup", "the card retry loop", "the statement export", "the proration check"),
+    "collections": ("the reminder scheduler", "the write-off review job", "the debt export", "the payment-plan builder", "the arrears report", "the chase list generator", "the settlement processor", "the hardship queue"),
+    "finance": ("the ledger export", "the month-end close job", "the revenue report builder", "the tax rules sync", "the accrual job", "the audit trail export", "the budget rollup", "the reconciliation run"),
+}
+
+# Used when a scenario builds its own fleet rather than the standard one.
 _SUBJECTS = (
-    "the checkout service", "the billing pipeline", "the retry queue",
-    "the search index", "the export job", "the session cache",
-    "the payments gateway", "the notification worker",
+    "the checkout service", "the export job", "the retry queue",
+    "the session cache", "the notification worker", "the search index",
+    "the scheduler", "the archive job",
 )
 
 _RULES = (
@@ -94,6 +110,7 @@ def sentence(
     words: int = 12,
     kind: str = "note",
     ordinal: int = 0,
+    role: str | None = None,
 ) -> str:
     """A plausible statement carrying a canary, deterministic across runs.
 
@@ -108,8 +125,9 @@ def sentence(
     # Rotation is per scenario, not per item: an offset that varied with the
     # item would collide, which is the thing `ordinal` exists to prevent.
     rot = hashlib.sha256(f"{seed}|{scenario_id}|{variant}".encode()).digest()[0]
+    subjects = _SUBJECTS_BY_ROLE.get(role or "", _SUBJECTS)
     if kind == "rule":
-        subject = _SUBJECTS[(h[0] + ordinal) % len(_SUBJECTS)]
+        subject = subjects[(rot + ordinal) % len(subjects)]
         # Drawn without replacement: the first len(_RULES) rules a scenario
         # plants are all different instructions, not one instruction restated.
         body = _RULES[(h[1] + ordinal) % len(_RULES)].format(s=subject)
@@ -118,9 +136,9 @@ def sentence(
         # One index over (frame x subject), so the pair is unique for the
         # first len(_OBSERVED) * len(_SUBJECTS) items a scenario plants — more
         # than the largest flood — and no frame is reused with a fresh noun.
-        combo = (rot + ordinal) % (len(_OBSERVED) * len(_SUBJECTS))
+        combo = (rot + ordinal) % (len(_OBSERVED) * len(subjects))
         frame = _OBSERVED[combo % len(_OBSERVED)]
-        subject = _SUBJECTS[combo // len(_OBSERVED)]
+        subject = subjects[combo // len(_OBSERVED)]
         body = frame.format(
             s=subject,
             v=101 + ordinal * 7 + h[2],       # unique to this item

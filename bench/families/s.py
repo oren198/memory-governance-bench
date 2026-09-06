@@ -122,7 +122,7 @@ def s7(ctx: Ctx) -> None:
     not forward Billing's claim — it believes it and writes it in its own
     words, citing Billing. When Billing retracts, Support must learn."""
     g = ctx.standard()
-    claim = ctx.text("claim", words=14)
+    claim = ctx.text("claim", words=14, group=g["billing"])
     r = ctx.write(ctx.agent(g["billing"]), "claim", content=claim)
     ctx.announce(ctx.agent(g["billing"]), r.id)
     ctx.read(ctx.agent(g["support"]))

@@ -27,7 +27,7 @@ _SUBJECTS = (
 )
 
 _RULES = (
-    "{s} must not be deployed without a rollback plan agreed in advance",
+    "{s} must not be deployed without a rollback plan written first",
     "every change to {s} requires a second reviewer before it is merged",
     "{s} must be drained before any migration begins",
     "no credential for {s} may be shared outside the owning team",
@@ -44,17 +44,33 @@ _NOTES = (
     "the on-call runbook for {s} is out of date in its escalation section",
     "load on {s} roughly doubles at the start of each month",
     "{s} still depends on a config file nobody owns",
-    "a customer reported missing receipts, traced to {s} retrying too eagerly",
+    "duplicate receipts went out from {s}, traced to retrying too eagerly",
     "the timeout on {s} was raised as a temporary measure and never revisited",
 )
 
-_TAILS = (
-    "This was agreed with the owning team",
-    "It has come up more than once",
-    "The change is recorded in the release notes",
-    "Nobody has objected so far",
+# Trailing clauses say what the item covers or how it is checked. They never
+# claim that anyone agreed to it, approved it, or failed to object, and they
+# never cite an authority the benchmark did not actually create. A system is
+# entitled to decline an item that asserts a ratification it cannot show —
+# guarding against exactly that is good governance, and a benchmark whose
+# filler asserted social proof would be punishing systems for having the
+# guard. Keep this bank free of it.
+_RULE_TAILS = (
+    "This applies in every environment, including staging",
+    "It is checked as part of the deploy pipeline",
+    "The same holds during incident response",
     "This holds until it is revisited",
-    "The details are in the incident channel",
+    "It covers both scheduled and manual runs",
+    "The scope is limited to production traffic",
+)
+
+_NOTE_TAILS = (
+    "The pattern is clearest in the afternoon",
+    "It affects a small share of requests",
+    "The effect is limited to the batch path",
+    "It shows up only under load",
+    "The behaviour is the same in staging",
+    "Nothing has changed since then",
 )
 
 
@@ -81,11 +97,12 @@ def sentence(
     tok = canary(seed, scenario_id, variant, tag)
     h = hashlib.sha256(tok.encode()).digest()
     bank = _RULES if kind == "rule" else _NOTES
+    tails = _RULE_TAILS if kind == "rule" else _NOTE_TAILS
     subject = _SUBJECTS[h[0] % len(_SUBJECTS)]
     body = bank[h[1] % len(bank)].format(s=subject)
     parts = [f"{tok}: {body}."]
     n = 2
     while len(" ".join(parts).split()) < words:
-        parts.append(f"{_TAILS[h[n % len(h)] % len(_TAILS)]}.")
+        parts.append(f"{tails[h[n % len(h)] % len(tails)]}.")
         n += 1
     return " ".join(parts)

@@ -278,6 +278,13 @@ shown something. A system that never admitted the item satisfies every one
 of them for free, and the two baselines cannot reveal it: the null baseline
 admits everything, and the reference admits everything legitimate.
 
+The same hole hides inside "a note must not": A2's no-binding-note and A3's
+not-binding-upward are satisfied by a system that holds no notes at all.
+`NotesRefused` is that adversary — it keeps rules and declines observations,
+which is not an absurd design and was met in the wild — and it must fail A
+and R. A memory that holds only decisions cannot carry what one agent
+learned to the agent who needs it, which is half the promise.
+
 The same hole hides inside "at most one": G4's repeats-collapse, T1/T3's
 one-side-survives and E1's not-two-independent-claims were all satisfied by
 a system holding nothing. Those now require exactly one, so collapsing eight

@@ -38,6 +38,8 @@ def a2(ctx: Ctx) -> None:
     own = ctx.write(ctx.agent(g["billing"]), "peer")
     ctx.announce(ctx.agent(g["billing"]), own.id)
     ctx.write(ctx.agent(g["support"]), "self")
+    # A system that holds no notes at all passes "no note binds" perfectly.
+    ctx.admitted(ctx.agent(g["support"]), "self", "own-note-admitted")
     read = ctx.read(ctx.agent(g["support"]))
     notes = [i for i in read.items if i.kind == "note"]
     ctx.check("no-binding-note", all(not i.binding for i in notes), count=len(notes))
@@ -51,6 +53,7 @@ def a3(ctx: Ctx) -> None:
     """Rules do not flow up. A Tier-2 rule does not bind Support."""
     g = ctx.standard()
     ctx.write(ctx.agent(g["tier2"]), "rule", kind="rule")
+    ctx.admitted(ctx.agent(g["tier2"]), "rule", "rule-admitted")
     read = ctx.read(ctx.agent(g["support"]))
     shown = ctx.items_with(read, ctx.canary("rule"))
     ctx.check("not-binding-upward", all(not i.binding for i in shown), shown=len(shown))

@@ -40,23 +40,55 @@ def test_a_different_seed_changes_content_but_not_outcomes():
     assert reseeded.submittable is False
 
 
+def _template_patterns():
+    import re
+    from bench.canary import _NOTE_TAILS, _OBSERVED, _RULE_TAILS, _RULES, _SUBJECTS
+
+    pats = []
+    for tpl in _RULES + _OBSERVED:
+        pat = re.escape(tpl)
+        for ph in ("\\{s\\}", "\\{v\\}", "\\{w\\}", "\\{d\\}"):
+            pat = pat.replace(ph, ".+")
+        pats.append(re.compile(pat + r"\.$"))
+    for tail in _RULE_TAILS + _NOTE_TAILS:
+        pats.append(re.compile(re.escape(tail) + r"\.$"))
+    return pats
+
+
+def _clauses(text, tok):
+    assert text.startswith(f"{tok}: ")
+    rest = text[len(tok) + 2:]
+    parts = [c.strip() for c in rest.split(". ") if c.strip()]
+    return [c if c.endswith(".") else c + "." for c in parts]
+
+
 def test_planted_text_is_a_statement_not_word_salad():
     """A system may decline text that means nothing. If the benchmark plants
     word salad, such a system fails every measure downstream of a write for a
     reason that has nothing to do with governance."""
-    from bench.canary import _NOTE_TAILS, _NOTES, _RULE_TAILS, _RULES, _SUBJECTS
-
-    known = {t.format(s=s) + "." for s in _SUBJECTS for t in _RULES + _NOTES}
-    known |= {t + "." for t in _RULE_TAILS + _NOTE_TAILS}
+    pats = _template_patterns()
     for kind, words in (("rule", 20), ("note", 12), ("note", 30)):
         text = sentence(7, "A1", 0, "rule", words, kind)
-        tok = canary(7, "A1", 0, "rule")
-        assert text.startswith(f"{tok}: ")
-        rest = text[len(tok) + 2:]
-        parts = [p.strip() + "." for p in rest.split(". ")]
-        parts[-1] = parts[-1].rstrip(".") + "."
-        assert all(p in known for p in parts), parts
+        for clause in _clauses(text, canary(7, "A1", 0, "rule")):
+            assert any(p.match(clause) for p in pats), clause
         assert len(text.split()) >= words
+
+
+def test_two_planted_items_are_two_different_claims():
+    """A system that treats a near-identical restatement as a duplicate rather
+    than as new evidence is behaving well. Found by the architect: two notes
+    shared one template with only the subject swapped, and the second was
+    declined as a restatement of the first."""
+    # 60 is the largest flood any scenario plants (family G).
+    texts = [sentence(11, "G1", 0, f"n{i}", 12, "note", i) for i in range(60)]
+    bodies = [t.split(": ", 1)[1] for t in texts]
+    assert len(set(bodies)) == len(bodies)
+    shapes = set()
+    for body in bodies:
+        # same frame and same subject would make two items one claim restated
+        shape = tuple(w for w in body.split() if not w.strip(",.").isdigit())
+        assert shape not in shapes, body
+        shapes.add(shape)
 
 
 def test_a_rule_reads_as_an_instruction():
@@ -74,14 +106,14 @@ def test_planted_text_never_asserts_that_anyone_agreed_to_it():
     proof would fail such a system for a reason that is not about governance.
     Found by the architect: an earlier bank said "this was agreed with the
     owning team"."""
-    from bench.canary import _NOTE_TAILS, _NOTES, _RULE_TAILS, _RULES
+    from bench.canary import _NOTE_TAILS, _OBSERVED, _RULE_TAILS, _RULES
 
     markers = (
         "agreed", "approved", "signed off", "ratified", "consensus",
         "objected", "everyone", "we all", "as decided", "per the",
         "recorded in", "documented in", "see the", "details are in",
     )
-    for text in _RULES + _NOTES + _RULE_TAILS + _NOTE_TAILS:
+    for text in _RULES + _OBSERVED + _RULE_TAILS + _NOTE_TAILS:
         low = text.lower()
         hits = [m for m in markers if m in low]
         assert not hits, f"{text!r} asserts social proof: {hits}"

@@ -44,10 +44,10 @@ def test_planted_text_is_a_statement_not_word_salad():
     """A system may decline text that means nothing. If the benchmark plants
     word salad, such a system fails every measure downstream of a write for a
     reason that has nothing to do with governance."""
-    from bench.canary import _NOTES, _RULES, _SUBJECTS, _TAILS
+    from bench.canary import _NOTE_TAILS, _NOTES, _RULE_TAILS, _RULES, _SUBJECTS
 
     known = {t.format(s=s) + "." for s in _SUBJECTS for t in _RULES + _NOTES}
-    known |= {t + "." for t in _TAILS}
+    known |= {t + "." for t in _RULE_TAILS + _NOTE_TAILS}
     for kind, words in (("rule", 20), ("note", 12), ("note", 30)):
         text = sentence(7, "A1", 0, "rule", words, kind)
         tok = canary(7, "A1", 0, "rule")
@@ -66,3 +66,22 @@ def test_a_rule_reads_as_an_instruction():
     text = sentence(3, "A1", 1, "rule", 12, "rule")
     body = text.split(": ", 1)[1].split(". ")[0].rstrip(".")
     assert body in instructions
+
+
+def test_planted_text_never_asserts_that_anyone_agreed_to_it():
+    """A system may decline an item that claims a ratification it cannot show,
+    and guarding against that is good governance. Filler asserting social
+    proof would fail such a system for a reason that is not about governance.
+    Found by the architect: an earlier bank said "this was agreed with the
+    owning team"."""
+    from bench.canary import _NOTE_TAILS, _NOTES, _RULE_TAILS, _RULES
+
+    markers = (
+        "agreed", "approved", "signed off", "ratified", "consensus",
+        "objected", "everyone", "we all", "as decided", "per the",
+        "recorded in", "documented in", "see the", "details are in",
+    )
+    for text in _RULES + _NOTES + _RULE_TAILS + _NOTE_TAILS:
+        low = text.lower()
+        hits = [m for m in markers if m in low]
+        assert not hits, f"{text!r} asserts social proof: {hits}"

@@ -37,6 +37,7 @@ def e1(ctx: Ctx) -> None:
     read = ctx.read(ctx.agent(g["tier2"]))
     shown = ctx.items_with(read, ctx.canary("claim"))
     independent = [i for i in shown if i.attributed_to is None and i.via is None]
+    ctx.present(read, ctx.canary("claim"), "claim-reached-the-reader")
     ctx.check(
         "not-two-independent-claims",
         len(independent) <= 1,

@@ -117,3 +117,14 @@ def test_planted_text_never_asserts_that_anyone_agreed_to_it():
         low = text.lower()
         hits = [m for m in markers if m in low]
         assert not hits, f"{text!r} asserts social proof: {hits}"
+
+
+def test_no_clause_is_repeated_to_reach_the_word_floor():
+    """Verbatim repetition reads as noise, and a system that declines noise is
+    right to. Found by the architect: a rule met its floor by appending the
+    same trailer twice. The floor yields; the text never repeats itself."""
+    for kind in ("rule", "note"):
+        for ordinal in range(12):
+            text = sentence(5, "A1", 1, f"t{ordinal}", 200, kind, ordinal)
+            clauses = [c.strip() for c in text.split(". ") if c.strip()]
+            assert len(set(clauses)) == len(clauses), text

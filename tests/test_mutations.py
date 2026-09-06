@@ -118,6 +118,23 @@ def test_mutants_keep_contributing():
         assert run(mutant()).families["R"]["rate"] == 1.0, mutant.__name__
 
 
+class NotesRefused(ReferenceMemory):
+    """Holds rules, refuses notes. A memory that keeps only decisions.
+
+    Not an absurd system — a real judge declined an observation for having
+    "no directive weight of its own". But a fleet memory that holds only
+    decisions cannot carry what one agent learned to the agent who needs it,
+    which is half the promise; and every measure that says "a note must not
+    do X" is satisfied for free.
+    """
+
+    def write(self, agent, w):
+        if w.kind != "rule":
+            self.seq += 1
+            return Receipt(id=f"i{self.seq}", accepted=True)
+        return super().write(agent, w)
+
+
 class AdmitsNothing(ReferenceMemory):
     """Accepts every write, holds none of it. Shows only what it must not.
 
@@ -134,7 +151,7 @@ class AdmitsNothing(ReferenceMemory):
         return Receipt(id=f"i{self.seq}", accepted=True)
 
 
-@pytest.mark.parametrize("family", ["C", "S", "F", "T", "E", "G"])
+@pytest.mark.parametrize("family", ["C", "S", "F", "T", "E", "G", "A", "R"])
 def test_a_system_that_holds_nothing_passes_no_absence(family):
     """An absence must be earned: the plant is shown to a reader entitled to
     it first, so declining the write fails the precondition instead of
@@ -143,6 +160,14 @@ def test_a_system_that_holds_nothing_passes_no_absence(family):
     assert result.families[family]["rate"] < 1.0, (
         f"family {family} passes vacuously for a system that admits nothing"
     )
+
+
+@pytest.mark.parametrize("family", ["A", "R"])
+def test_refusing_notes_is_not_governance(family):
+    """Keeping only decisions is not the same as governing memory well: the
+    measures that say what a note may not do must not be satisfied by a
+    system that has no notes."""
+    assert run(NotesRefused()).families[family]["rate"] < 1.0
 
 
 def test_holding_nothing_is_not_governance():

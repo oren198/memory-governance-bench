@@ -9,7 +9,7 @@ def a1(ctx: Ctx) -> None:
     """Rules bind at every depth, in full. A Company rule reaches Tier-2,
     verbatim and binding."""
     g = ctx.standard()
-    content = ctx.text("rule", words=20)
+    content = ctx.text("rule", words=20, kind="rule")
     ctx.write(ctx.agent(g["company"]), "rule", kind="rule", content=content)
     read = ctx.read(ctx.agent(g["tier2"]))
     shown = ctx.items_with(read, ctx.canary("rule"))
@@ -120,7 +120,7 @@ def a7(ctx: Ctx) -> None:
 def a8(ctx: Ctx) -> None:
     """An owner rule is not paraphrased: it survives later writes verbatim."""
     g = ctx.standard()
-    content = ctx.text("owner", words=25)
+    content = ctx.text("owner", words=25, kind="rule")
     ctx.write(ctx.agent(g["support"], owner=True), "owner", kind="rule", content=content)
     for n in range(12):
         ctx.write(ctx.agent(g["support"]), f"noise{n}")

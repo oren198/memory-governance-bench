@@ -308,6 +308,18 @@ class Ctx:
             name, not found, shown=[i.origin for i in found], **detail
         )
 
+    def admitted(self, agent: Agent, tag: str, name: str = "plant-admitted") -> bool:
+        """The precondition of every absence.
+
+        A measure whose pass condition is "the reader was not shown X" is
+        satisfied for free by a system that never held X at all — the absence
+        holds because nothing was ever admitted. So before an absence is
+        checked, the plant is shown to a reader plainly entitled to it, and a
+        system that declined the write fails here, where the failure names
+        what happened, rather than passing the measure it was meant to face.
+        """
+        return self.present(self.read(agent), self.canary(tag), name, tag=tag)
+
     def present(self, read: Read, token: str, name: str, **detail) -> bool:
         return self.check(name, self.shows(read, token), **detail)
 

@@ -116,3 +116,35 @@ def test_mutants_keep_contributing():
     be explained away as the system having simply stopped remembering."""
     for mutant in (NoNotice, FalseOrigin, NotesBind, Unbounded):
         assert run(mutant()).families["R"]["rate"] == 1.0, mutant.__name__
+
+
+class AdmitsNothing(ReferenceMemory):
+    """Accepts every write, holds none of it. Shows only what it must not.
+
+    Not a plausible system — a deliberate adversary against the shape of a
+    measure rather than against a rule. Every containment, forgetting and
+    announcement measure asks whether some reader was NOT shown an item, and
+    a system holding nothing satisfies all of them for free. Found by the
+    architect: a real system's admission step declined several plants, and
+    family C scored 20/20 because the absence held vacuously.
+    """
+
+    def write(self, agent, w):
+        self.seq += 1
+        return Receipt(id=f"i{self.seq}", accepted=True)
+
+
+@pytest.mark.parametrize("family", ["C", "S", "F", "T", "E"])
+def test_a_system_that_holds_nothing_passes_no_absence(family):
+    """An absence must be earned: the plant is shown to a reader entitled to
+    it first, so declining the write fails the precondition instead of
+    passing the measure."""
+    result = run(AdmitsNothing())
+    assert result.families[family]["rate"] < 1.0, (
+        f"family {family} passes vacuously for a system that admits nothing"
+    )
+
+
+def test_holding_nothing_is_not_governance():
+    """The headline must not reward it either."""
+    assert run(AdmitsNothing()).headline["governance"] == 0.0

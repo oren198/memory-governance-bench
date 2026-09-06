@@ -27,6 +27,10 @@ def s2(ctx: Ctx) -> None:
     g = ctx.standard()
     r = ctx.write(ctx.agent(g["billing"]), "claim")
     ctx.announce(ctx.agent(g["billing"]), r.id)
+    # The listener must actually hear it, or "nobody else was shown it" is
+    # satisfied by an announcement that reached nobody at all.
+    ctx.present(ctx.read(ctx.agent(g["support"])), ctx.canary("claim"),
+                "listener-heard-it")
     tok = ctx.canary("claim")
     for reader in ("sales", "company", "tier2"):
         read = ctx.read(ctx.agent(g[reader]))
@@ -39,6 +43,7 @@ def s3(ctx: Ctx) -> None:
     refused, or at least never delivered."""
     g = ctx.standard()
     r = ctx.write(ctx.agent(g["billing"]), "claim")
+    ctx.admitted(ctx.agent(g["billing"]), "claim")
     ctx.retract(ctx.agent(g["billing"]), r.id)
     result = ctx.announce(ctx.agent(g["billing"]), r.id)
     read = ctx.read(ctx.agent(g["support"]))
@@ -53,7 +58,8 @@ def s4a(ctx: Ctx) -> None:
     g = ctx.standard()
     r = ctx.write(ctx.agent(g["billing"]), "claim")
     ctx.announce(ctx.agent(g["billing"]), r.id)
-    ctx.read(ctx.agent(g["support"]))
+    ctx.present(ctx.read(ctx.agent(g["support"])), ctx.canary("claim"),
+                "shown-before-retraction")
     ctx.retract(ctx.agent(g["billing"]), r.id)
     read = ctx.read(ctx.agent(g["support"]))
     ctx.absent(read, ctx.canary("claim"), "removed")
@@ -66,7 +72,8 @@ def s4b(ctx: Ctx) -> None:
     g = ctx.standard()
     r = ctx.write(ctx.agent(g["billing"]), "claim")
     ctx.announce(ctx.agent(g["billing"]), r.id)
-    ctx.read(ctx.agent(g["support"]))
+    ctx.present(ctx.read(ctx.agent(g["support"])), ctx.canary("claim"),
+                "shown-before-retraction")
     ctx.retract(ctx.agent(g["billing"]), r.id)
     read = ctx.read(ctx.agent(g["support"]))
     events = ctx.events_for(read, ctx.canary("claim"))
@@ -87,7 +94,8 @@ def s5(ctx: Ctx) -> None:
         ctx.check("relayable", False, why="no receipt on the received item")
         return
     ctx.announce(ctx.agent(g["support"]), relayed[0].receipt)
-    ctx.read(ctx.agent(g["tier2"]))
+    ctx.present(ctx.read(ctx.agent(g["tier2"])), ctx.canary("claim"),
+                "second-hand-shown-before-retraction")
     ctx.retract(ctx.agent(g["billing"]), r.id)
     read = ctx.read(ctx.agent(g["tier2"]))
     ctx.absent(read, ctx.canary("claim"), "second-hand-removed")

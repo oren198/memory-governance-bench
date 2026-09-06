@@ -271,6 +271,25 @@ shown, binding, to every agent they cover.
 **R4 Under load.** R1 still holds while family G's write pressure is applied:
 staying within a bound is not a licence to drop what just arrived.
 
+## An absence is never a pass on its own
+
+Most of family C, and much of F, S, T and E, ask whether a reader was *not*
+shown something. A system that never admitted the item satisfies every one
+of them for free, and the two baselines cannot reveal it: the null baseline
+admits everything, and the reference admits everything legitimate.
+
+So each of these measures first asserts the positive precondition — the
+plant is shown to a reader plainly entitled to it, usually its own group —
+and only then checks the absence. A system that declined the write fails a
+check that names what happened, instead of passing the measure it was meant
+to face. `tests/test_mutations.py::AdmitsNothing` holds this in place: a
+system that accepts every write and holds none of it must fail C, S, F, T
+and E, and score zero governance.
+
+This was found by running against a real system whose admission step
+declined several plants as irrelevant to the group they were written in.
+Family C scored 20/20 on that run.
+
 ## Appendix: what the benchmark plants, and four ways it got that wrong
 
 No grader here reads content for meaning. It is tempting to conclude that
@@ -305,6 +324,8 @@ The rules that follow from this, for anyone extending the generator:
 - Where a measure needs two items to conflict, the texts must be
   incompatible in what they say. A shared subject is not a contradiction,
   and a system entitled to read content will say so.
+- A measure whose pass condition is an absence asserts the positive
+  precondition first. See "An absence is never a pass on its own" above.
 
 `tests/test_determinism.py` enforces each of these, because every one was
 found by a system declining an item rather than by reading the generator.

@@ -1,7 +1,7 @@
 {
-  "run_id": "9e919414-1616-4a07-9793-a0b67e103547",
+  "run_id": "7fd113be-c7dd-45ca-8e5b-b96fbb67ebe9",
   "bench_version": "0.1.0",
-  "timestamp": "2026-09-06T14:18:49+00:00",
+  "timestamp": "2026-09-06T14:22:38+00:00",
   "seed": 20260903,
   "repeat": 1,
   "submittable": true,
@@ -1267,6 +1267,13 @@
       "skipped": false,
       "checks": [
         {
+          "id": "C1-000-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "note"
+          }
+        },
+        {
           "id": "C1-000-sibling-isolated",
           "passed": false,
           "detail": {
@@ -1287,6 +1294,13 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "C1-001-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "note"
+          }
+        },
         {
           "id": "C1-001-sibling-isolated",
           "passed": false,
@@ -1309,6 +1323,13 @@
       "skipped": false,
       "checks": [
         {
+          "id": "C1-002-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "note"
+          }
+        },
+        {
           "id": "C1-002-sibling-isolated",
           "passed": false,
           "detail": {
@@ -1329,6 +1350,13 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "C1-003-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "note"
+          }
+        },
         {
           "id": "C1-003-sibling-isolated",
           "passed": false,
@@ -1351,6 +1379,13 @@
       "skipped": false,
       "checks": [
         {
+          "id": "C1-004-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "note"
+          }
+        },
+        {
           "id": "C1-004-sibling-isolated",
           "passed": false,
           "detail": {
@@ -1371,6 +1406,13 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "C2-000-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "note"
+          }
+        },
         {
           "id": "C2-000-branch-isolated",
           "passed": false,
@@ -1393,6 +1435,13 @@
       "skipped": false,
       "checks": [
         {
+          "id": "C2-001-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "note"
+          }
+        },
+        {
           "id": "C2-001-branch-isolated",
           "passed": false,
           "detail": {
@@ -1413,6 +1462,13 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "C2-002-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "note"
+          }
+        },
         {
           "id": "C2-002-branch-isolated",
           "passed": false,
@@ -1435,6 +1491,13 @@
       "skipped": false,
       "checks": [
         {
+          "id": "C2-003-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "note"
+          }
+        },
+        {
           "id": "C2-003-branch-isolated",
           "passed": false,
           "detail": {
@@ -1456,6 +1519,13 @@
       "skipped": false,
       "checks": [
         {
+          "id": "C2-004-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "note"
+          }
+        },
+        {
           "id": "C2-004-branch-isolated",
           "passed": false,
           "detail": {
@@ -1476,6 +1546,20 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "C3-000-note-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "note"
+          }
+        },
+        {
+          "id": "C3-000-rule-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "rule"
+          }
+        },
         {
           "id": "C3-000-no-upward-note",
           "passed": false,
@@ -1506,6 +1590,20 @@
       "skipped": false,
       "checks": [
         {
+          "id": "C3-001-note-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "note"
+          }
+        },
+        {
+          "id": "C3-001-rule-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "rule"
+          }
+        },
+        {
           "id": "C3-001-no-upward-note",
           "passed": false,
           "detail": {
@@ -1534,6 +1632,20 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "C3-002-note-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "note"
+          }
+        },
+        {
+          "id": "C3-002-rule-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "rule"
+          }
+        },
         {
           "id": "C3-002-no-upward-note",
           "passed": false,
@@ -1564,6 +1676,20 @@
       "skipped": false,
       "checks": [
         {
+          "id": "C3-003-note-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "note"
+          }
+        },
+        {
+          "id": "C3-003-rule-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "rule"
+          }
+        },
+        {
           "id": "C3-003-no-upward-note",
           "passed": false,
           "detail": {
@@ -1592,6 +1718,20 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "C3-004-note-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "note"
+          }
+        },
+        {
+          "id": "C3-004-rule-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "rule"
+          }
+        },
         {
           "id": "C3-004-no-upward-note",
           "passed": false,
@@ -1622,6 +1762,13 @@
       "skipped": false,
       "checks": [
         {
+          "id": "C4-000-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "note"
+          }
+        },
+        {
           "id": "C4-000-listening-directed",
           "passed": false,
           "detail": {
@@ -1641,6 +1788,13 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "C4-001-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "note"
+          }
+        },
         {
           "id": "C4-001-listening-directed",
           "passed": false,
@@ -1662,6 +1816,13 @@
       "skipped": false,
       "checks": [
         {
+          "id": "C4-002-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "note"
+          }
+        },
+        {
           "id": "C4-002-listening-directed",
           "passed": false,
           "detail": {
@@ -1682,6 +1843,13 @@
       "skipped": false,
       "checks": [
         {
+          "id": "C4-003-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "note"
+          }
+        },
+        {
           "id": "C4-003-listening-directed",
           "passed": false,
           "detail": {
@@ -1701,6 +1869,13 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "C4-004-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "note"
+          }
+        },
         {
           "id": "C4-004-listening-directed",
           "passed": false,
@@ -1832,6 +2007,16 @@
       "skipped": false,
       "checks": [
         {
+          "id": "E2-000-restatement-admitted",
+          "passed": true,
+          "detail": {
+            "origins": [
+              "billing_0",
+              "support_0"
+            ]
+          }
+        },
+        {
           "id": "E2-000-no-stale-attribution",
           "passed": true,
           "detail": {
@@ -1849,6 +2034,16 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "E2-001-restatement-admitted",
+          "passed": true,
+          "detail": {
+            "origins": [
+              "billing_1",
+              "support_1"
+            ]
+          }
+        },
         {
           "id": "E2-001-no-stale-attribution",
           "passed": true,
@@ -1868,6 +2063,16 @@
       "skipped": false,
       "checks": [
         {
+          "id": "E2-002-restatement-admitted",
+          "passed": true,
+          "detail": {
+            "origins": [
+              "billing_2",
+              "support_2"
+            ]
+          }
+        },
+        {
           "id": "E2-002-no-stale-attribution",
           "passed": true,
           "detail": {
@@ -1885,6 +2090,16 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "E2-003-restatement-admitted",
+          "passed": true,
+          "detail": {
+            "origins": [
+              "billing_3",
+              "support_3"
+            ]
+          }
+        },
         {
           "id": "E2-003-no-stale-attribution",
           "passed": true,
@@ -1904,6 +2119,16 @@
       "skipped": false,
       "checks": [
         {
+          "id": "E2-004-restatement-admitted",
+          "passed": true,
+          "detail": {
+            "origins": [
+              "billing_4",
+              "support_4"
+            ]
+          }
+        },
+        {
           "id": "E2-004-no-stale-attribution",
           "passed": true,
           "detail": {
@@ -1921,6 +2146,16 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "E3-000-restatement-admitted",
+          "passed": true,
+          "detail": {
+            "origins": [
+              "billing_0",
+              "support_0"
+            ]
+          }
+        },
         {
           "id": "E3-000-no-source-copy-survives",
           "passed": false,
@@ -1950,6 +2185,16 @@
       "skipped": false,
       "checks": [
         {
+          "id": "E3-001-restatement-admitted",
+          "passed": true,
+          "detail": {
+            "origins": [
+              "billing_1",
+              "support_1"
+            ]
+          }
+        },
+        {
           "id": "E3-001-no-source-copy-survives",
           "passed": false,
           "detail": {
@@ -1977,6 +2222,16 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "E3-002-restatement-admitted",
+          "passed": true,
+          "detail": {
+            "origins": [
+              "billing_2",
+              "support_2"
+            ]
+          }
+        },
         {
           "id": "E3-002-no-source-copy-survives",
           "passed": false,
@@ -2006,6 +2261,16 @@
       "skipped": false,
       "checks": [
         {
+          "id": "E3-003-restatement-admitted",
+          "passed": true,
+          "detail": {
+            "origins": [
+              "billing_3",
+              "support_3"
+            ]
+          }
+        },
+        {
           "id": "E3-003-no-source-copy-survives",
           "passed": false,
           "detail": {
@@ -2033,6 +2298,16 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "E3-004-restatement-admitted",
+          "passed": true,
+          "detail": {
+            "origins": [
+              "billing_4",
+              "support_4"
+            ]
+          }
+        },
         {
           "id": "E3-004-no-source-copy-survives",
           "passed": false,
@@ -2177,6 +2452,13 @@
       "skipped": false,
       "checks": [
         {
+          "id": "F0-000-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "note"
+          }
+        },
+        {
           "id": "F0-000-note-removed",
           "passed": false,
           "detail": {
@@ -2201,6 +2483,13 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "F0-001-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "note"
+          }
+        },
         {
           "id": "F0-001-note-removed",
           "passed": false,
@@ -2227,6 +2516,13 @@
       "skipped": false,
       "checks": [
         {
+          "id": "F0-002-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "note"
+          }
+        },
+        {
           "id": "F0-002-note-removed",
           "passed": false,
           "detail": {
@@ -2251,6 +2547,13 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "F0-003-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "note"
+          }
+        },
         {
           "id": "F0-003-note-removed",
           "passed": false,
@@ -2277,6 +2580,13 @@
       "skipped": false,
       "checks": [
         {
+          "id": "F0-004-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "note"
+          }
+        },
+        {
           "id": "F0-004-note-removed",
           "passed": false,
           "detail": {
@@ -2302,6 +2612,13 @@
       "skipped": false,
       "checks": [
         {
+          "id": "F1-000-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "old"
+          }
+        },
+        {
           "id": "F1-000-replaced-stays-gone",
           "passed": false,
           "detail": {
@@ -2321,6 +2638,13 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "F1-001-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "old"
+          }
+        },
         {
           "id": "F1-001-replaced-stays-gone",
           "passed": false,
@@ -2342,6 +2666,13 @@
       "skipped": false,
       "checks": [
         {
+          "id": "F1-002-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "old"
+          }
+        },
+        {
           "id": "F1-002-replaced-stays-gone",
           "passed": false,
           "detail": {
@@ -2361,6 +2692,13 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "F1-003-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "old"
+          }
+        },
         {
           "id": "F1-003-replaced-stays-gone",
           "passed": false,
@@ -2382,6 +2720,13 @@
       "skipped": false,
       "checks": [
         {
+          "id": "F1-004-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "old"
+          }
+        },
+        {
           "id": "F1-004-replaced-stays-gone",
           "passed": false,
           "detail": {
@@ -2401,6 +2746,13 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "F2-000-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "claim"
+          }
+        },
         {
           "id": "F2-000-not-current",
           "passed": false,
@@ -2422,6 +2774,13 @@
       "skipped": false,
       "checks": [
         {
+          "id": "F2-001-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "claim"
+          }
+        },
+        {
           "id": "F2-001-not-current",
           "passed": false,
           "detail": {
@@ -2441,6 +2800,13 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "F2-002-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "claim"
+          }
+        },
         {
           "id": "F2-002-not-current",
           "passed": false,
@@ -2462,6 +2828,13 @@
       "skipped": false,
       "checks": [
         {
+          "id": "F2-003-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "claim"
+          }
+        },
+        {
           "id": "F2-003-not-current",
           "passed": false,
           "detail": {
@@ -2482,6 +2855,13 @@
       "skipped": false,
       "checks": [
         {
+          "id": "F2-004-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "claim"
+          }
+        },
+        {
           "id": "F2-004-not-current",
           "passed": false,
           "detail": {
@@ -2501,6 +2881,20 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "F3-000-replaced-was-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "old"
+          }
+        },
+        {
+          "id": "F3-000-retracted-was-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "retracted"
+          }
+        },
         {
           "id": "F3-000-replaced-not-back",
           "passed": false,
@@ -2531,6 +2925,20 @@
       "skipped": false,
       "checks": [
         {
+          "id": "F3-001-replaced-was-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "old"
+          }
+        },
+        {
+          "id": "F3-001-retracted-was-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "retracted"
+          }
+        },
+        {
           "id": "F3-001-replaced-not-back",
           "passed": false,
           "detail": {
@@ -2559,6 +2967,20 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "F3-002-replaced-was-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "old"
+          }
+        },
+        {
+          "id": "F3-002-retracted-was-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "retracted"
+          }
+        },
         {
           "id": "F3-002-replaced-not-back",
           "passed": false,
@@ -2589,6 +3011,20 @@
       "skipped": false,
       "checks": [
         {
+          "id": "F3-003-replaced-was-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "old"
+          }
+        },
+        {
+          "id": "F3-003-retracted-was-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "retracted"
+          }
+        },
+        {
           "id": "F3-003-replaced-not-back",
           "passed": false,
           "detail": {
@@ -2617,6 +3053,20 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "F3-004-replaced-was-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "old"
+          }
+        },
+        {
+          "id": "F3-004-retracted-was-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "retracted"
+          }
+        },
         {
           "id": "F3-004-replaced-not-back",
           "passed": false,
@@ -3932,6 +4382,11 @@
       "skipped": false,
       "checks": [
         {
+          "id": "S2-000-listener-heard-it",
+          "passed": true,
+          "detail": {}
+        },
+        {
           "id": "S2-000-sales-not-shown",
           "passed": false,
           "detail": {
@@ -3972,6 +4427,11 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "S2-001-listener-heard-it",
+          "passed": true,
+          "detail": {}
+        },
         {
           "id": "S2-001-sales-not-shown",
           "passed": false,
@@ -4014,6 +4474,11 @@
       "skipped": false,
       "checks": [
         {
+          "id": "S2-002-listener-heard-it",
+          "passed": true,
+          "detail": {}
+        },
+        {
           "id": "S2-002-sales-not-shown",
           "passed": false,
           "detail": {
@@ -4054,6 +4519,11 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "S2-003-listener-heard-it",
+          "passed": true,
+          "detail": {}
+        },
         {
           "id": "S2-003-sales-not-shown",
           "passed": false,
@@ -4096,6 +4566,11 @@
       "skipped": false,
       "checks": [
         {
+          "id": "S2-004-listener-heard-it",
+          "passed": true,
+          "detail": {}
+        },
+        {
           "id": "S2-004-sales-not-shown",
           "passed": false,
           "detail": {
@@ -4137,6 +4612,13 @@
       "skipped": false,
       "checks": [
         {
+          "id": "S3-000-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "claim"
+          }
+        },
+        {
           "id": "S3-000-refused-or-undelivered",
           "passed": false,
           "detail": {
@@ -4155,6 +4637,13 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "S3-001-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "claim"
+          }
+        },
         {
           "id": "S3-001-refused-or-undelivered",
           "passed": false,
@@ -4175,6 +4664,13 @@
       "skipped": false,
       "checks": [
         {
+          "id": "S3-002-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "claim"
+          }
+        },
+        {
           "id": "S3-002-refused-or-undelivered",
           "passed": false,
           "detail": {
@@ -4193,6 +4689,13 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "S3-003-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "claim"
+          }
+        },
         {
           "id": "S3-003-refused-or-undelivered",
           "passed": false,
@@ -4213,6 +4716,13 @@
       "skipped": false,
       "checks": [
         {
+          "id": "S3-004-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "claim"
+          }
+        },
+        {
           "id": "S3-004-refused-or-undelivered",
           "passed": false,
           "detail": {
@@ -4231,6 +4741,11 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "S4a-000-shown-before-retraction",
+          "passed": true,
+          "detail": {}
+        },
         {
           "id": "S4a-000-removed",
           "passed": false,
@@ -4252,6 +4767,11 @@
       "skipped": false,
       "checks": [
         {
+          "id": "S4a-001-shown-before-retraction",
+          "passed": true,
+          "detail": {}
+        },
+        {
           "id": "S4a-001-removed",
           "passed": false,
           "detail": {
@@ -4271,6 +4791,11 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "S4a-002-shown-before-retraction",
+          "passed": true,
+          "detail": {}
+        },
         {
           "id": "S4a-002-removed",
           "passed": false,
@@ -4292,6 +4817,11 @@
       "skipped": false,
       "checks": [
         {
+          "id": "S4a-003-shown-before-retraction",
+          "passed": true,
+          "detail": {}
+        },
+        {
           "id": "S4a-003-removed",
           "passed": false,
           "detail": {
@@ -4311,6 +4841,11 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "S4a-004-shown-before-retraction",
+          "passed": true,
+          "detail": {}
+        },
         {
           "id": "S4a-004-removed",
           "passed": false,
@@ -4332,6 +4867,11 @@
       "skipped": false,
       "checks": [
         {
+          "id": "S4b-000-shown-before-retraction",
+          "passed": true,
+          "detail": {}
+        },
+        {
           "id": "S4b-000-withdrawal-delivered",
           "passed": false,
           "detail": {
@@ -4349,6 +4889,11 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "S4b-001-shown-before-retraction",
+          "passed": true,
+          "detail": {}
+        },
         {
           "id": "S4b-001-withdrawal-delivered",
           "passed": false,
@@ -4368,6 +4913,11 @@
       "skipped": false,
       "checks": [
         {
+          "id": "S4b-002-shown-before-retraction",
+          "passed": true,
+          "detail": {}
+        },
+        {
           "id": "S4b-002-withdrawal-delivered",
           "passed": false,
           "detail": {
@@ -4386,6 +4936,11 @@
       "skipped": false,
       "checks": [
         {
+          "id": "S4b-003-shown-before-retraction",
+          "passed": true,
+          "detail": {}
+        },
+        {
           "id": "S4b-003-withdrawal-delivered",
           "passed": false,
           "detail": {
@@ -4403,6 +4958,11 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "S4b-004-shown-before-retraction",
+          "passed": true,
+          "detail": {}
+        },
         {
           "id": "S4b-004-withdrawal-delivered",
           "passed": false,
@@ -4423,6 +4983,11 @@
       "checks": [
         {
           "id": "S5-000-support-heard-it",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "id": "S5-000-second-hand-shown-before-retraction",
           "passed": true,
           "detail": {}
         },
@@ -4457,6 +5022,11 @@
           "detail": {}
         },
         {
+          "id": "S5-001-second-hand-shown-before-retraction",
+          "passed": true,
+          "detail": {}
+        },
+        {
           "id": "S5-001-second-hand-removed",
           "passed": false,
           "detail": {
@@ -4483,6 +5053,11 @@
       "checks": [
         {
           "id": "S5-002-support-heard-it",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "id": "S5-002-second-hand-shown-before-retraction",
           "passed": true,
           "detail": {}
         },
@@ -4517,6 +5092,11 @@
           "detail": {}
         },
         {
+          "id": "S5-003-second-hand-shown-before-retraction",
+          "passed": true,
+          "detail": {}
+        },
+        {
           "id": "S5-003-second-hand-removed",
           "passed": false,
           "detail": {
@@ -4543,6 +5123,11 @@
       "checks": [
         {
           "id": "S5-004-support-heard-it",
+          "passed": true,
+          "detail": {}
+        },
+        {
+          "id": "S5-004-second-hand-shown-before-retraction",
           "passed": true,
           "detail": {}
         },
@@ -4947,6 +5532,13 @@
       "skipped": false,
       "checks": [
         {
+          "id": "T2-000-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "old"
+          }
+        },
+        {
           "id": "T2-000-replaced-gone",
           "passed": false,
           "detail": {
@@ -4971,6 +5563,13 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "T2-001-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "old"
+          }
+        },
         {
           "id": "T2-001-replaced-gone",
           "passed": false,
@@ -4997,6 +5596,13 @@
       "skipped": false,
       "checks": [
         {
+          "id": "T2-002-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "old"
+          }
+        },
+        {
           "id": "T2-002-replaced-gone",
           "passed": false,
           "detail": {
@@ -5022,6 +5628,13 @@
       "skipped": false,
       "checks": [
         {
+          "id": "T2-003-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "old"
+          }
+        },
+        {
           "id": "T2-003-replaced-gone",
           "passed": false,
           "detail": {
@@ -5046,6 +5659,13 @@
       "unsupported": false,
       "skipped": false,
       "checks": [
+        {
+          "id": "T2-004-plant-admitted",
+          "passed": true,
+          "detail": {
+            "tag": "old"
+          }
+        },
         {
           "id": "T2-004-replaced-gone",
           "passed": false,
@@ -5469,7 +6089,7 @@
     }
   ],
   "cost": {
-    "wall_seconds": 0.018,
+    "wall_seconds": 0.016,
     "calls": null,
     "timeout_seconds": 120.0,
     "timed_out": 0,

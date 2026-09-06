@@ -26,6 +26,7 @@ def t2(ctx: Ctx) -> None:
     g = ctx.standard()
     subj = f"batch-{ctx.variant}"
     first = ctx.write(ctx.agent(g["billing"]), "old", subject=subj)
+    ctx.admitted(ctx.agent(g["billing"]), "old")
     ctx.write(ctx.agent(g["billing"]), "new", subject=subj, replaces=first.id)
     read = ctx.read(ctx.agent(g["billing"]))
     ctx.absent(read, ctx.canary("old"), "replaced-gone")

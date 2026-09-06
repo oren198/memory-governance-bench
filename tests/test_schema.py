@@ -103,3 +103,33 @@ def test_a_skipped_scenario_is_neither_pass_nor_fail():
     assert skipped, "the null adapter declares a tree, so P3 is not applicable"
     assert all(s["passed"] is None for s in skipped)
     assert all(s.get("reason") for s in skipped), "a skip must say why"
+
+
+def test_remarks_are_the_teams_words_and_bounded():
+    """A run file is a record, not a place to publish an argument."""
+    from bench.adapter.null import NullMemory
+    from bench.runner import run
+    from bench.schema import MAX_REMARK_CHARS, MAX_REMARKS, validate
+
+    r = run(NullMemory(), remarks=["S4b fails for a known open issue, #186"]).to_json()
+    assert r["remarks"] == ["S4b fails for a known open issue, #186"]
+    assert validate(r) == []
+
+    r["remarks"] = ["x"] * (MAX_REMARKS + 1)
+    assert any("at most" in p for p in validate(r))
+    r["remarks"] = ["x" * (MAX_REMARK_CHARS + 1)]
+    assert any("over" in p for p in validate(r))
+    r["remarks"] = "not a list"
+    assert any("list of strings" in p for p in validate(r))
+
+
+def test_a_run_without_remarks_is_still_valid():
+    """`remarks` is optional: files written before the flag existed stay valid."""
+    from bench.adapter.reference import ReferenceMemory
+    from bench.runner import run
+    from bench.schema import validate
+
+    r = run(ReferenceMemory()).to_json()
+    assert r["remarks"] == []
+    del r["remarks"]
+    assert validate(r, for_submission=True) == []

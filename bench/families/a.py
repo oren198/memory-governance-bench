@@ -9,7 +9,7 @@ def a1(ctx: Ctx) -> None:
     """Rules bind at every depth, in full. A Company rule reaches Tier-2,
     verbatim and binding."""
     g = ctx.standard()
-    content = ctx.text("rule", words=20, kind="rule")
+    content = ctx.text("rule", words=20, kind="rule", group=g["company"])
     ctx.write(ctx.agent(g["company"]), "rule", kind="rule", content=content)
     read = ctx.read(ctx.agent(g["tier2"]))
     shown = ctx.items_with(read, ctx.canary("rule"))
@@ -114,8 +114,14 @@ def a7(ctx: Ctx) -> None:
     the same subject does not."""
     g = ctx.standard()
     subj = f"refunds-{ctx.variant}"
-    ctx.write(ctx.agent(g["support"], owner=True), "owner", kind="rule", subject=subj)
-    ctx.write(ctx.agent(g["support"]), "fleet", kind="rule", subject=subj)
+    # The two rules must genuinely conflict, not merely share a subject:
+    # MODEL.md defines a contradiction as the same subject with incompatible
+    # content, and a system entitled to read content will find no conflict
+    # between two unrelated rules that happen to be filed together.
+    ctx.write(ctx.agent(g["support"], owner=True), "owner", kind="rule", subject=subj,
+              content=ctx.claim("owner", "refunds above 100 require a manager's approval."))
+    ctx.write(ctx.agent(g["support"]), "fleet", kind="rule", subject=subj,
+              content=ctx.claim("fleet", "refunds above 100 do not require any approval."))
     read = ctx.read(ctx.agent(g["support"]))
     owner_shown = ctx.items_with(read, ctx.canary("owner"))
     fleet_shown = ctx.items_with(read, ctx.canary("fleet"))
@@ -131,7 +137,7 @@ def a7(ctx: Ctx) -> None:
 def a8(ctx: Ctx) -> None:
     """An owner rule is not paraphrased: it survives later writes verbatim."""
     g = ctx.standard()
-    content = ctx.text("owner", words=25, kind="rule")
+    content = ctx.text("owner", words=25, kind="rule", group=g["support"])
     ctx.write(ctx.agent(g["support"], owner=True), "owner", kind="rule", content=content)
     for n in range(12):
         ctx.write(ctx.agent(g["support"]), f"noise{n}")

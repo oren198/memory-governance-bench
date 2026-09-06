@@ -128,3 +128,33 @@ def test_no_clause_is_repeated_to_reach_the_word_floor():
             text = sentence(5, "A1", 1, f"t{ordinal}", 200, kind, ordinal)
             clauses = [c.strip() for c in text.split(". ") if c.strip()]
             assert len(set(clauses)) == len(clauses), text
+
+
+def test_an_item_names_something_its_own_group_would_hold():
+    """A system may weigh whether an item belongs where it was written. Found
+    by the architect: a note about a search index, planted in a billing group,
+    was declined as irrelevant there — and admitted on a re-run, so it also
+    cost the run its determinism."""
+    from bench.canary import _SUBJECTS_BY_ROLE
+
+    for role, nouns in _SUBJECTS_BY_ROLE.items():
+        for kind in ("rule", "note"):
+            for ordinal in range(len(nouns)):
+                text = sentence(9, "A5", 0, f"t{ordinal}", 12, kind, ordinal, role)
+                assert any(n in text for n in nouns), (role, text)
+                foreign = [
+                    n for other, ns in _SUBJECTS_BY_ROLE.items() if other != role
+                    for n in ns if n in text and n not in nouns
+                ]
+                assert not foreign, (role, text, foreign)
+
+
+def test_the_role_banks_do_not_overlap():
+    """Overlapping nouns would make the check above pass by accident."""
+    from bench.canary import _SUBJECTS_BY_ROLE
+
+    seen: dict[str, str] = {}
+    for role, nouns in _SUBJECTS_BY_ROLE.items():
+        for n in nouns:
+            assert n not in seen, f"{n!r} is in both {seen.get(n)} and {role}"
+            seen[n] = role

@@ -47,6 +47,7 @@ def load_system(spec: str):
 
 def cmd_run(args: argparse.Namespace) -> int:
     system = load_system(args.system)
+    remarks = list(args.note or [])
     families = sorted(set(args.families.split(","))) if args.families else None
 
     total = 0
@@ -62,7 +63,7 @@ def cmd_run(args: argparse.Namespace) -> int:
 
     result = run_bench(
         system, families=families, seed=args.seed, repeat=args.repeat,
-        timeout=(args.timeout or None), progress=progress,
+        timeout=(args.timeout or None), progress=progress, remarks=remarks,
     )
     if not args.verbose:
         print(file=sys.stderr)
@@ -211,6 +212,9 @@ def main(argv: list[str] | None = None) -> int:
                        help="repeat every scenario N times and record the spread")
     p_run.add_argument("--timeout", type=float, default=120.0,
                        help="wall-clock budget per scenario, in seconds (0 disables)")
+    p_run.add_argument("--note", action="append", metavar="TEXT",
+                       help="a remark to record in the run file, repeatable; "
+                            "context a reader needs, not a defence of the score")
     p_run.add_argument("-v", "--verbose", action="store_true")
     p_run.set_defaults(func=cmd_run)
 

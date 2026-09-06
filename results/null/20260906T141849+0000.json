@@ -1,7 +1,7 @@
 {
-  "run_id": "4eef92c7-cb3e-47b8-ae51-1f1c9b79f1a1",
+  "run_id": "9e919414-1616-4a07-9793-a0b67e103547",
   "bench_version": "0.1.0",
-  "timestamp": "2026-09-06T14:06:11+00:00",
+  "timestamp": "2026-09-06T14:18:49+00:00",
   "seed": 20260903,
   "repeat": 1,
   "submittable": true,
@@ -1151,7 +1151,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "CNRY472A31971AC5: every change to the retry queue requires a"
+              "CNRY472A31971AC5: every change to the macro sync requires a "
             ]
           }
         }
@@ -1176,7 +1176,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "CNRYF1C72F7154F7: access to the billing pipeline in producti"
+              "CNRYF1C72F7154F7: access to the chat widget in production is"
             ]
           }
         }
@@ -1201,7 +1201,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "CNRY4D34F5D875CF: the search index must be drained before an"
+              "CNRY4D34F5D875CF: the backlog sweeper must be drained before"
             ]
           }
         }
@@ -1226,7 +1226,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "CNRY2A230C208979: the retry queue must fail closed when its "
+              "CNRY2A230C208979: the backlog sweeper must fail closed when "
             ]
           }
         }
@@ -1251,7 +1251,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "CNRYBA998B6C3356: the session cache must not be deployed wit"
+              "CNRYBA998B6C3356: the macro sync must not be deployed withou"
             ]
           }
         }
@@ -2669,7 +2669,7 @@
           "id": "G1-001-within-bound",
           "passed": false,
           "detail": {
-            "words": 1030,
+            "words": 1034,
             "bound": 400
           }
         }
@@ -2688,7 +2688,7 @@
           "id": "G1-002-within-bound",
           "passed": false,
           "detail": {
-            "words": 1030,
+            "words": 1033,
             "bound": 400
           }
         }
@@ -2707,7 +2707,7 @@
           "id": "G1-003-within-bound",
           "passed": false,
           "detail": {
-            "words": 1030,
+            "words": 1034,
             "bound": 400
           }
         }
@@ -5469,7 +5469,7 @@
     }
   ],
   "cost": {
-    "wall_seconds": 0.016,
+    "wall_seconds": 0.018,
     "calls": null,
     "timeout_seconds": 120.0,
     "timed_out": 0,
@@ -5479,5 +5479,6 @@
     "python": "3.10.12",
     "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.35"
   },
-  "notes": []
+  "notes": [],
+  "remarks": []
 }

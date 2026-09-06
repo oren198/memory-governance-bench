@@ -1,7 +1,7 @@
 {
-  "run_id": "2626bdcb-03c4-4f1e-b430-d60eabd21c25",
+  "run_id": "e355b8c2-6773-48fd-adf2-99171e98bbd2",
   "bench_version": "0.1.0",
-  "timestamp": "2026-09-06T14:06:11+00:00",
+  "timestamp": "2026-09-06T14:18:49+00:00",
   "seed": 20260903,
   "repeat": 1,
   "submittable": true,
@@ -1151,7 +1151,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "CNRY472A31971AC5: every change to the retry queue requires a"
+              "CNRY472A31971AC5: every change to the macro sync requires a "
             ]
           }
         }
@@ -1176,7 +1176,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "CNRYF1C72F7154F7: access to the billing pipeline in producti"
+              "CNRYF1C72F7154F7: access to the chat widget in production is"
             ]
           }
         }
@@ -1201,7 +1201,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "CNRY4D34F5D875CF: the search index must be drained before an"
+              "CNRY4D34F5D875CF: the backlog sweeper must be drained before"
             ]
           }
         }
@@ -1226,7 +1226,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "CNRY2A230C208979: the retry queue must fail closed when its "
+              "CNRY2A230C208979: the backlog sweeper must fail closed when "
             ]
           }
         }
@@ -1251,7 +1251,7 @@
           "passed": true,
           "detail": {
             "got": [
-              "CNRYBA998B6C3356: the session cache must not be deployed wit"
+              "CNRYBA998B6C3356: the macro sync must not be deployed withou"
             ]
           }
         }
@@ -2578,7 +2578,7 @@
           "id": "G1-002-within-bound",
           "passed": true,
           "detail": {
-            "words": 397,
+            "words": 400,
             "bound": 400
           }
         }
@@ -5294,5 +5294,6 @@
     "python": "3.10.12",
     "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.35"
   },
-  "notes": []
+  "notes": [],
+  "remarks": []
 }

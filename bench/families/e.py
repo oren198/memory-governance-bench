@@ -15,6 +15,7 @@ def _echo_world(ctx: Ctx) -> dict[str, str]:
         "company": f"company_{v}",
     }
     ctx.build(
+        roles={gid: role for role, gid in g.items()},
         groups=g.values(),
         part_of=[(g["support"], g["company"]), (g["billing"], g["company"]),
                  (g["tier2"], g["support"])],
@@ -28,7 +29,7 @@ def e1(ctx: Ctx) -> None:
     """A restatement is not a second source. The same claim, first-hand and
     restated, is never shown as two independent claims."""
     g = _echo_world(ctx)
-    claim = ctx.text("claim", words=14)
+    claim = ctx.text("claim", words=14, group=g["billing"])
     r = ctx.write(ctx.agent(g["billing"]), "claim", content=claim)
     ctx.announce(ctx.agent(g["billing"]), r.id)
     restated = f"According to {g['billing']}, {claim}"
@@ -49,7 +50,7 @@ def e2(ctx: Ctx) -> None:
     """Attribution is live. After the source retracts, nothing is still
     attributed to it."""
     g = _echo_world(ctx)
-    claim = ctx.text("claim", words=14)
+    claim = ctx.text("claim", words=14, group=g["billing"])
     r = ctx.write(ctx.agent(g["billing"]), "claim", content=claim)
     ctx.announce(ctx.agent(g["billing"]), r.id)
     ctx.write(ctx.agent(g["support"]), None, content=f"According to {g['billing']}, {claim}")
@@ -67,7 +68,7 @@ def e3(ctx: Ctx) -> None:
     retraction it stands on the restater's own authority — its own origin,
     no borrowed attribution — never the source's copy with the label off."""
     g = _echo_world(ctx)
-    claim = ctx.text("claim", words=14)
+    claim = ctx.text("claim", words=14, group=g["billing"])
     r = ctx.write(ctx.agent(g["billing"]), "claim", content=claim)
     ctx.announce(ctx.agent(g["billing"]), r.id)
     ctx.write(ctx.agent(g["support"]), None, content=f"According to {g['billing']}, {claim}")
@@ -91,11 +92,12 @@ def e4(ctx: Ctx) -> None:
     v = ctx.variant
     g = {"billing": f"billing_{v}", "support": f"support_{v}", "company": f"company_{v}"}
     ctx.build(
+        roles={gid: role for role, gid in g.items()},
         groups=g.values(),
         part_of=[(g["billing"], g["company"]), (g["support"], g["company"])],
         listens_to=[(g["support"], g["billing"]), (g["billing"], g["support"])],
     )
-    claim = ctx.text("claim", words=14)
+    claim = ctx.text("claim", words=14, group=g["billing"])
     r = ctx.write(ctx.agent(g["billing"]), "claim", content=claim)
     ctx.announce(ctx.agent(g["billing"]), r.id)
     heard = ctx.read(ctx.agent(g["support"]))

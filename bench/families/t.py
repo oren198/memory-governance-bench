@@ -68,7 +68,7 @@ def t5(ctx: Ctx) -> None:
     planted in a group it is entitled to nothing of. The copy is not shown
     with the foreign group as its origin."""
     g = ctx.standard()
-    planted = ctx.text("foreign", words=15)
+    planted = ctx.text("foreign", words=15, group=g["sales"])
     ctx.write(ctx.agent(g["sales"]), None, content=planted)
     ctx.write(ctx.agent(g["billing"]), None, content=planted)
     read = ctx.read(ctx.agent(g["billing"]))

@@ -749,7 +749,43 @@ class StrataMemory(_StrataBase):
         from strata.settings import get_settings  # noqa: PLC0415
 
         settings = get_settings()
-        return ScopeManager(client=settings.build_judge_client(), model=settings.manager_model)
+        return ScopeManager(
+            client=_ThinkingSwitch(settings.build_judge_client()),
+            model=settings.manager_model,
+        )
+
+
+class _ThinkingSwitch:
+    """Transport shim: pass `thinking: disabled` when `JUDGE_THINKING=disabled`.
+
+    A thinking model (qwen3 on a local Ollama) reasons before every tool call
+    and takes ~100 s a judgment; the Anthropic Messages API's `thinking`
+    parameter switches that off. Strata does not send it, so the adapter's
+    client does. Nothing about what the judge is asked or how its answer is
+    read changes — this is the same class of setting as the base URL.
+    """
+
+    def __init__(self, inner):  # noqa: ANN001
+        self._inner = inner
+        self.messages = _ThinkingMessages(inner.messages)
+
+    def __getattr__(self, name):  # noqa: ANN001, ANN204
+        return getattr(self._inner, name)
+
+
+class _ThinkingMessages:
+    def __init__(self, messages):  # noqa: ANN001
+        self._messages = messages
+
+    def create(self, *args, **kwargs):  # noqa: ANN002, ANN003, ANN202
+        import os  # noqa: PLC0415
+
+        if os.environ.get("JUDGE_THINKING") == "disabled" and "thinking" not in kwargs:
+            kwargs["thinking"] = {"type": "disabled"}
+        return self._messages.create(*args, **kwargs)
+
+    def __getattr__(self, name):  # noqa: ANN001, ANN204
+        return getattr(self._messages, name)
 
 
 class StrataStubJudgeMemory(_StrataBase):

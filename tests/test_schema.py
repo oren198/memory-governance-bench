@@ -133,3 +133,17 @@ def test_a_run_without_remarks_is_still_valid():
     assert r["remarks"] == []
     del r["remarks"]
     assert validate(r, for_submission=True) == []
+
+
+def test_the_dashboard_opens_from_a_relative_out_dir(tmp_path, monkeypatch):
+    """`fmb ui` defaults to a relative path, and as_uri() rejects one — the
+    site built and then the command died on the last line."""
+    import bench.cli as cli
+
+    monkeypatch.chdir(tmp_path)
+    opened: list[str] = []
+    monkeypatch.setattr(cli.webbrowser, "open", lambda u: opened.append(u))
+    monkeypatch.setattr(cli, "_load_runs", lambda: [])
+    args = cli.argparse.Namespace(out="site", no_open=False)
+    assert cli.cmd_ui(args) == 0
+    assert opened and opened[0].startswith("file://")

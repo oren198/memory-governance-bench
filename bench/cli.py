@@ -136,7 +136,7 @@ def _load_runs() -> list[dict]:
 def cmd_ui(args: argparse.Namespace) -> int:
     from bench.ui import build_site
 
-    out = Path(args.out)
+    out = Path(args.out).resolve()   # as_uri() below needs an absolute path
     build_site(_load_runs(), out)
     index = out / "index.html"
     print(f"site: {index}")

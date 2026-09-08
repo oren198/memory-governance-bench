@@ -17,9 +17,6 @@ FORBIDDEN = (
     "scope", "stratum", "strata", "judge", "publication", "perspective",
     "directive", "summary",
 )
-EXEMPT_PATHS = {"adapters"}   # adapter notes may name the system they adapt
-
-
 def _documented() -> set[str]:
     return set(re.findall(r"^\*\*([A-Z][0-9]+[a-z]?) ", MEASURES, re.M))
 
@@ -67,8 +64,6 @@ def test_no_implementation_vocabulary_in_the_benchmark():
     an HTML tag named `summary` is a reference, not a concept."""
     offenders = []
     for path in list(ROOT.glob("*.md")) + list((ROOT / "bench").rglob("*.py")):
-        if any(part in EXEMPT_PATHS for part in path.parts):
-            continue
         if path.name in {"README.md", "CHARTER.md"}:
             continue   # these name the reference implementation on purpose
         text = _prose(path)

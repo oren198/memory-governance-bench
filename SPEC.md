@@ -2,8 +2,8 @@
 
 > **Status: implemented.** Two reference adapters ship with the benchmark:
 > `null` (ungoverned, fails every failure-mode family) and `reference`
-> (MODEL.md implemented plainly, passes all of them). Adapters for real
-> systems live under `adapters/`.
+> (MODEL.md implemented plainly, passes all of them). An adapter for a real
+> system lives with that system, not here — see CONTRIBUTING.md.
 
 How a team runs the benchmark, what their system must expose, what a result
 is, and how results are published and compared. Vocabulary: `MODEL.md`.

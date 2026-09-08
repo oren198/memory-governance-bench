@@ -110,9 +110,10 @@ Done: the runner, all nine families, both baselines, the HTTP and Python
 bindings, run files with Wilson bounds, the dashboard, and submission by
 pull request.
 
-Next: a working Strata adapter (a skeleton and its hazard notes are in
-`adapters/strata/`), publishing to PyPI, and hosting the dashboard on
-GitHub Pages.
+Next: publishing to PyPI and hosting the dashboard on GitHub Pages.
+
+Adapters for real systems live with those systems. This repository ships
+`null` and `reference` only — see CONTRIBUTING.md.
 
 ## Honesty about where this came from
 

@@ -45,7 +45,7 @@ def test_families_agree_with_the_charter():
 
 def _prose(path: Path) -> str:
     """Prose only: no fenced blocks, no inline code, no CSS or identifiers.
-    A path like `adapters/strata/` is a reference, not vocabulary."""
+    A path in prose is a reference, not vocabulary."""
     text = path.read_text()
     if path.suffix == ".md":
         text = re.sub(r"```.*?```", " ", text, flags=re.S)

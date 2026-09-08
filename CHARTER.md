@@ -91,6 +91,20 @@ follow, and both are load-bearing:
 Contributions that argue a forced rule is actually a chosen one, or the
 reverse, are the most valuable thing this repository can receive.
 
+**Both baselines admit everything.** The null baseline accepts every write
+and shows it to everyone; the reference accepts everything legitimate.
+Neither ever holds less than it was given, and for a while every measure
+whose condition was an absence, a "no more than one", or a "no note may"
+passed both — which read as the measures working. It was not. A system that
+declines what it is given satisfies all of them for free, and three separate
+instances of that hole were found only by running against a real system with
+an admission step of its own. Each is now closed with a positive
+precondition and an adversary in `tests/mutations`: `AdmitsNothing`, which
+holds none of what it accepts, and `NotesRefused`, which keeps rules and
+declines observations. If you are extending the measures, assume this class
+is not exhausted: ask of every new measure what a system that holds nothing
+would score on it.
+
 **Results are self-reported.** Runs are produced by the team being measured
 and published by pull request. The audit trail is the run file and the PR
 history, not an independent execution.
